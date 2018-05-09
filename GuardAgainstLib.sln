@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GuardAgainstLib", "GuardAga
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GuardAgainstLib.Test", "GuardAgainstLib.Test\GuardAgainstLib.Test.csproj", "{4D1D7CBF-201E-4299-B470-BC8AA13A7548}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleApp", "ExampleApp\ExampleApp.csproj", "{C4061524-1167-4298-8BE8-0242023251BB}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8E394B94-1524-4188-951F-DDE81EF280E7}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
@@ -28,10 +26,6 @@ Global
 		{4D1D7CBF-201E-4299-B470-BC8AA13A7548}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D1D7CBF-201E-4299-B470-BC8AA13A7548}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D1D7CBF-201E-4299-B470-BC8AA13A7548}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C4061524-1167-4298-8BE8-0242023251BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4061524-1167-4298-8BE8-0242023251BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C4061524-1167-4298-8BE8-0242023251BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4061524-1167-4298-8BE8-0242023251BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

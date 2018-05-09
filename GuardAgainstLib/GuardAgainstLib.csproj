@@ -3,6 +3,15 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.0</TargetFramework>
     <RootNamespace>GuardAgainstLib</RootNamespace>
+    <PackageId>GuardAgainst</PackageId>
+    <Authors>Paul Mcilreavy</Authors>
+    <Product>GuardAgainst</Product>
+    <Description>A single class, containing static methods, to make your code more readable and simplify argument validity checking.</Description>
+    <PackageLicenseUrl>https://github.com/pmcilreavy/GuardAgainst/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/pmcilreavy/GuardAgainst</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/pmcilreavy/GuardAgainst</RepositoryUrl>
+    <PackageTags>GuardAgainst dotnet contracts arguments validity</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
 </Project>
