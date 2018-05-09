@@ -5,7 +5,7 @@ A single class, containing static methods, to make your code more readable and t
 
 ### Installation
 
-Just copy the [source file](../blob/master/GuardAgainstLib/GuardAgainst.cs) into your project and change the namespace to match your own.
+Just copy the [source file](../master/GuardAgainstLib/GuardAgainst.cs) into your project and change the namespace to match your own.
 
 ### Why would I use it?
 
