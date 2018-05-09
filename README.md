@@ -1,5 +1,5 @@
 # GuardAgainst
-A single class, containing static methods, to make your code more readable and simplify argument validity checking.
+A single class, containing static methods, to make your code more readable and to simplify argument validity checking.
 
 ---
 
@@ -83,17 +83,17 @@ This is the same issue though that you'd have if you chose to tidy up your own h
 | Guard against being _null, whitespace or empty_                  | Description |
 | :-                                         | :-            |
 | GuardAgainst.ArgumentBeingNull             | Throws an ArgumentNullException when the value is null. |
-| GuardAgainst.ArgumentBeingNullOrWhitespace | Throws an ArgumentNullException when the value is null. Throws an ArgumentException when the value is a whitespace only string. |
+| GuardAgainst.ArgumentBeingNullOrWhitespace | Throws an ArgumentNullException when the value is null. <br/>Throws an ArgumentException when the value is a whitespace only string. |
 | GuardAgainst.ArgumentBeingWhitespace       | Throws an ArgumentException when the value is a whitespace only string. |
-| GuardAgainst.ArgumentBeingNullOrEmpty      | Throws an ArgumentNullException when the value is null. Throws an ArgumentException when the value is an empty string. |
+| GuardAgainst.ArgumentBeingNullOrEmpty      | Throws an ArgumentNullException when the value is null. <br/>Throws an ArgumentException when the value is an empty string. |
 | GuardAgainst.ArgumentBeingEmpty            | Throws an ArgumentException when the value is an empty string. |
 | **Guard against being _out of range_**                                    | **Description** |
-| GuardAgainst.ArgumentBeingNullOrLessThanMinimum    | Throws an ArgumentNullException when the value is null. Throws an ArgumentOutOfRangeException when the value is less than the minimum allowed value. |
+| GuardAgainst.ArgumentBeingNullOrLessThanMinimum    | Throws an ArgumentNullException when the value is null. <br/>Throws an ArgumentOutOfRangeException when the value is less than the minimum allowed value. |
 | GuardAgainst.ArgumentBeingLessThanMinimum          | Throws an ArgumentOutOfRangeException when the value is less than the minimum allowed value. |
-| GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum | Throws an ArgumentNullException when the value is null. Throws an ArgumentOutOfRangeException when the value is greater than the maximum allowed value. |
+| GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum | Throws an ArgumentNullException when the value is null. <br/>Throws an ArgumentOutOfRangeException when the value is greater than the maximum allowed value. |
 | GuardAgainst.ArgumentBeingGreaterThanMaximum       | Throws an ArgumentOutOfRangeException when the value is greater than the maximum allowed value. |
-| GuardAgainst.ArgumentBeingNullOrOutOfRange         | Throws an ArgumentNullException when the value is null. Throws an ArgumentOutOfRangeException when the value is less than the minimum allowed value. Throws an ArgumentOutOfRangeException when the value is greater than the maximum allowed value. |
-| GuardAgainst.ArgumentBeingOutOfRange               | Throws an ArgumentOutOfRangeException when the value is less than the minimum allowed value. Throws an ArgumentOutOfRangeException when the value is greater than the maximum allowed value. |
+| GuardAgainst.ArgumentBeingNullOrOutOfRange         | Throws an ArgumentNullException when the value is null. <br/>Throws an ArgumentOutOfRangeException when the value is less than the minimum allowed value. <br/>Throws an ArgumentOutOfRangeException when the value is greater than the maximum allowed value. |
+| GuardAgainst.ArgumentBeingOutOfRange               | Throws an ArgumentOutOfRangeException when the value is less than the minimum allowed value. <br/>Throws an ArgumentOutOfRangeException when the value is greater than the maximum allowed value. |
 | **Guard against being _invalid_**                                          | **Description** |
 | GuardAgainst.ArgumentBeingInvalid      | Throws an ArgumentException based on whether the condition is met. |
 | GuardAgainst.InvalidOperationException | Throws an InvalidOperationException based on whether the condition is met. |
