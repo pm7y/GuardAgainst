@@ -1,21 +1,28 @@
-﻿using System;
-using System.Diagnostics;
-
-namespace GuardAgainstLib
+﻿namespace GuardAgainstLib
 {
+    using System;
+    using System.Diagnostics;
+
+    /// <summary>
+    ///     A single class, containing static methods, to make your code more readable and to simplify argument validity
+    ///     checking.
+    ///     More information @ https://github.com/pmcilreavy/GuardAgainst
+    /// </summary>
     [DebuggerNonUserCode]
     public static class GuardAgainst
     {
         #region Null, Whitespace, Empty
 
         /// <summary>
-        /// Throws an ArgumentNullException if the argumentValue is null.
+        ///     Throws an ArgumentNullException if the argumentValue is null.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="argumentValue">The argument value to check for null.</param>
         /// <param name="argumentName">Name of the argument. Can be optionally specified to be included in the raised exception.</param>
-        /// <param name="exceptionMessage">The exception message. An optional error message that decribes the exception in more
-        /// detail.</param>
+        /// <param name="exceptionMessage">
+        ///     The exception message. An optional error message that decribes the exception in more
+        ///     detail.
+        /// </param>
         /// <exception cref="ArgumentNullException"></exception>
         public static void ArgumentBeingNull<T>(T argumentValue,
                                                 string argumentName = null,
@@ -353,14 +360,20 @@ namespace GuardAgainstLib
         /// <summary>
         ///     Throws an ArgumentException if the argument is not valid.
         /// </summary>
-        /// <param name="condition">By default, <c>true</c> indicates that the argument value is invalid. This can be reversed by setting conditionMeaning = ConditionMeaning.TrueMeansValid.</param>
+        /// <param name="condition">
+        ///     By default, <c>true</c> indicates that the argument value is invalid. This can be reversed by
+        ///     setting conditionMeaning = ConditionMeaning.TrueMeansValid.
+        /// </param>
         /// <param name="argumentName">Name of the argument. Can be optionally specified to be included in the raised exception.</param>
         /// <param name="exceptionMessage">
         ///     The exception message. An optional error message that decribes the exception in more
         ///     detail.
         /// </param>
-        /// <param name="conditionMeaning">Can be used to change the polarity of the condition.
-        /// Defaults to TrueMeansInvalid. Is used in conjuction with the condition flag to determine whether or not to raise the exception.</param>
+        /// <param name="conditionMeaning">
+        ///     Can be used to change the polarity of the condition.
+        ///     Defaults to TrueMeansInvalid. Is used in conjuction with the condition flag to determine whether or not to raise
+        ///     the exception.
+        /// </param>
         /// <exception cref="ArgumentException"></exception>
         public static void ArgumentBeingInvalid(bool condition,
                                                 string argumentName = null,
@@ -376,14 +389,20 @@ namespace GuardAgainstLib
         /// <summary>
         ///     Throws an ArgumentException if the argument is not valid.
         /// </summary>
-        /// <param name="condition">By default, <c>true</c> indicates that the argument value is invalid. This can be reversed by setting conditionMeaning = ConditionMeaning.TrueMeansValid.</param>
+        /// <param name="condition">
+        ///     By default, <c>true</c> indicates that the argument value is invalid. This can be reversed by
+        ///     setting conditionMeaning = ConditionMeaning.TrueMeansValid.
+        /// </param>
         /// <param name="argumentName">Name of the argument. Can be optionally specified to be included in the raised exception.</param>
         /// <param name="exceptionMessage">
         ///     The exception message. An optional error message that decribes the exception in more
         ///     detail.
         /// </param>
-        /// <param name="conditionMeaning">Can be used to change the polarity of the condition.
-        /// Defaults to TrueMeansInvalid. Is used in conjuction with the condition flag to determine whether or not to raise the exception.</param>
+        /// <param name="conditionMeaning">
+        ///     Can be used to change the polarity of the condition.
+        ///     Defaults to TrueMeansInvalid. Is used in conjuction with the condition flag to determine whether or not to raise
+        ///     the exception.
+        /// </param>
         /// <exception cref="ArgumentException"></exception>
         public static void ArgumentBeingInvalid(Func<bool> condition,
                                                 string argumentName = null,
@@ -401,20 +420,27 @@ namespace GuardAgainstLib
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="argumentValue">The argument value to check if invalid.</param>
-        /// <param name="condition">By default, <c>true</c> indicates that the argument value is invalid. This can be reversed by setting conditionMeaning = ConditionMeaning.TrueMeansValid.</param>
+        /// <param name="condition">
+        ///     By default, <c>true</c> indicates that the argument value is invalid. This can be reversed by
+        ///     setting conditionMeaning = ConditionMeaning.TrueMeansValid.
+        /// </param>
         /// <param name="argumentName">Name of the argument. Can be optionally specified to be included in the raised exception.</param>
         /// <param name="exceptionMessage">
         ///     The exception message. An optional error message that decribes the exception in more
         ///     detail.
         /// </param>
-        /// <param name="conditionMeaning">Can be used to change the polarity of the condition.
-        /// Defaults to TrueMeansInvalid. Is used in conjuction with the condition flag to determine whether or not to raise the exception.</param>
+        /// <param name="conditionMeaning">
+        ///     Can be used to change the polarity of the condition.
+        ///     Defaults to TrueMeansInvalid. Is used in conjuction with the condition flag to determine whether or not to raise
+        ///     the exception.
+        /// </param>
         /// <exception cref="ArgumentException"></exception>
         public static void ArgumentBeingInvalid<T>(T argumentValue,
                                                    Predicate<T> condition,
                                                    string argumentName = null,
                                                    string exceptionMessage = null,
-                                                   ConditionMeaning conditionMeaning = ConditionMeaning.TrueMeansInvalid)
+                                                   ConditionMeaning conditionMeaning =
+                                                       ConditionMeaning.TrueMeansInvalid)
         {
             if (condition != null && IsInvalid(condition(argumentValue), conditionMeaning))
             {
@@ -425,13 +451,19 @@ namespace GuardAgainstLib
         /// <summary>
         ///     Throws an InvalidOperationException if the condition is not met.
         /// </summary>
-        /// <param name="condition">By default, <c>true</c> indicates that the argument value is invalid. This can be reversed by setting conditionMeaning = ConditionMeaning.TrueMeansValid.</param>
+        /// <param name="condition">
+        ///     By default, <c>true</c> indicates that the argument value is invalid. This can be reversed by
+        ///     setting conditionMeaning = ConditionMeaning.TrueMeansValid.
+        /// </param>
         /// <param name="exceptionMessage">
         ///     The exception message. An optional error message that decribes the exception in more
         ///     detail.
         /// </param>
-        /// <param name="conditionMeaning">Can be used to change the polarity of the condition.
-        /// Defaults to TrueMeansInvalid. Is used in conjuction with the condition flag to determine whether or not to raise the exception.</param>
+        /// <param name="conditionMeaning">
+        ///     Can be used to change the polarity of the condition.
+        ///     Defaults to TrueMeansInvalid. Is used in conjuction with the condition flag to determine whether or not to raise
+        ///     the exception.
+        /// </param>
         /// <exception cref="InvalidOperationException"></exception>
         public static void InvalidOperation(bool condition,
                                             string exceptionMessage = null,
@@ -446,13 +478,19 @@ namespace GuardAgainstLib
         /// <summary>
         ///     Throws an InvalidOperationException if the condition is not met.
         /// </summary>
-        /// <param name="condition">By default, <c>true</c> indicates that the argument value is invalid. This can be reversed by setting conditionMeaning = ConditionMeaning.TrueMeansValid.</param>
+        /// <param name="condition">
+        ///     By default, <c>true</c> indicates that the argument value is invalid. This can be reversed by
+        ///     setting conditionMeaning = ConditionMeaning.TrueMeansValid.
+        /// </param>
         /// <param name="exceptionMessage">
         ///     The exception message. An optional error message that decribes the exception in more
         ///     detail.
         /// </param>
-        /// <param name="conditionMeaning">Can be used to change the polarity of the condition.
-        /// Defaults to TrueMeansInvalid. Is used in conjuction with the condition flag to determine whether or not to raise the exception.</param>
+        /// <param name="conditionMeaning">
+        ///     Can be used to change the polarity of the condition.
+        ///     Defaults to TrueMeansInvalid. Is used in conjuction with the condition flag to determine whether or not to raise
+        ///     the exception.
+        /// </param>
         /// <exception cref="InvalidOperationException"></exception>
         public static void InvalidOperation(Func<bool> condition,
                                             string exceptionMessage = null,
@@ -468,13 +506,19 @@ namespace GuardAgainstLib
         ///     Throws an InvalidOperationException if the condition is not met.
         /// </summary>
         /// <param name="argumentValue">The argument value to check if invalid.</param>
-        /// <param name="condition">By default, <c>true</c> indicates that the argument value is invalid. This can be reversed by setting conditionMeaning = ConditionMeaning.TrueMeansValid.</param>
+        /// <param name="condition">
+        ///     By default, <c>true</c> indicates that the argument value is invalid. This can be reversed by
+        ///     setting conditionMeaning = ConditionMeaning.TrueMeansValid.
+        /// </param>
         /// <param name="exceptionMessage">
         ///     The exception message. An optional error message that decribes the exception in more
         ///     detail.
         /// </param>
-        /// <param name="conditionMeaning">Can be used to change the polarity of the condition.
-        /// Defaults to TrueMeansInvalid. Is used in conjuction with the condition flag to determine whether or not to raise the exception.</param>
+        /// <param name="conditionMeaning">
+        ///     Can be used to change the polarity of the condition.
+        ///     Defaults to TrueMeansInvalid. Is used in conjuction with the condition flag to determine whether or not to raise
+        ///     the exception.
+        /// </param>
         /// <exception cref="InvalidOperationException"></exception>
         public static void InvalidOperation<T>(T argumentValue,
                                                Predicate<T> condition,
@@ -490,14 +534,14 @@ namespace GuardAgainstLib
         public enum ConditionMeaning
         {
             TrueMeansInvalid,
-            TrueMeansValid,
+            TrueMeansValid
         }
 
         private static bool IsInvalid(bool condition,
                                       ConditionMeaning conditionMeaning)
         {
-            if ((condition && conditionMeaning == ConditionMeaning.TrueMeansValid) ||
-                (!condition && conditionMeaning == ConditionMeaning.TrueMeansInvalid))
+            if (condition && conditionMeaning == ConditionMeaning.TrueMeansValid ||
+                !condition && conditionMeaning == ConditionMeaning.TrueMeansInvalid)
             {
                 return true;
             }
