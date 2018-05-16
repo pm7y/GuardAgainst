@@ -9,24 +9,44 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentIsNull_ShouldThrowException()
         {
-            Should.Throw<ArgumentOutOfRangeException>(() =>
+            Should.Throw<ArgumentNullException>(() =>
             {
-                const string minimum = "b";
-                const string arg = "a";
+                const string arg = default(string);
 
-                GuardAgainst.ArgumentBeingLessThanMinimum(arg, minimum, nameof(arg), "Argh!");
+                GuardAgainst.ArgumentBeingNull(arg, nameof(arg), "Argh!");
             });
         }
 
         [Fact]
-        public void WhenMinimumIsNull_ShouldNotThrowException()
+        public void WhenArgumentIsNotNull_ShouldNotThrowException()
         {
             Should.NotThrow(() =>
             {
-                const string minimum = default(string);
-                const string arg = "a";
-                
-                GuardAgainst.ArgumentBeingLessThanMinimum(arg, minimum, nameof(arg), "Argh!");
+                const string arg = "blah";
+
+                GuardAgainst.ArgumentBeingNull(arg, nameof(arg), "Argh!");
+            });
+        }
+
+        [Fact]
+        public void WhenArgumentIsEmpty_ShouldNotThrowException()
+        {
+            Should.NotThrow(() =>
+            {
+                const string arg = "";
+
+                GuardAgainst.ArgumentBeingNull(arg, nameof(arg), "Argh!");
+            });
+        }
+
+        [Fact]
+        public void WhenArgumentIsWhitespace_ShouldNotThrowException()
+        {
+            Should.NotThrow(() =>
+            {
+                const string arg = "       ";
+
+                GuardAgainst.ArgumentBeingNull(arg, nameof(arg), "Argh!");
             });
         }
     }
