@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace GuardAgainstLib
 {
+    [DebuggerNonUserCode]
     public static class GuardAgainst
     {
         #region Null, Whitespace, Empty
