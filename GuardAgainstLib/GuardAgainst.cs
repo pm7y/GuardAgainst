@@ -25,12 +25,12 @@
         /// </param>
         /// <exception cref="ArgumentNullException"></exception>
         public static void ArgumentBeingNull<T>(T argumentValue,
-                                                string argumentName = null,
-                                                string exceptionMessage = null) where T : class
+                                                string argumentName = default,
+                                                string exceptionMessage = default) where T : class
         {
             if (argumentValue == null)
             {
-                throw new ArgumentNullException(argumentName, exceptionMessage);
+                throw new ArgumentNullException(argumentName.NullIfWhitespace(), exceptionMessage.NullIfWhitespace());
             }
         }
 
@@ -47,17 +47,17 @@
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
         public static void ArgumentBeingNullOrWhitespace(string argumentValue,
-                                                         string argumentName = null,
-                                                         string exceptionMessage = null)
+                                                         string argumentName = default,
+                                                         string exceptionMessage = default)
         {
             if (argumentValue == null)
             {
-                throw new ArgumentNullException(argumentName, exceptionMessage);
+                throw new ArgumentNullException(argumentName.NullIfWhitespace(), exceptionMessage.NullIfWhitespace());
             }
 
             if (string.IsNullOrWhiteSpace(argumentValue))
             {
-                throw new ArgumentException(exceptionMessage, argumentName);
+                throw new ArgumentException(exceptionMessage.NullIfWhitespace(), argumentName.NullIfWhitespace());
             }
         }
 
@@ -72,8 +72,8 @@
         /// </param>
         /// <exception cref="ArgumentException"></exception>
         public static void ArgumentBeingWhitespace(string argumentValue,
-                                                   string argumentName = null,
-                                                   string exceptionMessage = null)
+                                                   string argumentName = default,
+                                                   string exceptionMessage = default)
         {
             if (argumentValue == null)
             {
@@ -82,7 +82,7 @@
 
             if (string.IsNullOrWhiteSpace(argumentValue))
             {
-                throw new ArgumentException(exceptionMessage, argumentName);
+                throw new ArgumentException(exceptionMessage.NullIfWhitespace(), argumentName.NullIfWhitespace());
             }
         }
 
@@ -99,17 +99,17 @@
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
         public static void ArgumentBeingNullOrEmpty(string argumentValue,
-                                                    string argumentName = null,
-                                                    string exceptionMessage = null)
+                                                    string argumentName = default,
+                                                    string exceptionMessage = default)
         {
             if (argumentValue == null)
             {
-                throw new ArgumentNullException(argumentName, exceptionMessage);
+                throw new ArgumentNullException(argumentName.NullIfWhitespace(), exceptionMessage.NullIfWhitespace());
             }
 
             if (string.IsNullOrEmpty(argumentValue))
             {
-                throw new ArgumentException(exceptionMessage, argumentName);
+                throw new ArgumentException(exceptionMessage.NullIfWhitespace(), argumentName.NullIfWhitespace());
             }
         }
 
@@ -125,8 +125,8 @@
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
         public static void ArgumentBeingEmpty(string argumentValue,
-                                              string argumentName = null,
-                                              string exceptionMessage = null)
+                                              string argumentName = default,
+                                              string exceptionMessage = default)
         {
             if (argumentValue == null)
             {
@@ -135,7 +135,7 @@
 
             if (string.IsNullOrEmpty(argumentValue))
             {
-                throw new ArgumentException(exceptionMessage, argumentName);
+                throw new ArgumentException(exceptionMessage.NullIfWhitespace(), argumentName.NullIfWhitespace());
             }
         }
 
@@ -158,19 +158,19 @@
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static void ArgumentBeingNullOrLessThanMinimum<T>(T argumentValue,
                                                                  T minimumAllowedValue,
-                                                                 string argumentName = null,
-                                                                 string exceptionMessage = null
+                                                                 string argumentName = default,
+                                                                 string exceptionMessage = default
         )
             where T : class, IComparable<T>
         {
             if (argumentValue == null)
             {
-                throw new ArgumentNullException(argumentName, exceptionMessage);
+                throw new ArgumentNullException(argumentName.NullIfWhitespace(), exceptionMessage.NullIfWhitespace());
             }
 
             if (argumentValue.IsLessThan(minimumAllowedValue))
             {
-                throw new ArgumentOutOfRangeException(argumentName, argumentValue, exceptionMessage);
+                throw new ArgumentOutOfRangeException(argumentName.NullIfWhitespace(), argumentValue, exceptionMessage.NullIfWhitespace());
             }
         }
 
@@ -187,8 +187,8 @@
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static void ArgumentBeingLessThanMinimum<T>(T argumentValue,
                                                            T minimumAllowedValue,
-                                                           string argumentName = null,
-                                                           string exceptionMessage = null
+                                                           string argumentName = default,
+                                                           string exceptionMessage = default
         )
             where T : IComparable<T>
         {
@@ -199,7 +199,7 @@
 
             if (argumentValue.IsLessThan(minimumAllowedValue))
             {
-                throw new ArgumentOutOfRangeException(argumentName, argumentValue, exceptionMessage);
+                throw new ArgumentOutOfRangeException(argumentName.NullIfWhitespace(), argumentValue, exceptionMessage.NullIfWhitespace());
             }
         }
 
@@ -218,19 +218,19 @@
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static void ArgumentBeingNullOrGreaterThanMaximum<T>(T argumentValue,
                                                                     T maximumAllowedValue,
-                                                                    string argumentName = null,
-                                                                    string exceptionMessage = null
+                                                                    string argumentName = default,
+                                                                    string exceptionMessage = default
         )
             where T : class, IComparable<T>
         {
             if (argumentValue == null)
             {
-                throw new ArgumentNullException(argumentName, exceptionMessage);
+                throw new ArgumentNullException(argumentName.NullIfWhitespace(), exceptionMessage.NullIfWhitespace());
             }
 
             if (argumentValue.IsMoreThan(maximumAllowedValue))
             {
-                throw new ArgumentOutOfRangeException(argumentName, argumentValue, exceptionMessage);
+                throw new ArgumentOutOfRangeException(argumentName.NullIfWhitespace(), argumentValue, exceptionMessage.NullIfWhitespace());
             }
         }
 
@@ -247,8 +247,8 @@
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static void ArgumentBeingGreaterThanMaximum<T>(T argumentValue,
                                                               T maximumAllowedValue,
-                                                              string argumentName = null,
-                                                              string exceptionMessage = null
+                                                              string argumentName = default,
+                                                              string exceptionMessage = default
         )
             where T : IComparable<T>
         {
@@ -259,7 +259,7 @@
 
             if (argumentValue.IsMoreThan(maximumAllowedValue))
             {
-                throw new ArgumentOutOfRangeException(argumentName, argumentValue, exceptionMessage);
+                throw new ArgumentOutOfRangeException(argumentName.NullIfWhitespace(), argumentValue, exceptionMessage.NullIfWhitespace());
             }
         }
 
@@ -281,19 +281,19 @@
         public static void ArgumentBeingNullOrOutOfRange<T>(T argumentValue,
                                                             T minimumAllowedValue,
                                                             T maximumAllowedValue,
-                                                            string argumentName = null,
-                                                            string exceptionMessage = null
+                                                            string argumentName = default,
+                                                            string exceptionMessage = default
         )
             where T : class, IComparable<T>
         {
             if (argumentValue == null)
             {
-                throw new ArgumentNullException(argumentName, exceptionMessage);
+                throw new ArgumentNullException(argumentName.NullIfWhitespace(), exceptionMessage.NullIfWhitespace());
             }
 
             if (!argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
             {
-                throw new ArgumentOutOfRangeException(argumentName, argumentValue, exceptionMessage);
+                throw new ArgumentOutOfRangeException(argumentName.NullIfWhitespace(), argumentValue, exceptionMessage.NullIfWhitespace());
             }
         }
 
@@ -313,8 +313,8 @@
         public static void ArgumentBeingOutOfRange<T>(T argumentValue,
                                                       T minimumAllowedValue,
                                                       T maximumAllowedValue,
-                                                      string argumentName = null,
-                                                      string exceptionMessage = null
+                                                      string argumentName = default,
+                                                      string exceptionMessage = default
         )
             where T : IComparable<T>
         {
@@ -325,7 +325,7 @@
 
             if (!argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
             {
-                throw new ArgumentOutOfRangeException(argumentName, argumentValue, exceptionMessage);
+                throw new ArgumentOutOfRangeException(argumentName.NullIfWhitespace(), argumentValue, exceptionMessage.NullIfWhitespace());
             }
         }
 
@@ -376,13 +376,13 @@
         /// </param>
         /// <exception cref="ArgumentException"></exception>
         public static void ArgumentBeingInvalid(bool condition,
-                                                string argumentName = null,
-                                                string exceptionMessage = null,
+                                                string argumentName = default,
+                                                string exceptionMessage = default,
                                                 ConditionMeaning conditionMeaning = ConditionMeaning.TrueMeansInvalid)
         {
             if (IsInvalid(condition, conditionMeaning))
             {
-                throw new ArgumentException(exceptionMessage, argumentName);
+                throw new ArgumentException(exceptionMessage.NullIfWhitespace(), argumentName.NullIfWhitespace());
             }
         }
 
@@ -405,46 +405,13 @@
         /// </param>
         /// <exception cref="ArgumentException"></exception>
         public static void ArgumentBeingInvalid(Func<bool> condition,
-                                                string argumentName = null,
-                                                string exceptionMessage = null,
+                                                string argumentName = default,
+                                                string exceptionMessage = default,
                                                 ConditionMeaning conditionMeaning = ConditionMeaning.TrueMeansInvalid)
         {
             if (condition != null && IsInvalid(condition(), conditionMeaning))
             {
-                throw new ArgumentException(exceptionMessage, argumentName);
-            }
-        }
-
-        /// <summary>
-        ///     Throws an ArgumentException if the argument is not valid.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="argumentValue">The argument value to check if invalid.</param>
-        /// <param name="condition">
-        ///     By default, <c>true</c> indicates that the argument value is invalid. This can be reversed by
-        ///     setting conditionMeaning = ConditionMeaning.TrueMeansValid.
-        /// </param>
-        /// <param name="argumentName">Name of the argument. Can be optionally specified to be included in the raised exception.</param>
-        /// <param name="exceptionMessage">
-        ///     The exception message. An optional error message that decribes the exception in more
-        ///     detail.
-        /// </param>
-        /// <param name="conditionMeaning">
-        ///     Can be used to change the polarity of the condition.
-        ///     Defaults to TrueMeansInvalid. Is used in conjuction with the condition flag to determine whether or not to raise
-        ///     the exception.
-        /// </param>
-        /// <exception cref="ArgumentException"></exception>
-        public static void ArgumentBeingInvalid<T>(T argumentValue,
-                                                   Predicate<T> condition,
-                                                   string argumentName = null,
-                                                   string exceptionMessage = null,
-                                                   ConditionMeaning conditionMeaning =
-                                                       ConditionMeaning.TrueMeansInvalid)
-        {
-            if (condition != null && IsInvalid(condition(argumentValue), conditionMeaning))
-            {
-                throw new ArgumentException(exceptionMessage, argumentName);
+                throw new ArgumentException(exceptionMessage.NullIfWhitespace(), argumentName.NullIfWhitespace());
             }
         }
 
@@ -466,12 +433,12 @@
         /// </param>
         /// <exception cref="InvalidOperationException"></exception>
         public static void InvalidOperation(bool condition,
-                                            string exceptionMessage = null,
+                                            string exceptionMessage = default,
                                             ConditionMeaning conditionMeaning = ConditionMeaning.TrueMeansInvalid)
         {
             if (IsInvalid(condition, conditionMeaning))
             {
-                throw new InvalidOperationException(exceptionMessage);
+                throw new InvalidOperationException(exceptionMessage.NullIfWhitespace());
             }
         }
 
@@ -493,12 +460,12 @@
         /// </param>
         /// <exception cref="InvalidOperationException"></exception>
         public static void InvalidOperation(Func<bool> condition,
-                                            string exceptionMessage = null,
+                                            string exceptionMessage = default,
                                             ConditionMeaning conditionMeaning = ConditionMeaning.TrueMeansInvalid)
         {
             if (condition != null && IsInvalid(condition(), conditionMeaning))
             {
-                throw new InvalidOperationException(exceptionMessage);
+                throw new InvalidOperationException(exceptionMessage.NullIfWhitespace());
             }
         }
 
@@ -522,12 +489,12 @@
         /// <exception cref="InvalidOperationException"></exception>
         public static void InvalidOperation<T>(T argumentValue,
                                                Predicate<T> condition,
-                                               string exceptionMessage = null,
+                                               string exceptionMessage = default,
                                                ConditionMeaning conditionMeaning = ConditionMeaning.TrueMeansInvalid)
         {
             if (condition != null && IsInvalid(condition(argumentValue), conditionMeaning))
             {
-                throw new InvalidOperationException(exceptionMessage);
+                throw new InvalidOperationException(exceptionMessage.NullIfWhitespace());
             }
         }
 
@@ -540,15 +507,15 @@
         private static bool IsInvalid(bool condition,
                                       ConditionMeaning conditionMeaning)
         {
-            if (condition && conditionMeaning == ConditionMeaning.TrueMeansValid ||
-                !condition && conditionMeaning == ConditionMeaning.TrueMeansInvalid)
-            {
-                return true;
-            }
-
-            return false;
+            return condition && conditionMeaning == ConditionMeaning.TrueMeansValid ||
+                   !condition && conditionMeaning == ConditionMeaning.TrueMeansInvalid;
         }
 
         #endregion
+
+        private static string NullIfWhitespace(this string @this)
+        {
+            return string.IsNullOrWhiteSpace(@this) ? default : @this;
+        }
     }
 }

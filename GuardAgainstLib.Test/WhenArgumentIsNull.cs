@@ -4,17 +4,33 @@ using Xunit;
 
 namespace GuardAgainstLib.Test
 {
+    public static class Extensions
+    {
+        public static string NullIfWhitespace(this string @this)
+        {
+            return string.IsNullOrWhiteSpace(@this) ? null : @this;
+        }
+    }
+
     public class WhenArgumentIsNull
     {
-        [Fact]
-        public void WhenArgumentIsNull_ShouldThrowException()
+        [Theory]
+        [InlineData(default(object), "myVal", "Argh!")]
+        [InlineData(default(object), "myVal", "")]
+        [InlineData(default(object), "myVal", "   ")]
+        [InlineData(default(object), "myVal", null)]
+        [InlineData(default(object), "", null)]
+        [InlineData(default(object), "   ", null)]
+        [InlineData(default(object), null, null)]
+        public void WhenArgumentIsNull_ShouldThrowException(object arg, string argName, string msg)
         {
-            Should.Throw<ArgumentNullException>(() =>
+            var ex = Should.Throw<ArgumentNullException>(() =>
             {
-                const string arg = default(string);
-
-                GuardAgainst.ArgumentBeingNull(arg, nameof(arg), "Argh!");
+                GuardAgainst.ArgumentBeingNull(arg, argName, msg);
             });
+
+            ex.ParamName.ShouldBe(argName.NullIfWhitespace());
+            ex.Message.ShouldContain(msg.NullIfWhitespace() ?? "Exception");
         }
 
         [Fact]
