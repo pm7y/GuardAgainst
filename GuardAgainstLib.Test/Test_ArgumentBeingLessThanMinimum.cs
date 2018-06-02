@@ -5,7 +5,7 @@ using Xunit;
 
 namespace GuardAgainstLib.Test
 {
-    public class WhenArgumentIsLessThanTheMinimum
+    public class Test_ArgumentBeingLessThanMinimum
     {
         [Theory]
         [MemberData(nameof(Data))]
@@ -55,11 +55,31 @@ namespace GuardAgainstLib.Test
         {
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimum(value, minimumValue);
+                GuardAgainst.ArgumentBeingLessThanMinimum(value, minimumValue, default(string), default(string));
             });
 
             ex.ActualValue.ShouldBe(value);
             ex.ParamName.ShouldBeNull();
+        }
+
+        [Fact]
+        public void WhenArgumentIsLessThanMinimum_AndArgumentValueIsNull_ShouldNotThrowException()
+        {
+            Should.NotThrow(() =>
+            {
+                GuardAgainst.ArgumentBeingLessThanMinimum(default(string), "z");
+            });
+        }
+
+        [Fact]
+        public void WhenArgumentIsLessThanMinimum_AndMinimumValueIsNull_ShouldNotThrowException()
+        {
+            var ex = Should.Throw<ArgumentNullException>(() =>
+            {
+                GuardAgainst.ArgumentBeingLessThanMinimum("z", default(string));
+            });
+
+            ex.ParamName.ShouldBe("minimumAllowedValue");
         }
 
         public static IEnumerable<object[]> Data =>
@@ -73,7 +93,7 @@ namespace GuardAgainstLib.Test
                 new object[] { float.MinValue, float.MaxValue },
                 new object[] { 'a', 'b'},
                 new object[] { DateTime.MinValue, DateTime.MaxValue },
-                new object[] { "a", "b" },
+                new object[] { "a", "b" }
             };
     }
 }
