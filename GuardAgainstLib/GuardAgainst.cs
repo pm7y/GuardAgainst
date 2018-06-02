@@ -508,7 +508,7 @@
                                       ConditionMeaning conditionMeaning)
         {
             return condition && conditionMeaning == ConditionMeaning.TrueMeansValid ||
-                   !condition && conditionMeaning == ConditionMeaning.TrueMeansInvalid;
+                   condition && conditionMeaning == ConditionMeaning.TrueMeansInvalid;
         }
 
         #endregion
