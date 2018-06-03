@@ -17,12 +17,11 @@ namespace GuardAgainstLib.Test
         [InlineData(default(object), "", null)]
         [InlineData(default(object), "   ", null)]
         [InlineData(default(object), null, null)]
-        public void WhenArgumentIsNull_ShouldThrowArgumentNullException(object arg, string argName, string msg)
+        public void WhenArgumentIsNull_ShouldThrowArgumentNullException(object arg,
+                                                                        string argName,
+                                                                        string msg)
         {
-            var ex = Should.Throw<ArgumentNullException>(() =>
-            {
-                GuardAgainst.ArgumentBeingNull(arg, argName, msg);
-            });
+            var ex = Should.Throw<ArgumentNullException>(() => { GuardAgainst.ArgumentBeingNull(arg, argName, msg); });
 
             ex.ParamName.ShouldBe(argName.NullIfWhitespace());
             ex.Message.ShouldContain(msg.NullIfWhitespace() ?? "Exception");
@@ -39,12 +38,11 @@ namespace GuardAgainstLib.Test
         [InlineData("", "", null)]
         [InlineData("", "   ", null)]
         [InlineData("", null, null)]
-        public void WhenArgumentIsNotNull_ShouldNotThrowException(object arg, string argName, string msg)
+        public void WhenArgumentIsNotNull_ShouldNotThrowException(object arg,
+                                                                  string argName,
+                                                                  string msg)
         {
-            Should.NotThrow(() =>
-            {
-                GuardAgainst.ArgumentBeingNull(arg, argName, msg);
-            });
+            Should.NotThrow(() => { GuardAgainst.ArgumentBeingNull(arg, argName, msg); });
         }
     }
 }

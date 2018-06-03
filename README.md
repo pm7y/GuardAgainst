@@ -139,7 +139,5 @@ A brain dump of some stuff I might add at somepoint. Not in any particular order
 - Need to improve test coverage.
 - Add a NuGet package option (dll or cs file?).
 - Think about logging support. Maybe via LibLog.
-- More examples & docs.
-- Add support for adding `Data` name/value pairs.
 
 <br/>

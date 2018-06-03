@@ -17,11 +17,14 @@ namespace GuardAgainstLib.Test
         [InlineData(default(string), "", null)]
         [InlineData(default(string), "   ", null)]
         [InlineData(default(string), null, null)]
-        public void WhenArgumentIsNull_ShouldThrowArgumentNullException(string arg, string argName, string msg)
+        public void WhenArgumentIsNull_ShouldThrowArgumentNullException(string arg,
+                                                                        string argName,
+                                                                        string msg)
         {
             var ex = Should.Throw<ArgumentNullException>(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrWhitespace(arg, argName, msg);
+                GuardAgainst.ArgumentBeingNullOrWhitespace(arg, argName,
+                                                           msg);
             });
 
             ex.ParamName.ShouldBe(argName.NullIfWhitespace());
@@ -39,7 +42,9 @@ namespace GuardAgainstLib.Test
         [InlineData("", "", null)]
         [InlineData("", "   ", null)]
         [InlineData("", null, null)]
-        public void WhenArgumentIsEmpty_ShouldThrowArgumentException(string arg, string argName, string msg)
+        public void WhenArgumentIsEmpty_ShouldThrowArgumentException(string arg,
+                                                                     string argName,
+                                                                     string msg)
         {
             var ex = Should.Throw<ArgumentException>(() =>
             {
@@ -61,7 +66,9 @@ namespace GuardAgainstLib.Test
         [InlineData("   ", "", null)]
         [InlineData("   ", "   ", null)]
         [InlineData("   ", null, null)]
-        public void WhenArgumentIsWhitespace_ShouldThrowArgumentException(string arg, string argName, string msg)
+        public void WhenArgumentIsWhitespace_ShouldThrowArgumentException(string arg,
+                                                                          string argName,
+                                                                          string msg)
         {
             var ex = Should.Throw<ArgumentException>(() =>
             {
@@ -83,12 +90,11 @@ namespace GuardAgainstLib.Test
         [InlineData(" a ", "", null)]
         [InlineData(" a ", "   ", null)]
         [InlineData(" a ", null, null)]
-        public void WhenArgumentIsNotNullOrWhitespace_ShouldNotThrowException(string arg, string argName, string msg)
+        public void WhenArgumentIsNotNullOrWhitespace_ShouldNotThrowException(string arg,
+                                                                              string argName,
+                                                                              string msg)
         {
-            Should.NotThrow(() =>
-            {
-                GuardAgainst.ArgumentBeingNullOrWhitespace(arg, argName, msg);
-            });
+            Should.NotThrow(() => { GuardAgainst.ArgumentBeingNullOrWhitespace(arg, argName, msg); });
         }
     }
 }
