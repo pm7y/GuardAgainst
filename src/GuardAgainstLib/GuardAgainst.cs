@@ -1,9 +1,9 @@
-﻿namespace GuardAgainstLib
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
+namespace GuardAgainstLib
+{
     /// <summary>
     ///     A single class, containing static methods, to make your code more readable and to simplify argument validity
     ///     checking.
@@ -14,6 +14,25 @@
 #endif
     public static class GuardAgainst
     {
+        private static string NullIfWhitespace(this string @this)
+        {
+            return string.IsNullOrWhiteSpace(@this) ? default(string) : @this;
+        }
+
+        private static void AddAdditionalDataToException(Exception ex,
+                                                         Dictionary<object, object> additionalData)
+        {
+            if (ex?.Data == null || additionalData == null)
+            {
+                return;
+            }
+
+            foreach (var key in additionalData.Keys)
+            {
+                ex.Data.Add(key, additionalData[key]);
+            }
+        }
+
         #region Null, Whitespace, Empty
 
         /// <summary>
@@ -31,8 +50,8 @@
         public static void ArgumentBeingNull<T>(T argumentValue,
                                                 string argumentName = default(string),
                                                 string exceptionMessage = default(string),
-                                                Dictionary<object, object> additionalData =
-                                                    default(Dictionary<object, object>)) where T : class
+                                                Dictionary<object, object> additionalData = default(Dictionary<object, object>))
+            where T : class
         {
             if (argumentValue != null)
             {
@@ -94,8 +113,7 @@
         public static void ArgumentBeingWhitespace(string argumentValue,
                                                    string argumentName = default(string),
                                                    string exceptionMessage = default(string),
-                                                   Dictionary<object, object> additionalData =
-                                                       default(Dictionary<object, object>))
+                                                   Dictionary<object, object> additionalData = default(Dictionary<object, object>))
         {
             if (argumentValue == null)
             {
@@ -126,15 +144,13 @@
         public static void ArgumentBeingNullOrEmpty(string argumentValue,
                                                     string argumentName = default(string),
                                                     string exceptionMessage = default(string),
-                                                    Dictionary<object, object> additionalData =
-                                                        default(Dictionary<object, object>))
+                                                    Dictionary<object, object> additionalData = default(Dictionary<object, object>))
         {
             Exception ex = null;
 
             if (argumentValue == null)
             {
                 ex = new ArgumentNullException(argumentName.NullIfWhitespace(), exceptionMessage.NullIfWhitespace());
-
             }
             else if (string.IsNullOrEmpty(argumentValue))
             {
@@ -163,8 +179,7 @@
         public static void ArgumentBeingEmpty(string argumentValue,
                                               string argumentName = default(string),
                                               string exceptionMessage = default(string),
-                                              Dictionary<object, object> additionalData =
-                                                  default(Dictionary<object, object>))
+                                              Dictionary<object, object> additionalData = default(Dictionary<object, object>))
         {
             if (argumentValue == null)
             {
@@ -198,10 +213,10 @@
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static void ArgumentBeingNullOrLessThanMinimum<T>(T argumentValue,
-                                                                                 T minimumAllowedValue,
-                                                                                 string argumentName = default(string),
-                                                                                 string exceptionMessage = default(string),
-                                                                                 Dictionary<object, object> additionalData = default(Dictionary<object, object>))
+                                                                 T minimumAllowedValue,
+                                                                 string argumentName = default(string),
+                                                                 string exceptionMessage = default(string),
+                                                                 Dictionary<object, object> additionalData = default(Dictionary<object, object>))
             where T : class, IComparable<T>
         {
             Exception ex = null;
@@ -239,10 +254,10 @@
         /// <param name="additionalData">Additional key/value data to add to the Data property of the exception.</param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static void ArgumentBeingLessThanMinimum<T>(T argumentValue,
-                                                                           T minimumAllowedValue,
-                                                                           string argumentName = default(string),
-                                                                           string exceptionMessage = default(string),
-                                                                           Dictionary<object, object> additionalData = default(Dictionary<object, object>))
+                                                           T minimumAllowedValue,
+                                                           string argumentName = default(string),
+                                                           string exceptionMessage = default(string),
+                                                           Dictionary<object, object> additionalData = default(Dictionary<object, object>))
             where T : class, IComparable<T>
         {
             if (argumentValue == null)
@@ -281,10 +296,10 @@
         /// <param name="additionalData">Additional key/value data to add to the Data property of the exception.</param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static void ArgumentBeingLessThanMinimumForValueType<T>(T argumentValue,
-                                                           T minimumAllowedValue,
-                                                           string argumentName = default(string),
-                                                           string exceptionMessage = default(string),
-                                                           Dictionary<object, object> additionalData = default(Dictionary<object, object>))
+                                                                       T minimumAllowedValue,
+                                                                       string argumentName = default(string),
+                                                                       string exceptionMessage = default(string),
+                                                                       Dictionary<object, object> additionalData = default(Dictionary<object, object>))
             where T : struct, IComparable<T>
         {
             if (argumentValue.IsLessThan(minimumAllowedValue))
@@ -310,10 +325,10 @@
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static void ArgumentBeingNullOrGreaterThanMaximum<T>(T argumentValue,
-                                                                                    T maximumAllowedValue,
-                                                                                    string argumentName = default(string),
-                                                                                    string exceptionMessage = default(string),
-                                                                                    Dictionary<object, object> additionalData = default(Dictionary<object, object>))
+                                                                    T maximumAllowedValue,
+                                                                    string argumentName = default(string),
+                                                                    string exceptionMessage = default(string),
+                                                                    Dictionary<object, object> additionalData = default(Dictionary<object, object>))
             where T : class, IComparable<T>
         {
             Exception ex = null;
@@ -328,8 +343,7 @@
             }
             else if (argumentValue.IsMoreThan(maximumAllowedValue))
             {
-                ex = new ArgumentOutOfRangeException(argumentName.NullIfWhitespace(), argumentValue,
-                    exceptionMessage.NullIfWhitespace());
+                ex = new ArgumentOutOfRangeException(argumentName.NullIfWhitespace(), argumentValue, exceptionMessage.NullIfWhitespace());
             }
 
             if (ex != null)
@@ -352,10 +366,10 @@
         /// <param name="additionalData">Additional key/value data to add to the Data property of the exception.</param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static void ArgumentBeingGreaterThanMaximum<T>(T argumentValue,
-                                                                              T maximumAllowedValue,
-                                                                              string argumentName = default(string),
-                                                                              string exceptionMessage = default(string),
-                                                                              Dictionary<object, object> additionalData = default(Dictionary<object, object>))
+                                                              T maximumAllowedValue,
+                                                              string argumentName = default(string),
+                                                              string exceptionMessage = default(string),
+                                                              Dictionary<object, object> additionalData = default(Dictionary<object, object>))
             where T : class, IComparable<T>
         {
             if (argumentValue == null)
@@ -371,8 +385,7 @@
             }
             else if (argumentValue.IsMoreThan(maximumAllowedValue))
             {
-                ex = new ArgumentOutOfRangeException(argumentName.NullIfWhitespace(), argumentValue,
-                    exceptionMessage.NullIfWhitespace());
+                ex = new ArgumentOutOfRangeException(argumentName.NullIfWhitespace(), argumentValue, exceptionMessage.NullIfWhitespace());
             }
 
             if (ex != null)
@@ -395,10 +408,10 @@
         /// <param name="additionalData">Additional key/value data to add to the Data property of the exception.</param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static void ArgumentBeingGreaterThanMaximumForValueType<T>(T argumentValue,
-                                                              T maximumAllowedValue,
-                                                              string argumentName = default(string),
-                                                              string exceptionMessage = default(string),
-                                                              Dictionary<object, object> additionalData = default(Dictionary<object, object>))
+                                                                          T maximumAllowedValue,
+                                                                          string argumentName = default(string),
+                                                                          string exceptionMessage = default(string),
+                                                                          Dictionary<object, object> additionalData = default(Dictionary<object, object>))
             where T : struct, IComparable<T>
         {
             if (argumentValue.IsMoreThan(maximumAllowedValue))
@@ -426,11 +439,11 @@
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static void ArgumentBeingNullOrOutOfRange<T>(T argumentValue,
-                                                                            T minimumAllowedValue,
-                                                                            T maximumAllowedValue,
-                                                                            string argumentName = default(string),
-                                                                            string exceptionMessage = default(string),
-                                                                            Dictionary<object, object> additionalData = default(Dictionary<object, object>))
+                                                            T minimumAllowedValue,
+                                                            T maximumAllowedValue,
+                                                            string argumentName = default(string),
+                                                            string exceptionMessage = default(string),
+                                                            Dictionary<object, object> additionalData = default(Dictionary<object, object>))
             where T : class, IComparable<T>
         {
             Exception ex = null;
@@ -450,8 +463,7 @@
             }
             else if (!argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
             {
-                ex = new ArgumentOutOfRangeException(argumentName.NullIfWhitespace(), argumentValue,
-                    exceptionMessage.NullIfWhitespace());
+                ex = new ArgumentOutOfRangeException(argumentName.NullIfWhitespace(), argumentValue, exceptionMessage.NullIfWhitespace());
             }
 
             if (ex != null)
@@ -476,11 +488,11 @@
         /// <param name="additionalData">Additional key/value data to add to the Data property of the exception.</param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static void ArgumentBeingOutOfRange<T>(T argumentValue,
-                                                                      T minimumAllowedValue,
-                                                                      T maximumAllowedValue,
-                                                                      string argumentName = default(string),
-                                                                      string exceptionMessage = default(string),
-                                                                      Dictionary<object, object> additionalData = default(Dictionary<object, object>))
+                                                      T minimumAllowedValue,
+                                                      T maximumAllowedValue,
+                                                      string argumentName = default(string),
+                                                      string exceptionMessage = default(string),
+                                                      Dictionary<object, object> additionalData = default(Dictionary<object, object>))
             where T : class, IComparable<T>
         {
             Exception ex = null;
@@ -500,8 +512,7 @@
             }
             else if (!argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
             {
-                ex = new ArgumentOutOfRangeException(argumentName.NullIfWhitespace(), argumentValue,
-                    exceptionMessage.NullIfWhitespace());
+                ex = new ArgumentOutOfRangeException(argumentName.NullIfWhitespace(), argumentValue, exceptionMessage.NullIfWhitespace());
             }
 
             if (ex != null)
@@ -526,11 +537,11 @@
         /// <param name="additionalData">Additional key/value data to add to the Data property of the exception.</param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static void ArgumentBeingOutOfRangeForValueType<T>(T argumentValue,
-                                                      T minimumAllowedValue,
-                                                      T maximumAllowedValue,
-                                                      string argumentName = default(string),
-                                                      string exceptionMessage = default(string),
-                                                      Dictionary<object, object> additionalData = default(Dictionary<object, object>))
+                                                                  T minimumAllowedValue,
+                                                                  T maximumAllowedValue,
+                                                                  string argumentName = default(string),
+                                                                  string exceptionMessage = default(string),
+                                                                  Dictionary<object, object> additionalData = default(Dictionary<object, object>))
             where T : struct, IComparable<T>
         {
             if (!argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
@@ -737,30 +748,9 @@
         private static bool IsInvalid(bool condition,
                                       ConditionMeaning conditionMeaning)
         {
-            return condition && conditionMeaning == ConditionMeaning.TrueMeansValid ||
-                   condition && conditionMeaning == ConditionMeaning.TrueMeansInvalid;
+            return condition && conditionMeaning == ConditionMeaning.TrueMeansValid || condition && conditionMeaning == ConditionMeaning.TrueMeansInvalid;
         }
 
         #endregion
-
-        private static string NullIfWhitespace(this string @this)
-        {
-            return string.IsNullOrWhiteSpace(@this) ? default(string) : @this;
-        }
-
-        private static void AddAdditionalDataToException(Exception ex,
-                                                         Dictionary<object, object> additionalData)
-        {
-            if (ex?.Data == null ||
-                additionalData == null)
-            {
-                return;
-            }
-
-            foreach (var key in additionalData.Keys)
-            {
-                ex.Data.Add(key, additionalData[key]);
-            }
-        }
     }
 }

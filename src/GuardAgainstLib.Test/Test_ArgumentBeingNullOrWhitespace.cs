@@ -23,8 +23,7 @@ namespace GuardAgainstLib.Test
         {
             var ex = Should.Throw<ArgumentNullException>(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrWhitespace(arg, argName,
-                                                           msg);
+                GuardAgainst.ArgumentBeingNullOrWhitespace(arg, argName, msg);
             });
 
             ex.ParamName.ShouldBe(argName.NullIfWhitespace());
@@ -94,7 +93,10 @@ namespace GuardAgainstLib.Test
                                                                               string argName,
                                                                               string msg)
         {
-            Should.NotThrow(() => { GuardAgainst.ArgumentBeingNullOrWhitespace(arg, argName, msg); });
+            Should.NotThrow(() =>
+            {
+                GuardAgainst.ArgumentBeingNullOrWhitespace(arg, argName, msg);
+            });
         }
     }
 }

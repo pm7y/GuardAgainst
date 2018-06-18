@@ -21,7 +21,10 @@ namespace GuardAgainstLib.Test
                                                                string argName,
                                                                string msg)
         {
-            Should.NotThrow(() => { GuardAgainst.ArgumentBeingWhitespace(arg, argName, msg); });
+            Should.NotThrow(() =>
+            {
+                GuardAgainst.ArgumentBeingWhitespace(arg, argName, msg);
+            });
         }
 
         [Theory]
@@ -87,7 +90,10 @@ namespace GuardAgainstLib.Test
                                                                         string argName,
                                                                         string msg)
         {
-            Should.NotThrow(() => { GuardAgainst.ArgumentBeingWhitespace(arg, argName, msg); });
+            Should.NotThrow(() =>
+            {
+                GuardAgainst.ArgumentBeingWhitespace(arg, argName, msg);
+            });
         }
     }
 }

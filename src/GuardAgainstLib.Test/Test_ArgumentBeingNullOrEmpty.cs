@@ -45,8 +45,10 @@ namespace GuardAgainstLib.Test
                                                                      string argName,
                                                                      string msg)
         {
-            var ex =
-                Should.Throw<ArgumentException>(() => { GuardAgainst.ArgumentBeingNullOrEmpty(arg, argName, msg); });
+            var ex = Should.Throw<ArgumentException>(() =>
+            {
+                GuardAgainst.ArgumentBeingNullOrEmpty(arg, argName, msg);
+            });
 
             ex.ParamName.ShouldBe(argName.NullIfWhitespace());
             ex.Message.ShouldContain(msg.NullIfWhitespace() ?? "Exception");
@@ -67,7 +69,10 @@ namespace GuardAgainstLib.Test
                                                                      string argName,
                                                                      string msg)
         {
-            Should.NotThrow(() => { GuardAgainst.ArgumentBeingNullOrEmpty(arg, argName, msg); });
+            Should.NotThrow(() =>
+            {
+                GuardAgainst.ArgumentBeingNullOrEmpty(arg, argName, msg);
+            });
         }
 
         [Theory]
@@ -85,7 +90,10 @@ namespace GuardAgainstLib.Test
                                                                          string argName,
                                                                          string msg)
         {
-            Should.NotThrow(() => { GuardAgainst.ArgumentBeingNullOrEmpty(arg, argName, msg); });
+            Should.NotThrow(() =>
+            {
+                GuardAgainst.ArgumentBeingNullOrEmpty(arg, argName, msg);
+            });
         }
     }
 }

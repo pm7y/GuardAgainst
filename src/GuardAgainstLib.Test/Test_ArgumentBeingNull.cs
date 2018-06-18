@@ -45,7 +45,10 @@ namespace GuardAgainstLib.Test
                                                                   string argName,
                                                                   string msg)
         {
-            Should.NotThrow(() => { GuardAgainst.ArgumentBeingNull(arg, argName, msg); });
+            Should.NotThrow(() =>
+            {
+                GuardAgainst.ArgumentBeingNull(arg, argName, msg);
+            });
         }
     }
 }

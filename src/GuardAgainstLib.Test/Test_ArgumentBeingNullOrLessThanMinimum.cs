@@ -8,37 +8,13 @@ namespace GuardAgainstLib.Test
     public class Test_ArgumentBeingNullOrLessThanMinimum
     {
         public static IEnumerable<object[]> DataWhereValueIsLessThanMinimum =>
-            new List<string[]>
-            {
-                new[] { "a", "b", "myArg", "Err msg!" },
-                new[] { "a", "b", "myArg", null },
-                new[] { "a", "b", null, "Err msg!" },
-                new[] { "a", "b", null, null },
-                new[] { "a", "b", " ", " " },
-                new[] { "a", "b", "", "" }
-            };
+            new List<string[]> { new[] { "a", "b", "myArg", "Err msg!" }, new[] { "a", "b", "myArg", null }, new[] { "a", "b", null, "Err msg!" }, new[] { "a", "b", null, null }, new[] { "a", "b", " ", " " }, new[] { "a", "b", "", "" } };
 
         public static IEnumerable<object[]> DataWhereValueIsGreaterThanMinimum =>
-            new List<string[]>
-            {
-                new[] { "z", "a", "myArg", "Err msg!" },
-                new[] { "z", "a", "myArg", null },
-                new[] { "z", "a", null, "Err msg!" },
-                new[] { "z", "a", null, null },
-                new[] { "z", "a", " ", " " },
-                new[] { "z", "a", "", "" }
-            };
+            new List<string[]> { new[] { "z", "a", "myArg", "Err msg!" }, new[] { "z", "a", "myArg", null }, new[] { "z", "a", null, "Err msg!" }, new[] { "z", "a", null, null }, new[] { "z", "a", " ", " " }, new[] { "z", "a", "", "" } };
 
         public static IEnumerable<object[]> DataWhereValueIsEqualToMinimum =>
-            new List<string[]>
-            {
-                new[] { "z", "z", "myArg", "Err msg!" },
-                new[] { "z", "z", "myArg", null },
-                new[] { "z", "z", null, "Err msg!" },
-                new[] { "z", "z", null, null },
-                new[] { "z", "z", " ", " " },
-                new[] { "z", "z", "", "" }
-            };
+            new List<string[]> { new[] { "z", "z", "myArg", "Err msg!" }, new[] { "z", "z", "myArg", null }, new[] { "z", "z", null, "Err msg!" }, new[] { "z", "z", null, null }, new[] { "z", "z", " ", " " }, new[] { "z", "z", "", "" } };
 
         public static IEnumerable<object[]> DataWhereMinimumIsNull =>
             new List<string[]>
@@ -68,11 +44,7 @@ namespace GuardAgainstLib.Test
         {
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst
-                    .ArgumentBeingNullOrLessThanMinimum(value,
-                                                                        minimumValue,
-                                                                        argumentName,
-                                                                        errorMessage);
+                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(value, minimumValue, argumentName, errorMessage);
             });
 
             ex.ActualValue.ShouldBe(value);
@@ -91,8 +63,7 @@ namespace GuardAgainstLib.Test
         {
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(value, minimumValue, argumentName,
-                                                                                errorMessage);
+                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(value, minimumValue, argumentName, errorMessage);
             });
         }
 
@@ -106,10 +77,7 @@ namespace GuardAgainstLib.Test
         {
             var ex = Should.Throw<ArgumentNullException>(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(value,
-                                                                                minimumValue,
-                                                                                argumentName,
-                                                                                errorMessage);
+                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(value, minimumValue, argumentName, errorMessage);
             });
 
             ex.ParamName.ShouldBe("minimumAllowedValue");
@@ -124,8 +92,7 @@ namespace GuardAgainstLib.Test
         {
             var ex = Should.Throw<ArgumentNullException>(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(value, minimumValue, argumentName,
-                                                                                errorMessage);
+                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(value, minimumValue, argumentName, errorMessage);
             });
 
             ex.ParamName.ShouldBe(argumentName.NullIfWhitespace());

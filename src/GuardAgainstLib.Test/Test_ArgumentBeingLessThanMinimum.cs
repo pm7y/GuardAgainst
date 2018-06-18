@@ -95,19 +95,13 @@ namespace GuardAgainstLib.Test
         [MemberData(nameof(DataWhereValueIsLessThanMinimumReferenceType))]
         public void WhenArgumentIsLessThanMinimum_ShouldThrowArgumentOutOfRangeException_ForReferenceType<T>(T value,
                                                                                                              T minimumValue,
-                                                                                                             string
-                                                                                                                 argumentName,
-                                                                                                             string
-                                                                                                                 errorMessage)
+                                                                                                             string argumentName,
+                                                                                                             string errorMessage)
             where T : class, IComparable<T>
         {
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst
-                    .ArgumentBeingLessThanMinimum(value,
-                                                                  minimumValue,
-                                                                  argumentName,
-                                                                  errorMessage);
+                GuardAgainst.ArgumentBeingLessThanMinimum(value, minimumValue, argumentName, errorMessage);
             });
 
             ex.ActualValue.ShouldBe(value);
@@ -119,19 +113,13 @@ namespace GuardAgainstLib.Test
         [MemberData(nameof(DataWhereValueIsLessThanMinimumValueType))]
         public void WhenArgumentIsLessThanMinimum_ShouldThrowArgumentOutOfRangeException_ForValueType<T>(T value,
                                                                                                          T minimumValue,
-                                                                                                         string
-                                                                                                             argumentName,
-                                                                                                         string
-                                                                                                             errorMessage)
+                                                                                                         string argumentName,
+                                                                                                         string errorMessage)
             where T : struct, IComparable<T>
         {
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst
-                    .ArgumentBeingLessThanMinimumForValueType(value,
-                                                  minimumValue,
-                                                  argumentName,
-                                                  errorMessage);
+                GuardAgainst.ArgumentBeingLessThanMinimumForValueType(value, minimumValue, argumentName, errorMessage);
             });
 
             ex.ActualValue.ShouldBe(value);
@@ -144,16 +132,13 @@ namespace GuardAgainstLib.Test
         [MemberData(nameof(DataWhereValueIsEqualToMinimumForReferenceType))]
         public void WhenArgumentIsGreaterThanOrEqualToMinimum_ShouldThrowNotException_ForReferenceType<T>(T value,
                                                                                                           T minimumValue,
-                                                                                                          string
-                                                                                                              argumentName,
-                                                                                                          string
-                                                                                                              errorMessage)
+                                                                                                          string argumentName,
+                                                                                                          string errorMessage)
             where T : class, IComparable<T>
         {
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimum(value, minimumValue,
-                                                                          argumentName, errorMessage);
+                GuardAgainst.ArgumentBeingLessThanMinimum(value, minimumValue, argumentName, errorMessage);
             });
         }
 
@@ -162,16 +147,13 @@ namespace GuardAgainstLib.Test
         [MemberData(nameof(DataWhereValueIsEqualToMinimumForValueType))]
         public void WhenArgumentIsGreaterThanOrEqualToMinimum_ShouldThrowNotException_ForValueType<T>(T value,
                                                                                                       T minimumValue,
-                                                                                                      string
-                                                                                                          argumentName,
-                                                                                                      string
-                                                                                                          errorMessage)
+                                                                                                      string argumentName,
+                                                                                                      string errorMessage)
             where T : struct, IComparable<T>
         {
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimumForValueType(value, minimumValue, argumentName,
-                                                          errorMessage);
+                GuardAgainst.ArgumentBeingLessThanMinimumForValueType(value, minimumValue, argumentName, errorMessage);
             });
         }
 
@@ -186,10 +168,7 @@ namespace GuardAgainstLib.Test
         {
             var ex = Should.Throw<ArgumentNullException>(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimum(value,
-                                                                          minimumValue,
-                                                                          argumentName,
-                                                                          errorMessage);
+                GuardAgainst.ArgumentBeingLessThanMinimum(value, minimumValue, argumentName, errorMessage);
             });
 
             ex.ParamName.ShouldBe("minimumAllowedValue");
@@ -204,8 +183,7 @@ namespace GuardAgainstLib.Test
         {
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimum(value, minimumValue,
-                                                                          argumentName, errorMessage);
+                GuardAgainst.ArgumentBeingLessThanMinimum(value, minimumValue, argumentName, errorMessage);
             });
         }
     }
