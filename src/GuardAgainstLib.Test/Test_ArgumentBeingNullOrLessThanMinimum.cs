@@ -70,9 +70,9 @@ namespace GuardAgainstLib.Test
             {
                 GuardAgainst
                     .ArgumentBeingNullOrLessThanMinimum(value,
-                                                        minimumValue,
-                                                        argumentName,
-                                                        errorMessage);
+                                                                        minimumValue,
+                                                                        argumentName,
+                                                                        errorMessage);
             });
 
             ex.ActualValue.ShouldBe(value);
@@ -92,7 +92,7 @@ namespace GuardAgainstLib.Test
             Should.NotThrow(() =>
             {
                 GuardAgainst.ArgumentBeingNullOrLessThanMinimum(value, minimumValue, argumentName,
-                                                                errorMessage);
+                                                                                errorMessage);
             });
         }
 
@@ -107,9 +107,9 @@ namespace GuardAgainstLib.Test
             var ex = Should.Throw<ArgumentNullException>(() =>
             {
                 GuardAgainst.ArgumentBeingNullOrLessThanMinimum(value,
-                                                                minimumValue,
-                                                                argumentName,
-                                                                errorMessage);
+                                                                                minimumValue,
+                                                                                argumentName,
+                                                                                errorMessage);
             });
 
             ex.ParamName.ShouldBe("minimumAllowedValue");
@@ -125,7 +125,7 @@ namespace GuardAgainstLib.Test
             var ex = Should.Throw<ArgumentNullException>(() =>
             {
                 GuardAgainst.ArgumentBeingNullOrLessThanMinimum(value, minimumValue, argumentName,
-                                                                errorMessage);
+                                                                                errorMessage);
             });
 
             ex.ParamName.ShouldBe(argumentName.NullIfWhitespace());

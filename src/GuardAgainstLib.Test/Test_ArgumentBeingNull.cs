@@ -21,7 +21,10 @@ namespace GuardAgainstLib.Test
                                                                         string argName,
                                                                         string msg)
         {
-            var ex = Should.Throw<ArgumentNullException>(() => { GuardAgainst.ArgumentBeingNull(arg, argName, msg); });
+            var ex = Should.Throw<ArgumentNullException>(() =>
+            {
+                GuardAgainst.ArgumentBeingNull(arg, argName, msg);
+            });
 
             ex.ParamName.ShouldBe(argName.NullIfWhitespace());
             ex.Message.ShouldContain(msg.NullIfWhitespace() ?? "Exception");
