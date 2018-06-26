@@ -2,26 +2,27 @@
 #tool "nuget:?package=XunitXml.TestLogger"
 #tool "nuget:?package=OpenCoverToCoberturaConverter"
 #tool "nuget:?package=ReportGenerator"
-#tool "nuget:?package=GitVersion.CommandLine"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
 
-Information("blah");
-
-var version = Argument("version", "");
+var buildVersion = Argument("buildVersion", default(string));
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 
-Information(version);
+if (buildVersion == null)
+{
+  Warning($"'buildVersion' argument was NULL");
+}
 
 //////////////////////////////////////////////////////////////////////
 // VARIABLES
 //////////////////////////////////////////////////////////////////////
 
 var solutionPath = MakeAbsolute(File("./src/GuardAgainstLib.sln")).FullPath;
-var codeArtifactsFolder = MakeAbsolute(Directory("./Artifacts/Code/"));
+var binariesArtifactsFolder = MakeAbsolute(Directory("./Artifacts/Binaries/"));
+var nugetArtifactsFolder = MakeAbsolute(Directory("./Artifacts/NuGet/"));
 var testArtifactsFolder = MakeAbsolute(Directory("./Artifacts/TestOutput/"));
 var xunitTestLoggerFolder = MakeAbsolute(Directory("./tools/XunitXml.TestLogger.2.0.0/build/_common"));
 
@@ -46,28 +47,8 @@ Task("Clean")
     DotNetCoreClean(solutionPath);
 });
 
-Task("Version")
-    .IsDependentOn("Clean")
-    .Does(() => {
-        var versionInfo = GitVersion(new GitVersionSettings {
-            Branch = "master",
-            UpdateAssemblyInfo = true,
-            OutputType = GitVersionOutput.BuildServer,
-            NoFetch = true,
-            //Url = "https://github.com/pmcilreavy/GuardAgainst.git"
-        });
-          
-    
-        Information(versionInfo.AssemblySemVer);
-        //var versionInfo = GitVersion(new GitVersionSettings{ OutputType = GitVersionOutput.Json });
-        // Update project.json
-        //var updatedProjectJson = System.IO.File.ReadAllText(specifyProjectJson).Replace("1.0.0-*", versionInfo.NuGetVersion);
-
-        //System.IO.File.WriteAllText(specifyProjectJson, updatedProjectJson);
-    });
-
 Task("Restore")
-    .IsDependentOn("Version")
+    .IsDependentOn("Clean")
     .Does(() => 
 {
     DotNetCoreRestore(solutionPath, new DotNetCoreRestoreSettings
@@ -153,16 +134,16 @@ Task("Publish")
         {
             Framework = "netstandard1.0",
             Configuration = "Release",
-            OutputDirectory = $"{codeArtifactsFolder}/{projectName}/",
+            OutputDirectory = $"{binariesArtifactsFolder}/{projectName}/",
             NoRestore = true,
             SelfContained = false
         };
 
         DotNetCorePublish(project.FullPath, settings);
 
-        Zip($"{codeArtifactsFolder}/{projectName}/", $"{codeArtifactsFolder}/{projectName}.zip");
+        Zip($"{binariesArtifactsFolder}/{projectName}/", $"{binariesArtifactsFolder}/{projectName}.zip");
 
-        DeleteDirectory($"{codeArtifactsFolder}/{projectName}/", new DeleteDirectorySettings {
+        DeleteDirectory($"{binariesArtifactsFolder}/{projectName}/", new DeleteDirectorySettings {
             Recursive = true,
             Force = true
         });
@@ -170,12 +151,39 @@ Task("Publish")
 
 });
 
+Task("Pack")
+    .WithCriteria(() => buildVersion != null)
+    .IsDependentOn("Publish")
+    .Does(() =>
+{
+                  var nuGetPackSettings   = new NuGetPackSettings {
+                                     Id                      = "GuardAgainst",
+                                     Version                 = buildVersion,
+                                     Title                   = "GuardAgainst",
+                                     Authors                 = new[] {"Paul Mcilreavy"},
+                                     Owners                  = new[] {"Paul Mcilreavy"},
+                                     Description             = "Static methods to simplify argument validity checking.",
+                                     ProjectUrl              = new Uri("https://github.com/pmcilreavy/GuardAgainst"),
+                                     IconUrl                 = new Uri("http://cdn.rawgit.com/pmcilreavy/GuardAgainst/master/GuardAgainst.png"),
+                                     LicenseUrl              = new Uri("https://github.com/pmcilreavy/GuardAgainst/blob/master/LICENSE"),
+                                     Tags                    = new [] {"GuardAgainst", "guard", "dotnet", "contracts", "arguments", "validity"},
+                                     RequireLicenseAcceptance= false,
+                                     Symbols                 = false,
+                                     NoPackageAnalysis       = true,
+                                     Files                   = new [] { new NuSpecContent {Source = "./GuardAgainstLib.dll", Target = "lib/netstandard1.0/GuardAgainstLib.dll"} },
+                                     BasePath                = "./src/GuardAgainstLib/bin/release/netstandard1.0",
+                                     OutputDirectory         = nugetArtifactsFolder.FullPath
+                                 };
+
+     NuGetPack("./src/GuardAgainst.nuspec", nuGetPackSettings);
+});
+
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
 
 Task("Default")
-    .IsDependentOn("Publish");
+    .IsDependentOn("Pack");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION

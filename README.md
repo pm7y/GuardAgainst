@@ -141,3 +141,5 @@ A brain dump of some stuff I might add at somepoint. Not in any particular order
 - Think about logging support. Maybe via LibLog.
 
 <br/>
+
+Queen's Guard Icon by Angelo Troiano from the Noun Project
