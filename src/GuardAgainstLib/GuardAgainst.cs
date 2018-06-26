@@ -14,9 +14,9 @@ namespace GuardAgainstLib
 #endif
     public static class GuardAgainst
     {
-        public static void Blah()
+        public static string Blah(string x)
         {
-
+            return null;
         }
 
         private static string NullIfWhitespace(this string @this)
