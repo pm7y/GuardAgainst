@@ -1,3 +1,6 @@
+
+<img src="https://raw.githubusercontent.com/pmcilreavy/GuardAgainst/master/GuardAgainst.png" width="64"> 
+
 # GuardAgainst
 
 A single class, containing static methods, to make your code more readable and to simplify argument validity checking.
