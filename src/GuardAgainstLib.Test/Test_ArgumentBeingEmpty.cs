@@ -17,9 +17,9 @@ namespace GuardAgainstLib.Test
         [InlineData(default(string), "", null)]
         [InlineData(default(string), "   ", null)]
         [InlineData(default(string), null, null)]
-        public void WhenArgumentIsNull_ShouldNotThrowException(string arg,
+        public void WhenArgumentIsNull_ShouldNotThrowException( string arg,
                                                                string argName,
-                                                               string msg)
+                                                               string msg )
         {
             Should.NotThrow(() =>
             {
@@ -38,9 +38,9 @@ namespace GuardAgainstLib.Test
         [InlineData("", "", null)]
         [InlineData("", "   ", null)]
         [InlineData("", null, null)]
-        public void WhenArgumentIsEmpty_ShouldThrowArgumentException(string arg,
+        public void WhenArgumentIsEmpty_ShouldThrowArgumentException( string arg,
                                                                      string argName,
-                                                                     string msg)
+                                                                     string msg )
         {
             var ex = Should.Throw<ArgumentException>(() =>
             {
@@ -62,9 +62,9 @@ namespace GuardAgainstLib.Test
         [InlineData("   ", "", null)]
         [InlineData("   ", "   ", null)]
         [InlineData("   ", null, null)]
-        public void WhenArgumentIsWhitespace_ShouldNotThrowArgumentException(string arg,
+        public void WhenArgumentIsWhitespace_ShouldNotThrowArgumentException( string arg,
                                                                              string argName,
-                                                                             string msg)
+                                                                             string msg )
         {
             Should.NotThrow(() =>
             {
@@ -83,9 +83,9 @@ namespace GuardAgainstLib.Test
         [InlineData(" a ", "", null)]
         [InlineData(" a ", "   ", null)]
         [InlineData(" a ", null, null)]
-        public void WhenArgumentIsNotEmpty_ShouldNotThrowException(string arg,
+        public void WhenArgumentIsNotEmpty_ShouldNotThrowException( string arg,
                                                                    string argName,
-                                                                   string msg)
+                                                                   string msg )
         {
             Should.NotThrow(() =>
             {

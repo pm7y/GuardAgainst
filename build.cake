@@ -2,13 +2,19 @@
 #tool "nuget:?package=XunitXml.TestLogger"
 #tool "nuget:?package=OpenCoverToCoberturaConverter"
 #tool "nuget:?package=ReportGenerator"
+#tool "nuget:?package=GitVersion.CommandLine"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
 
+Information("blah");
+
+var version = Argument("version", "");
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
+
+Information(version);
 
 //////////////////////////////////////////////////////////////////////
 // VARIABLES
@@ -40,8 +46,32 @@ Task("Clean")
     DotNetCoreClean(solutionPath);
 });
 
-Task("Restore")
+Task("Version")
     .IsDependentOn("Clean")
+    .Does(() => {
+        /*var versionInfo = GitVersion(new GitVersionSettings {
+            Branch = "master",
+            UpdateAssemblyInfo = true,
+            OutputType = GitVersionOutput.Json,
+            NoFetch = false,
+            Url = "https://github.com/pmcilreavy/GuardAgainst.git"
+        });*/
+        
+        var versionInfo = GitVersion(new GitVersionSettings {
+        RepositoryPath = "./"
+    });
+    
+    
+        Information(versionInfo.AssemblySemVer);
+        //var versionInfo = GitVersion(new GitVersionSettings{ OutputType = GitVersionOutput.Json });
+        // Update project.json
+        //var updatedProjectJson = System.IO.File.ReadAllText(specifyProjectJson).Replace("1.0.0-*", versionInfo.NuGetVersion);
+
+        //System.IO.File.WriteAllText(specifyProjectJson, updatedProjectJson);
+    });
+
+Task("Restore")
+    .IsDependentOn("Version")
     .Does(() => 
 {
     DotNetCoreRestore(solutionPath, new DotNetCoreRestoreSettings
@@ -61,7 +91,7 @@ Task("Build")
         Verbosity = DotNetCoreVerbosity.Minimal
     });
 });
-
+    
 Task("TestAndCoverage")
     .IsDependentOn("Build")
     .Does(() =>
