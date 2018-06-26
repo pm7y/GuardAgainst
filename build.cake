@@ -146,6 +146,9 @@ Task("Publish")
 
         DotNetCorePublish(project.FullPath, settings);
 
+        DeleteFiles($"{binariesArtifactsFolder}/{projectName}/*.deps.json");
+        DeleteFiles($"{binariesArtifactsFolder}/{projectName}/*.pdb");
+        
         Zip($"{binariesArtifactsFolder}/{projectName}/", $"{binariesArtifactsFolder}/{projectName}.zip");
 
         DeleteDirectory($"{binariesArtifactsFolder}/{projectName}/", new DeleteDirectorySettings {
@@ -175,7 +178,10 @@ Task("Pack")
                                      RequireLicenseAcceptance= false,
                                      Symbols                 = false,
                                      NoPackageAnalysis       = true,
-                                     Files                   = new [] { new NuSpecContent {Source = "./GuardAgainstLib.dll", Target = "lib/netstandard1.0/GuardAgainstLib.dll"} },
+                                     Files                   = new [] { 
+                                      new NuSpecContent {Source = "./GuardAgainstLib.dll", Target = "lib/netstandard1.0/GuardAgainstLib.dll"},
+                                      new NuSpecContent {Source = "./GuardAgainstLib.xml", Target = "lib/netstandard1.0/GuardAgainstLib.xml"},
+                                     },
                                      BasePath                = "./src/GuardAgainstLib/bin/release/netstandard1.0",
                                      OutputDirectory         = nugetArtifactsFolder.FullPath
                                  };

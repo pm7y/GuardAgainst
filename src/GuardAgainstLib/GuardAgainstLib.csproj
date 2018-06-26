@@ -24,6 +24,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <DocumentationFile>bin\Release\netstandard1.0\GuardAgainstLib.xml</DocumentationFile>
   </PropertyGroup>
 
 </Project>

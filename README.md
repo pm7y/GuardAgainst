@@ -1,7 +1,7 @@
 
 <img src="https://raw.githubusercontent.com/pmcilreavy/GuardAgainst/master/GuardAgainst.png" width="64"> 
 
-# GuardAgainst
+# GuardAgainst [![Build status](https://ci.appveyor.com/api/projects/status/96fprgm7y092871s?svg=true)](https://ci.appveyor.com/project/fallenidol/guardagainst)
 
 A single class, containing static methods, to make your code more readable and to simplify argument validity checking.
 
@@ -12,7 +12,15 @@ Probably not, but this one is mine and I prefer it to the others I've seen.
 
 ## Installation
 
-Just copy the [source file](../master/GuardAgainstLib/GuardAgainst.cs) into your project and change the namespace to match your own.
+### Source
+
+Just copy the [source file](https://raw.githubusercontent.com/pmcilreavy/GuardAgainst/master/src/GuardAgainstLib/GuardAgainst.cs) into your project and change the namespace to match your own.
+
+### NuGet
+
+```
+Install-Package GuardAgainst
+```
 
 <br/>
 
