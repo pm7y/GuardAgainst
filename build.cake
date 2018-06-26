@@ -15,6 +15,10 @@ if (buildVersion == null)
 {
   Warning($"'buildVersion' argument was NULL");
 }
+else
+{
+  Information($"'buildVersion'='{buildVersion}'");
+}
 
 //////////////////////////////////////////////////////////////////////
 // VARIABLES
