@@ -49,18 +49,14 @@ Task("Clean")
 Task("Version")
     .IsDependentOn("Clean")
     .Does(() => {
-        /*var versionInfo = GitVersion(new GitVersionSettings {
+        var versionInfo = GitVersion(new GitVersionSettings {
             Branch = "master",
             UpdateAssemblyInfo = true,
-            OutputType = GitVersionOutput.Json,
-            NoFetch = false,
-            Url = "https://github.com/pmcilreavy/GuardAgainst.git"
-        });*/
-        
-        var versionInfo = GitVersion(new GitVersionSettings {
-        RepositoryPath = "./"
-    });
-    
+            OutputType = GitVersionOutput.BuildServer,
+            NoFetch = true,
+            //Url = "https://github.com/pmcilreavy/GuardAgainst.git"
+        });
+          
     
         Information(versionInfo.AssemblySemVer);
         //var versionInfo = GitVersion(new GitVersionSettings{ OutputType = GitVersionOutput.Json });
