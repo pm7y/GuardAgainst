@@ -21,6 +21,7 @@ if (buildVersion == null)
 //////////////////////////////////////////////////////////////////////
 
 var solutionPath = MakeAbsolute(File("./src/GuardAgainstLib.sln")).FullPath;
+var nuspecPath = MakeAbsolute(File("./src/GuardAgainst.nuspec")).FullPath;
 var binariesArtifactsFolder = MakeAbsolute(Directory("./Artifacts/Binaries/"));
 var nugetArtifactsFolder = MakeAbsolute(Directory("./Artifacts/NuGet/"));
 var testArtifactsFolder = MakeAbsolute(Directory("./Artifacts/TestOutput/"));
@@ -175,7 +176,7 @@ Task("Pack")
                                      OutputDirectory         = nugetArtifactsFolder.FullPath
                                  };
 
-     NuGetPack("./src/GuardAgainst.nuspec", nuGetPackSettings);
+     NuGetPack(nuspecPath, nuGetPackSettings);
 });
 
 //////////////////////////////////////////////////////////////////////
