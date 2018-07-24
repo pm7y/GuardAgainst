@@ -9,9 +9,7 @@ namespace GuardAgainstLib
     ///     checking.
     ///     More information @ https://github.com/pmcilreavy/GuardAgainst
     /// </summary>
-#if STEPINTO
     [DebuggerNonUserCode]
-#endif
     public static class GuardAgainst
     {
         private static string NullIfWhitespace(this string @this)

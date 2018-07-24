@@ -102,7 +102,7 @@ There are several other helper methods available that act in a similar fashioin.
 | GuardAgainst.ArgumentBeingOutOfRange               | Throws an ArgumentOutOfRangeException when the value is less than the minimum allowed value. <br/>Throws an ArgumentOutOfRangeException when the value is greater than the maximum allowed value. |
 | **Guard against being _invalid_**                                          | **Description** |
 | GuardAgainst.ArgumentBeingInvalid      | Throws an ArgumentException based on whether the condition is met. |
-| GuardAgainst.InvalidOperationException | Throws an InvalidOperationException based on whether the condition is met. |
+| GuardAgainst.InvalidOperation | Throws an InvalidOperationException based on whether the condition is met. |
 
 <br/>
 
