@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Shouldly;
 using Xunit;
 
@@ -6,94 +7,98 @@ namespace GuardAgainstLib.Test
 {
     public class Test_ArgumentBeingNullOrEmpty
     {
-        [Theory]
-        [InlineData(default(string), "myVal", "Argh!")]
-        [InlineData(default(string), "myVal", "")]
-        [InlineData(default(string), "myVal", "   ")]
-        [InlineData(default(string), "myVal", null)]
-        [InlineData(default(string), "", "")]
-        [InlineData(default(string), null, "")]
-        [InlineData(default(string), null, "   ")]
-        [InlineData(default(string), "", null)]
-        [InlineData(default(string), "   ", null)]
-        [InlineData(default(string), null, null)]
-        public void WhenArgumentIsNull_ShouldThrowArgumentNullException(string arg,
-                                                                        string argName,
-                                                                        string msg)
+        [Fact]
+        public void WhenArgumentEmptyIsNull_ShouldThrowArgumentNullException()
         {
+            var myArgument = default(string);
             var ex = Should.Throw<ArgumentNullException>(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrEmpty(arg, argName, msg);
+                GuardAgainst.ArgumentBeingNullOrEmpty(() => myArgument, null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
             });
 
-            ex.ParamName.ShouldBe(argName.NullIfWhitespace());
-            ex.Message.ShouldContain(msg.NullIfWhitespace() ?? "Exception");
+            ex.ParamName.ShouldBe(nameof(myArgument));
+            ex.Data.Count.ShouldBe(1);
+            ex.Data["a"].ShouldBe("1");
         }
 
-        [Theory]
-        [InlineData("", "myVal", "Argh!")]
-        [InlineData("", "myVal", "")]
-        [InlineData("", "myVal", "   ")]
-        [InlineData("", "myVal", null)]
-        [InlineData("", "", "")]
-        [InlineData("", null, "")]
-        [InlineData("", null, "   ")]
-        [InlineData("", "", null)]
-        [InlineData("", "   ", null)]
-        [InlineData("", null, null)]
-        public void WhenArgumentIsEmpty_ShouldThrowArgumentException(string arg,
-                                                                     string argName,
-                                                                     string msg)
+        [Fact]
+        public void WhenArgumentExpressionIsEmpty_ShouldThrowArgumentException()
         {
+            var myArgument = "";
             var ex = Should.Throw<ArgumentException>(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrEmpty(arg, argName, msg);
+                GuardAgainst.ArgumentBeingNullOrEmpty(() => myArgument, null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
             });
 
-            ex.ParamName.ShouldBe(argName.NullIfWhitespace());
-            ex.Message.ShouldContain(msg.NullIfWhitespace() ?? "Exception");
+            ex.ParamName.ShouldBe(nameof(myArgument));
+            ex.Data.Count.ShouldBe(1);
+            ex.Data["a"].ShouldBe("1");
         }
 
-        [Theory]
-        [InlineData("   ", "myVal", "Argh!")]
-        [InlineData("   ", "myVal", "")]
-        [InlineData("   ", "myVal", "   ")]
-        [InlineData("   ", "myVal", null)]
-        [InlineData("   ", "", "")]
-        [InlineData("   ", null, "")]
-        [InlineData("   ", null, "   ")]
-        [InlineData("   ", "", null)]
-        [InlineData("   ", "   ", null)]
-        [InlineData("   ", null, null)]
-        public void WhenArgumentIsWhitespace_ShouldNotThrowException(string arg,
-                                                                     string argName,
-                                                                     string msg)
+        [Fact]
+        public void WhenArgumentExpressionIsNotNullOrEmpty_ShouldNotThrow()
         {
+            var myArgument = " blah ";
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrEmpty(arg, argName, msg);
+                GuardAgainst.ArgumentBeingNullOrEmpty(() => myArgument, null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
             });
         }
 
-        [Theory]
-        [InlineData(" a ", "myVal", "Argh!")]
-        [InlineData(" a ", "myVal", "")]
-        [InlineData(" a ", "myVal", "   ")]
-        [InlineData(" a ", "myVal", null)]
-        [InlineData(" a ", "", "")]
-        [InlineData(" a ", null, "")]
-        [InlineData(" a ", null, "   ")]
-        [InlineData(" a ", "", null)]
-        [InlineData(" a ", "   ", null)]
-        [InlineData(" a ", null, null)]
-        public void WhenArgumentIsNotNullOrEmpty_ShouldNotThrowException(string arg,
-                                                                         string argName,
-                                                                         string msg)
+        [Fact]
+        public void WhenArgumentIsEmpty_ShouldThrowArgumentException()
         {
+            var myArgument = "";
+            var ex = Should.Throw<ArgumentException>(() =>
+            {
+                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            });
+
+            ex.ParamName.ShouldBe(nameof(myArgument));
+            ex.Data.Count.ShouldBe(1);
+            ex.Data["a"].ShouldBe("1");
+        }
+
+        [Fact]
+        public void WhenArgumentIsNotNullOrEmpty_ShouldNotThrow()
+        {
+            var myArgument = " blah ";
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrEmpty(arg, argName, msg);
+                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
             });
+        }
+
+        [Fact]
+        public void WhenArgumentIsNull_ShouldThrowArgumentNullException()
+        {
+            var myArgument = default(string);
+            var ex = Should.Throw<ArgumentNullException>(() =>
+            {
+                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            });
+
+            ex.ParamName.ShouldBe(nameof(myArgument));
+            ex.Data.Count.ShouldBe(1);
+            ex.Data["a"].ShouldBe("1");
         }
     }
 }

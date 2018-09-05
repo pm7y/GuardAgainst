@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Shouldly;
 using Xunit;
 
@@ -6,97 +7,98 @@ namespace GuardAgainstLib.Test
 {
     public class Test_ArgumentBeingNullOrWhitespace
     {
-        [Theory]
-        [InlineData(default(string), "myVal", "Argh!")]
-        [InlineData(default(string), "myVal", "")]
-        [InlineData(default(string), "myVal", "   ")]
-        [InlineData(default(string), "myVal", null)]
-        [InlineData(default(string), "", "")]
-        [InlineData(default(string), null, "")]
-        [InlineData(default(string), null, "   ")]
-        [InlineData(default(string), "", null)]
-        [InlineData(default(string), "   ", null)]
-        [InlineData(default(string), null, null)]
-        public void WhenArgumentIsNull_ShouldThrowArgumentNullException(string arg,
-                                                                        string argName,
-                                                                        string msg)
+        [Fact]
+        public void WhenArgumentExpressionIsNotNullOrWhitespace_ShouldNotThrow()
         {
-            var ex = Should.Throw<ArgumentNullException>(() =>
-            {
-                GuardAgainst.ArgumentBeingNullOrWhitespace(arg, argName, msg);
-            });
-
-            ex.ParamName.ShouldBe(argName.NullIfWhitespace());
-            ex.Message.ShouldContain(msg.NullIfWhitespace() ?? "Exception");
-        }
-
-        [Theory]
-        [InlineData("", "myVal", "Argh!")]
-        [InlineData("", "myVal", "")]
-        [InlineData("", "myVal", "   ")]
-        [InlineData("", "myVal", null)]
-        [InlineData("", "", "")]
-        [InlineData("", null, "")]
-        [InlineData("", null, "   ")]
-        [InlineData("", "", null)]
-        [InlineData("", "   ", null)]
-        [InlineData("", null, null)]
-        public void WhenArgumentIsEmpty_ShouldThrowArgumentException(string arg,
-                                                                     string argName,
-                                                                     string msg)
-        {
-            var ex = Should.Throw<ArgumentException>(() =>
-            {
-                GuardAgainst.ArgumentBeingNullOrWhitespace(arg, argName, msg);
-            });
-
-            ex.ParamName.ShouldBe(argName.NullIfWhitespace());
-            ex.Message.ShouldContain(msg.NullIfWhitespace() ?? "Exception");
-        }
-
-        [Theory]
-        [InlineData("   ", "myVal", "Argh!")]
-        [InlineData("   ", "myVal", "")]
-        [InlineData("   ", "myVal", "   ")]
-        [InlineData("   ", "myVal", null)]
-        [InlineData("   ", "", "")]
-        [InlineData("   ", null, "")]
-        [InlineData("   ", null, "   ")]
-        [InlineData("   ", "", null)]
-        [InlineData("   ", "   ", null)]
-        [InlineData("   ", null, null)]
-        public void WhenArgumentIsWhitespace_ShouldThrowArgumentException(string arg,
-                                                                          string argName,
-                                                                          string msg)
-        {
-            var ex = Should.Throw<ArgumentException>(() =>
-            {
-                GuardAgainst.ArgumentBeingNullOrWhitespace(arg, argName, msg);
-            });
-
-            ex.ParamName.ShouldBe(argName.NullIfWhitespace());
-            ex.Message.ShouldContain(msg.NullIfWhitespace() ?? "Exception");
-        }
-
-        [Theory]
-        [InlineData(" a ", "myVal", "Argh!")]
-        [InlineData(" a ", "myVal", "")]
-        [InlineData(" a ", "myVal", "   ")]
-        [InlineData(" a ", "myVal", null)]
-        [InlineData(" a ", "", "")]
-        [InlineData(" a ", null, "")]
-        [InlineData(" a ", null, "   ")]
-        [InlineData(" a ", "", null)]
-        [InlineData(" a ", "   ", null)]
-        [InlineData(" a ", null, null)]
-        public void WhenArgumentIsNotNullOrWhitespace_ShouldNotThrowException(string arg,
-                                                                              string argName,
-                                                                              string msg)
-        {
+            var myArgument = " blah ";
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrWhitespace(arg, argName, msg);
+                GuardAgainst.ArgumentBeingNullOrWhitespace(() => myArgument, null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
             });
+        }
+
+        [Fact]
+        public void WhenArgumentExpressionIsNull_ShouldThrowArgumentNullException()
+        {
+            var myArgument = default(string);
+            var ex = Should.Throw<ArgumentNullException>(() =>
+            {
+                GuardAgainst.ArgumentBeingNullOrWhitespace(() => myArgument, null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            });
+
+            ex.ParamName.ShouldBe(nameof(myArgument));
+            ex.Data.Count.ShouldBe(1);
+            ex.Data["a"].ShouldBe("1");
+        }
+
+        [Fact]
+        public void WhenArgumentExpressionIsWhitespace_ShouldThrowArgumentException()
+        {
+            var myArgument = "  ";
+            var ex = Should.Throw<ArgumentException>(() =>
+            {
+                GuardAgainst.ArgumentBeingNullOrWhitespace(() => myArgument, null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            });
+
+            ex.ParamName.ShouldBe(nameof(myArgument));
+            ex.Data.Count.ShouldBe(1);
+            ex.Data["a"].ShouldBe("1");
+        }
+
+        [Fact]
+        public void WhenArgumentIsNotNullOrWhitespace_ShouldNotThrow()
+        {
+            var myArgument = " blah ";
+            Should.NotThrow(() =>
+            {
+                GuardAgainst.ArgumentBeingNullOrWhitespace(myArgument, nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            });
+        }
+
+        [Fact]
+        public void WhenArgumentIsNull_ShouldThrowArgumentNullException()
+        {
+            var myArgument = default(string);
+            var ex = Should.Throw<ArgumentNullException>(() =>
+            {
+                GuardAgainst.ArgumentBeingNullOrWhitespace(myArgument, nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            });
+
+            ex.ParamName.ShouldBe(nameof(myArgument));
+            ex.Data.Count.ShouldBe(1);
+            ex.Data["a"].ShouldBe("1");
+        }
+
+        [Fact]
+        public void WhenArgumentIsWhitespace_ShouldThrowArgumentException()
+        {
+            var myArgument = "  ";
+            var ex = Should.Throw<ArgumentException>(() =>
+            {
+                GuardAgainst.ArgumentBeingNullOrWhitespace(myArgument, nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            });
+
+            ex.ParamName.ShouldBe(nameof(myArgument));
+            ex.Data.Count.ShouldBe(1);
+            ex.Data["a"].ShouldBe("1");
         }
     }
 }

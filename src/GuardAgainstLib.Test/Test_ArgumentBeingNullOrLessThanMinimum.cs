@@ -7,96 +7,156 @@ namespace GuardAgainstLib.Test
 {
     public class Test_ArgumentBeingNullOrLessThanMinimum
     {
-        public static IEnumerable<object[]> DataWhereValueIsLessThanMinimum =>
-            new List<string[]> { new[] { "a", "b", "myArg", "Err msg!" }, new[] { "a", "b", "myArg", null }, new[] { "a", "b", null, "Err msg!" }, new[] { "a", "b", null, null }, new[] { "a", "b", " ", " " }, new[] { "a", "b", "", "" } };
-
-        public static IEnumerable<object[]> DataWhereValueIsGreaterThanMinimum =>
-            new List<string[]> { new[] { "z", "a", "myArg", "Err msg!" }, new[] { "z", "a", "myArg", null }, new[] { "z", "a", null, "Err msg!" }, new[] { "z", "a", null, null }, new[] { "z", "a", " ", " " }, new[] { "z", "a", "", "" } };
-
-        public static IEnumerable<object[]> DataWhereValueIsEqualToMinimum =>
-            new List<string[]> { new[] { "z", "z", "myArg", "Err msg!" }, new[] { "z", "z", "myArg", null }, new[] { "z", "z", null, "Err msg!" }, new[] { "z", "z", null, null }, new[] { "z", "z", " ", " " }, new[] { "z", "z", "", "" } };
-
-        public static IEnumerable<object[]> DataWhereMinimumIsNull =>
-            new List<string[]>
-            {
-                new[] { "a", default(string), "myArg", "Err msg!" },
-                new[] { "a", default(string), "myArg", default(string) },
-                new[] { "a", default(string), default(string), "Err msg!" },
-                new[] { "a", default(string), default(string), default(string) }
-            };
-
-        public static IEnumerable<object[]> DataWhereArgumentIsNull =>
-            new List<string[]>
-            {
-                new[] { default(string), "a", "myArg", "Err msg!" },
-                new[] { default(string), "a", "myArg", default(string) },
-                new[] { default(string), "a", default(string), "Err msg!" },
-                new[] { default(string), "a", default(string), default(string) }
-            };
-
-        [Theory]
-        [MemberData(nameof(DataWhereValueIsLessThanMinimum))]
-        public void WhenArgumentIsLessThanMinimum_ShouldThrowArgumentOutOfRangeException<T>(T value,
-                                                                                            T minimumValue,
-                                                                                            string argumentName,
-                                                                                            string errorMessage)
-            where T : class, IComparable<T>
+        [Fact]
+        public void WhenArgumentExpressionIsEqualToMinimum_ShouldNotThrow()
         {
-            var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
-            {
-                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(value, minimumValue, argumentName, errorMessage);
-            });
-
-            ex.ActualValue.ShouldBe(value);
-            ex.ParamName.ShouldBe(argumentName.NullIfWhitespace());
-            ex.Message.ShouldContain(errorMessage.NullIfWhitespace() ?? "Exception");
-        }
-
-        [Theory]
-        [MemberData(nameof(DataWhereValueIsGreaterThanMinimum))]
-        [MemberData(nameof(DataWhereValueIsEqualToMinimum))]
-        public void WhenArgumentIsGreaterThanOrEqualToMinimum_ShouldThrowNotException<T>(T value,
-                                                                                         T minimumValue,
-                                                                                         string argumentName,
-                                                                                         string errorMessage)
-            where T : class, IComparable<T>
-        {
+            var myArgument = "A";
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(value, minimumValue, argumentName, errorMessage);
+                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(() => myArgument, "A", null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
             });
         }
 
-        [Theory]
-        [MemberData(nameof(DataWhereMinimumIsNull))]
-        public void WhenMinimumValueIsNull_ShouldThrowArgumentNullException<T>(T value,
-                                                                               T minimumValue,
-                                                                               string argumentName,
-                                                                               string errorMessage)
-            where T : class, IComparable<T>
+        [Fact]
+        public void WhenArgumentExpressionIsGreaterThanMinimum_ShouldNotThrow()
         {
+            var myArgument = "B";
+            Should.NotThrow(() =>
+            {
+                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(() => myArgument, "A", null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            });
+        }
+
+        [Fact]
+        public void WhenArgumentExpressionIsLessThanMinimum_ShouldThrowArgumentOutOfRangeException()
+        {
+            var myArgument = "A";
+            var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
+            {
+                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(() => myArgument, "B", null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            });
+
+            ex.ParamName.ShouldBe(nameof(myArgument));
+            ex.Data.Count.ShouldBe(1);
+            ex.Data["a"].ShouldBe("1");
+        }
+
+        [Fact]
+        public void WhenArgumentExpressionIsNull_ShouldThrowArgumentNullException()
+        {
+            var myArgument = default(string);
             var ex = Should.Throw<ArgumentNullException>(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(value, minimumValue, argumentName, errorMessage);
+                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(() => myArgument, "B", null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            });
+
+            ex.ParamName.ShouldBe(nameof(myArgument));
+            ex.Data.Count.ShouldBe(1);
+            ex.Data["a"].ShouldBe("1");
+        }
+
+        [Fact]
+        public void WhenArgumentIsEqualToMinimum_ShouldNotThrow()
+        {
+            var myArgument = "A";
+            Should.NotThrow(() =>
+            {
+                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(myArgument, "A", nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            });
+        }
+
+        [Fact]
+        public void WhenArgumentIsGreaterThanMinimum_ShouldNotThrow()
+        {
+            var myArgument = "B";
+            Should.NotThrow(() =>
+            {
+                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(myArgument, "A", nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            });
+        }
+
+        [Fact]
+        public void WhenArgumentIsLessThanMinimum_ShouldThrowArgumentOutOfRangeException()
+        {
+            var myArgument = "A";
+            var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
+            {
+                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(myArgument, "B", nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            });
+
+            ex.ParamName.ShouldBe(nameof(myArgument));
+            ex.Data.Count.ShouldBe(1);
+            ex.Data["a"].ShouldBe("1");
+        }
+
+        [Fact]
+        public void WhenArgumentIsNull_ShouldThrowArgumentNullException()
+        {
+            var myArgument = default(string);
+            var ex = Should.Throw<ArgumentNullException>(() =>
+            {
+                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(myArgument, "B", nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            });
+
+            ex.ParamName.ShouldBe(nameof(myArgument));
+            ex.Data.Count.ShouldBe(1);
+            ex.Data["a"].ShouldBe("1");
+        }
+
+        [Fact]
+        public void WhenExpressionMinimumValueIsNull_ShouldThrowArgumentNullException()
+        {
+            var myArgument = "A";
+            var ex = Should.Throw<ArgumentNullException>(() =>
+            {
+                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(() => myArgument, null, null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
             });
 
             ex.ParamName.ShouldBe("minimumAllowedValue");
+            ex.Data.Count.ShouldBe(1);
         }
 
-        [Theory]
-        [MemberData(nameof(DataWhereArgumentIsNull))]
-        public void WhenArgumentIsNull_ShouldNotThrowException(string value,
-                                                               string minimumValue,
-                                                               string argumentName,
-                                                               string errorMessage)
+        [Fact]
+        public void WhenMinimumValueIsNull_ShouldThrowArgumentNullException()
         {
+            var myArgument = "A";
             var ex = Should.Throw<ArgumentNullException>(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(value, minimumValue, argumentName, errorMessage);
+                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(myArgument, null, nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
             });
 
-            ex.ParamName.ShouldBe(argumentName.NullIfWhitespace());
-            ex.Message.ShouldContain(errorMessage.NullIfWhitespace() ?? "Exception");
+            ex.ParamName.ShouldBe("minimumAllowedValue");
+            ex.Data.Count.ShouldBe(1);
         }
     }
 }

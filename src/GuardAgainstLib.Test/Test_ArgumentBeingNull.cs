@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Shouldly;
 using Xunit;
 
@@ -6,49 +7,78 @@ namespace GuardAgainstLib.Test
 {
     public class Test_ArgumentBeingNull
     {
-        [Theory]
-        [InlineData(default(object), "myVal", "Argh!")]
-        [InlineData(default(object), "myVal", "")]
-        [InlineData(default(object), "myVal", "   ")]
-        [InlineData(default(object), "myVal", null)]
-        [InlineData(default(object), "", "")]
-        [InlineData(default(object), null, "")]
-        [InlineData(default(object), null, "   ")]
-        [InlineData(default(object), "", null)]
-        [InlineData(default(object), "   ", null)]
-        [InlineData(default(object), null, null)]
-        public void WhenArgumentIsNull_ShouldThrowArgumentNullException(object arg,
-                                                                        string argName,
-                                                                        string msg)
+        [Fact]
+        public void WhenAdditionalData_ShouldThrowArgumentNullException()
         {
+            var myArgument = default(object);
             var ex = Should.Throw<ArgumentNullException>(() =>
             {
-                GuardAgainst.ArgumentBeingNull(arg, argName, msg);
+                GuardAgainst.ArgumentBeingNull(myArgument, nameof(myArgument), null, null);
             });
 
-            ex.ParamName.ShouldBe(argName.NullIfWhitespace());
-            ex.Message.ShouldContain(msg.NullIfWhitespace() ?? "Exception");
+            ex.ParamName.ShouldBe(nameof(myArgument));
+            ex.Data.Count.ShouldBe(0);
         }
 
-        [Theory]
-        [InlineData("", "myVal", "Argh!")]
-        [InlineData("", "myVal", "")]
-        [InlineData("", "myVal", "   ")]
-        [InlineData("", "myVal", null)]
-        [InlineData("", "", "")]
-        [InlineData("", null, "")]
-        [InlineData("", null, "   ")]
-        [InlineData("", "", null)]
-        [InlineData("", "   ", null)]
-        [InlineData("", null, null)]
-        public void WhenArgumentIsNotNull_ShouldNotThrowException(object arg,
-                                                                  string argName,
-                                                                  string msg)
+
+        [Fact]
+        public void WhenArgumentExpressionIsNotNull_ShouldNotThrowException()
         {
+            var myArgument = "Hello, World!";
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingNull(arg, argName, msg);
+                GuardAgainst.ArgumentBeingNull(() => myArgument, null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
             });
+        }
+
+        [Fact]
+        public void WhenArgumentExpressionIsNull_ShouldThrowArgumentNullException()
+        {
+            var myArgument = default(object);
+            var ex = Should.Throw<ArgumentNullException>(() =>
+            {
+                GuardAgainst.ArgumentBeingNull(() => myArgument, null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            });
+
+            ex.ParamName.ShouldBe(nameof(myArgument));
+            ex.Data.Count.ShouldBe(1);
+            ex.Data["a"].ShouldBe("1");
+        }
+
+        [Fact]
+        public void WhenArgumentIsNotNull_ShouldNotThrowException()
+        {
+            var myArgument = "Hello, World!";
+            Should.NotThrow(() =>
+            {
+                GuardAgainst.ArgumentBeingNull(myArgument, nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            });
+        }
+
+        [Fact]
+        public void WhenArgumentIsNull_ShouldThrowArgumentNullException()
+        {
+            var myArgument = default(object);
+            var ex = Should.Throw<ArgumentNullException>(() =>
+            {
+                GuardAgainst.ArgumentBeingNull(myArgument, nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            });
+
+            ex.ParamName.ShouldBe(nameof(myArgument));
+            ex.Data.Count.ShouldBe(1);
+            ex.Data["a"].ShouldBe("1");
         }
     }
 }
