@@ -12,11 +12,11 @@ Probably not, but this one is mine and I prefer it to the others I've seen.
 
 ## Installation
 
-### Source
+### Via Source
 
 Just copy the [source file](https://raw.githubusercontent.com/pmcilreavy/GuardAgainst/master/src/GuardAgainstLib/GuardAgainst.cs) into your project and change the namespace to match your own.
 
-### NuGet
+### Via NuGet
 
 ```
 Install-Package GuardAgainst
@@ -66,8 +66,8 @@ Hopefully you'll agree that this is much simpler and easier to read...
 ```csharp
 private static string GetFullname(string firstname, string surname)
 {
-    GuardAgainst.ArgumentBeingNullOrWhitespace(firstname, nameof(firstname), "Firstname is required.");
-    GuardAgainst.ArgumentBeingNullOrWhitespace(surname, nameof(surname), "Surname is required.");
+    GuardAgainst.ArgumentBeingNullOrWhitespace(() => firstname, "Firstname is required.");
+    GuardAgainst.ArgumentBeingNullOrWhitespace(() => surname, "Surname is required.");
 
     return $"{firstname} {surname}";
 }
@@ -75,9 +75,8 @@ private static string GetFullname(string firstname, string surname)
 
 Both implementations of `GetFullname` are achieving the exact same thing.
 
-`GuardAgainst.ArgumentBeingNullOrWhitespace` accepts 3 arguments: `argumentValue`, `argumentName` and `exceptionMessage`.
+`GuardAgainst.ArgumentBeingNullOrWhitespace` accepts 2 main arguments: `argumentExpression` and `exceptionMessage`.
 - `argumentValue` is required. This is the value that you want to validate.
-- `argumentName` is optional. This is the string name of the variable that you are validating and will be passed to exception constructor. Passing this will make identifying the argument that caused the exception easier. You can pass this in using a literal string (e.g. `"firstname"`) but using `nameof(firstname)` gives some nice compile time safety.
 - `exceptionMessage` is optional. Allows you to give a additional specific error message to pass to the exception constructor.
 
 There are several other helper methods available that act in a similar fashioin. See table below for the full list.
