@@ -15,9 +15,19 @@ namespace GuardAgainstLib
     [DebuggerNonUserCode]
     public static class GuardAgainst
     {
+        /// <summary>
+        /// Indicates what the boolean condition flags means.
+        /// </summary>
         public enum ConditionMeaning
         {
+            /// <summary>
+            /// True means invalid
+            /// </summary>
             TrueMeansInvalid,
+
+            /// <summary>
+            /// True means valid
+            /// </summary>
             TrueMeansValid
         }
 
