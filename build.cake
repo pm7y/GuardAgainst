@@ -117,7 +117,7 @@ Task("TestAndCoverage")
           .Append($"-sources:\"{xunitTestLoggerFolder}\"")
           .Append($"-includeGettersSetters:true");
                     
-        StartProcess("./tools/OpenCoverToCoberturaConverter.0.3.3/tools/OpenCoverToCoberturaConverter.exe", new ProcessSettings { Arguments = openCoverToCoberturaConverterArguments });
+        StartProcess("./tools/OpenCoverToCoberturaConverter.0.3.4/tools/OpenCoverToCoberturaConverter.exe", new ProcessSettings { Arguments = openCoverToCoberturaConverterArguments });
 
         var reportGeneratorArguments = new ProcessArgumentBuilder()
           .Append($"-reports:\"{relativeCoverageResultPath}\"")
