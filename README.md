@@ -144,10 +144,8 @@ Sometimes though you just want something you can drop in without any extra setup
 
 ## TODO
 
-A brain dump of some stuff I might add at somepoint. Not in any particular order.
+A few things I might add at some point. Not in any particular order.
 
-- Need to improve test coverage.
-- Add a NuGet package option (dll or cs file?).
 - Think about logging support. Maybe via LibLog.
 
 <br/>
