@@ -13,7 +13,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 1;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimumForValueType(() => myArgument, 1, null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingLessThanMinimum(() => myArgument, 1, null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
@@ -26,7 +26,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 2;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimumForValueType(() => myArgument, 1, null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingLessThanMinimum(() => myArgument, 1, null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
@@ -39,7 +39,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 1;
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimumForValueType(() => myArgument, 2, null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingLessThanMinimum(() => myArgument, 2, null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
@@ -56,7 +56,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 1;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimumForValueType(myArgument, 1, nameof(myArgument), null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
@@ -69,7 +69,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 2;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimumForValueType(myArgument, 1, nameof(myArgument), null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
@@ -82,7 +82,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 1;
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimumForValueType(myArgument, 2, nameof(myArgument), null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 2, nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });

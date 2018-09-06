@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace GuardAgainstLib
@@ -12,7 +12,7 @@ namespace GuardAgainstLib
     ///     checking.
     ///     More information @ https://github.com/pmcilreavy/GuardAgainst
     /// </summary>
-    [DebuggerNonUserCode]
+    //[DebuggerNonUserCode]
     public static class GuardAgainst
     {
         /// <summary>
@@ -33,6 +33,12 @@ namespace GuardAgainstLib
 
         #region private stuff
 
+        private static bool CanBeNull<T>(this T @this)
+        {
+            var typeInfo = typeof(T).GetTypeInfo();
+            return !typeInfo.IsValueType && typeInfo.IsClass;
+        }
+
         private static readonly Regex ValueExpressionRegex = new Regex(@"(value\()(.*)(\).)", RegexOptions.CultureInvariant);
 
         private static string ToArgumentExpressionString<T>(this Expression<Func<T>> argumentExpression)
@@ -52,7 +58,7 @@ namespace GuardAgainstLib
         private static void AddData(this Exception ex,
                                     IDictionary<object, object> additionalData)
         {
-            if (ex?.Data == null || additionalData == null || !additionalData.Any())
+            if (ex?.Data is null || additionalData is null || !additionalData.Any())
             {
                 return;
             }
@@ -182,7 +188,7 @@ namespace GuardAgainstLib
 
             Exception ex;
 
-            if (argumentValue == null)
+            if (argumentValue is null)
             {
                 ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
             }
@@ -222,7 +228,7 @@ namespace GuardAgainstLib
 
             Exception ex;
 
-            if (argumentValue == null)
+            if (argumentValue is null)
             {
                 ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
             }
@@ -255,7 +261,7 @@ namespace GuardAgainstLib
                                                    string exceptionMessage = default(string),
                                                    IDictionary<object, object> additionalData = default(IDictionary<object, object>))
         {
-            if (argumentValue == null)
+            if (argumentValue is null)
             {
                 return;
             }
@@ -286,7 +292,7 @@ namespace GuardAgainstLib
         {
             var argumentValue = argumentExpression.Compile().Invoke();
 
-            if (argumentValue == null)
+            if (argumentValue is null)
             {
                 return;
             }
@@ -332,7 +338,7 @@ namespace GuardAgainstLib
 
             Exception ex;
 
-            if (argumentValue == null)
+            if (argumentValue is null)
             {
                 ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
             }
@@ -371,7 +377,7 @@ namespace GuardAgainstLib
             var argumentName = argumentExpression.ToArgumentExpressionString();
             Exception ex;
 
-            if (argumentValue == null)
+            if (argumentValue is null)
             {
                 ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
             }
@@ -405,7 +411,7 @@ namespace GuardAgainstLib
                                               string exceptionMessage = default(string),
                                               IDictionary<object, object> additionalData = default(IDictionary<object, object>))
         {
-            if (argumentValue == null)
+            if (argumentValue is null)
             {
                 return;
             }
@@ -437,7 +443,7 @@ namespace GuardAgainstLib
         {
             var argumentValue = argumentExpression.Compile().Invoke();
 
-            if (argumentValue == null)
+            if (argumentValue is null)
             {
                 return;
             }
@@ -481,11 +487,11 @@ namespace GuardAgainstLib
         {
             Exception ex = null;
 
-            if (argumentValue == null)
+            if (argumentValue is null)
             {
                 ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
             }
-            else if (minimumAllowedValue == null)
+            else if (minimumAllowedValue is null)
             {
                 ex = new ArgumentNullException(nameof(minimumAllowedValue));
             }
@@ -494,7 +500,7 @@ namespace GuardAgainstLib
                 ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
             }
 
-            if (ex == null)
+            if (ex is null)
             {
                 return;
             }
@@ -526,12 +532,12 @@ namespace GuardAgainstLib
 
             Exception ex = null;
 
-            if (argumentValue == null)
+            if (argumentValue is null)
             {
                 var argumentName = argumentExpression.ToArgumentExpressionString();
                 ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
             }
-            else if (minimumAllowedValue == null)
+            else if (minimumAllowedValue is null)
             {
                 ex = new ArgumentNullException(nameof(minimumAllowedValue));
             }
@@ -541,7 +547,7 @@ namespace GuardAgainstLib
                 ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
             }
 
-            if (ex == null)
+            if (ex is null)
             {
                 return;
             }
@@ -571,16 +577,16 @@ namespace GuardAgainstLib
                                                            string argumentName = default(string),
                                                            string exceptionMessage = default(string),
                                                            IDictionary<object, object> additionalData = default(IDictionary<object, object>))
-            where T : class, IComparable<T>
+            where T : IComparable<T>
         {
-            if (argumentValue == null)
+            if (argumentValue.CanBeNull() && argumentValue == null)
             {
                 return;
             }
 
             Exception ex = null;
 
-            if (minimumAllowedValue == null)
+            if (minimumAllowedValue.CanBeNull() && minimumAllowedValue == null)
             {
                 ex = new ArgumentNullException(nameof(minimumAllowedValue));
             }
@@ -589,7 +595,7 @@ namespace GuardAgainstLib
                 ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
             }
 
-            if (ex == null)
+            if (ex is null)
             {
                 return;
             }
@@ -613,18 +619,18 @@ namespace GuardAgainstLib
                                                            T minimumAllowedValue,
                                                            string exceptionMessage = default(string),
                                                            IDictionary<object, object> additionalData = default(IDictionary<object, object>))
-            where T : class, IComparable<T>
+            where T : IComparable<T>
         {
             var argumentValue = argumentExpression.Compile().Invoke();
 
-            if (argumentValue == null)
+            if (argumentValue.CanBeNull() && argumentValue == null)
             {
                 return;
             }
 
             Exception ex = null;
 
-            if (minimumAllowedValue == null)
+            if (minimumAllowedValue.CanBeNull() && minimumAllowedValue == null)
             {
                 ex = new ArgumentNullException(nameof(minimumAllowedValue));
             }
@@ -634,7 +640,7 @@ namespace GuardAgainstLib
                 ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
             }
 
-            if (ex == null)
+            if (ex is null)
             {
                 return;
             }
@@ -645,68 +651,6 @@ namespace GuardAgainstLib
 
         #endregion ArgumentBeingLessThanMinimum
 
-        #region ArgumentBeingLessThanMinimumForValueType
-
-        /// <summary>
-        ///     Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
-        /// </summary>
-        /// <param name="argumentValue">The argument value to check if less than minimum.</param>
-        /// <param name="minimumAllowedValue">The minimum allowed value.</param>
-        /// <param name="argumentName">Name of the argument. Can be optionally specified to be included in the raised exception.</param>
-        /// <param name="exceptionMessage">
-        ///     The exception message. An optional error message that describes the exception in more
-        ///     detail. If left null, the default .net message will be generated.
-        /// </param>
-        /// <param name="additionalData">Additional key/value data to add to the Data property of the exception.</param>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static void ArgumentBeingLessThanMinimumForValueType<T>(T argumentValue,
-                                                                       T minimumAllowedValue,
-                                                                       string argumentName = default(string),
-                                                                       string exceptionMessage = default(string),
-                                                                       IDictionary<object, object> additionalData = default(IDictionary<object, object>))
-            where T : struct, IComparable<T>
-        {
-            if (!argumentValue.IsLessThan(minimumAllowedValue))
-            {
-                return;
-            }
-
-            var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
-            ex.AddData(additionalData);
-            throw ex;
-        }
-
-        /// <summary>
-        ///     Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
-        /// </summary>
-        /// <param name="argumentExpression">The argument expression to check if less than minimum.</param>
-        /// <param name="minimumAllowedValue">The minimum allowed value.</param>
-        /// <param name="exceptionMessage">
-        ///     The exception message. An optional error message that describes the exception in more
-        ///     detail. If left null, the default .net message will be generated.
-        /// </param>
-        /// <param name="additionalData">Additional key/value data to add to the Data property of the exception.</param>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static void ArgumentBeingLessThanMinimumForValueType<T>(Expression<Func<T>> argumentExpression,
-                                                                       T minimumAllowedValue,
-                                                                       string exceptionMessage = default(string),
-                                                                       IDictionary<object, object> additionalData = default(IDictionary<object, object>))
-            where T : struct, IComparable<T>
-        {
-            var argumentValue = argumentExpression.Compile().Invoke();
-
-            if (!argumentValue.IsLessThan(minimumAllowedValue))
-            {
-                return;
-            }
-
-            var argumentName = argumentExpression.ToArgumentExpressionString();
-            var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
-            ex.AddData(additionalData);
-            throw ex;
-        }
-
-        #endregion ArgumentBeingLessThanMinimumForValueType
 
         #region ArgumentBeingNullOrGreaterThanMaximum
 
@@ -733,11 +677,11 @@ namespace GuardAgainstLib
         {
             Exception ex = null;
 
-            if (argumentValue == null)
+            if (argumentValue is null)
             {
                 ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
             }
-            else if (maximumAllowedValue == null)
+            else if (maximumAllowedValue is null)
             {
                 ex = new ArgumentNullException(nameof(maximumAllowedValue));
             }
@@ -746,7 +690,7 @@ namespace GuardAgainstLib
                 ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
             }
 
-            if (ex == null)
+            if (ex is null)
             {
                 return;
             }
@@ -778,12 +722,12 @@ namespace GuardAgainstLib
 
             Exception ex = null;
 
-            if (argumentValue == null)
+            if (argumentValue is null)
             {
                 var argumentName = argumentExpression.ToArgumentExpressionString();
                 ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
             }
-            else if (maximumAllowedValue == null)
+            else if (maximumAllowedValue is null)
             {
                 ex = new ArgumentNullException(nameof(maximumAllowedValue));
             }
@@ -793,7 +737,7 @@ namespace GuardAgainstLib
                 ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
             }
 
-            if (ex == null)
+            if (ex is null)
             {
                 return;
             }
@@ -823,16 +767,16 @@ namespace GuardAgainstLib
                                                               string argumentName = default(string),
                                                               string exceptionMessage = default(string),
                                                               IDictionary<object, object> additionalData = default(IDictionary<object, object>))
-            where T : class, IComparable<T>
+            where T : IComparable<T>
         {
-            if (argumentValue == null)
+            if (argumentValue.CanBeNull() && argumentValue == null)
             {
                 return;
             }
 
             Exception ex = null;
 
-            if (maximumAllowedValue == null)
+            if (maximumAllowedValue.CanBeNull() && maximumAllowedValue == null)
             {
                 ex = new ArgumentNullException(nameof(maximumAllowedValue));
             }
@@ -841,7 +785,7 @@ namespace GuardAgainstLib
                 ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
             }
 
-            if (ex == null)
+            if (ex is null)
             {
                 return;
             }
@@ -866,18 +810,18 @@ namespace GuardAgainstLib
                                                               T maximumAllowedValue,
                                                               string exceptionMessage = default(string),
                                                               IDictionary<object, object> additionalData = default(IDictionary<object, object>))
-            where T : class, IComparable<T>
+            where T : IComparable<T>
         {
             var argumentValue = argumentExpression.Compile().Invoke();
 
-            if (argumentValue == null)
+            if (argumentValue.CanBeNull() && argumentValue == null)
             {
                 return;
             }
 
             Exception ex = null;
 
-            if (maximumAllowedValue == null)
+            if (maximumAllowedValue.CanBeNull() && maximumAllowedValue == null)
             {
                 ex = new ArgumentNullException(nameof(maximumAllowedValue));
             }
@@ -887,7 +831,7 @@ namespace GuardAgainstLib
                 ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
             }
 
-            if (ex == null)
+            if (ex is null)
             {
                 return;
             }
@@ -897,69 +841,6 @@ namespace GuardAgainstLib
         }
 
         #endregion ArgumentBeingGreaterThanMaximum
-
-        #region ArgumentBeingGreaterThanMaximumForValueType
-
-        /// <summary>
-        ///     Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
-        /// </summary>
-        /// <param name="argumentValue">The argument value to check if greater than maximum.</param>
-        /// <param name="maximumAllowedValue">The maximum allowed value.</param>
-        /// <param name="argumentName">Name of the argument. Can be optionally specified to be included in the raised exception.</param>
-        /// <param name="exceptionMessage">
-        ///     The exception message. An optional error message that describes the exception in more
-        ///     detail. If left null, the default .net message will be generated.
-        /// </param>
-        /// <param name="additionalData">Additional key/value data to add to the Data property of the exception.</param>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static void ArgumentBeingGreaterThanMaximumForValueType<T>(T argumentValue,
-                                                                          T maximumAllowedValue,
-                                                                          string argumentName = default(string),
-                                                                          string exceptionMessage = default(string),
-                                                                          IDictionary<object, object> additionalData = default(IDictionary<object, object>))
-            where T : struct, IComparable<T>
-        {
-            if (!argumentValue.IsMoreThan(maximumAllowedValue))
-            {
-                return;
-            }
-
-            var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
-            ex.AddData(additionalData);
-            throw ex;
-        }
-
-        /// <summary>
-        ///     Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
-        /// </summary>
-        /// <param name="argumentExpression">The argument expression to check if greater than maximum.</param>
-        /// <param name="maximumAllowedValue">The maximum allowed value.</param>
-        /// <param name="exceptionMessage">
-        ///     The exception message. An optional error message that describes the exception in more
-        ///     detail. If left null, the default .net message will be generated.
-        /// </param>
-        /// <param name="additionalData">Additional key/value data to add to the Data property of the exception.</param>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static void ArgumentBeingGreaterThanMaximumForValueType<T>(Expression<Func<T>> argumentExpression,
-                                                                          T maximumAllowedValue,
-                                                                          string exceptionMessage = default(string),
-                                                                          IDictionary<object, object> additionalData = default(IDictionary<object, object>))
-            where T : struct, IComparable<T>
-        {
-            var argumentValue = argumentExpression.Compile().Invoke();
-            var argumentName = argumentExpression.ToArgumentExpressionString();
-
-            if (!argumentValue.IsMoreThan(maximumAllowedValue))
-            {
-                return;
-            }
-
-            var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
-            ex.AddData(additionalData);
-            throw ex;
-        }
-
-        #endregion ArgumentBeingGreaterThanMaximumForValueType
 
         #region ArgumentBeingNullOrOutOfRange
 
@@ -989,15 +870,15 @@ namespace GuardAgainstLib
         {
             Exception ex = null;
 
-            if (argumentValue == null)
+            if (argumentValue is null)
             {
                 ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
             }
-            else if (minimumAllowedValue == null)
+            else if (minimumAllowedValue is null)
             {
                 ex = new ArgumentNullException(nameof(minimumAllowedValue));
             }
-            else if (maximumAllowedValue == null)
+            else if (maximumAllowedValue is null)
             {
                 ex = new ArgumentNullException(nameof(maximumAllowedValue));
             }
@@ -1006,7 +887,7 @@ namespace GuardAgainstLib
                 ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
             }
 
-            if (ex == null)
+            if (ex is null)
             {
                 return;
             }
@@ -1041,16 +922,16 @@ namespace GuardAgainstLib
 
             Exception ex = null;
 
-            if (argumentValue == null)
+            if (argumentValue is null)
             {
                 var argumentName = argumentExpression.ToArgumentExpressionString();
                 ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
             }
-            else if (minimumAllowedValue == null)
+            else if (minimumAllowedValue is null)
             {
                 ex = new ArgumentNullException(nameof(minimumAllowedValue));
             }
-            else if (maximumAllowedValue == null)
+            else if (maximumAllowedValue is null)
             {
                 ex = new ArgumentNullException(nameof(maximumAllowedValue));
             }
@@ -1060,7 +941,7 @@ namespace GuardAgainstLib
                 ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
             }
 
-            if (ex == null)
+            if (ex is null)
             {
                 return;
             }
@@ -1093,20 +974,20 @@ namespace GuardAgainstLib
                                                       string argumentName = default(string),
                                                       string exceptionMessage = default(string),
                                                       IDictionary<object, object> additionalData = default(IDictionary<object, object>))
-            where T : class, IComparable<T>
+            where T : IComparable<T>
         {
             Exception ex = null;
 
-            if (argumentValue == null)
+            if (argumentValue.CanBeNull() && argumentValue == null)
             {
                 return;
             }
 
-            if (minimumAllowedValue == null)
+            if (minimumAllowedValue.CanBeNull() && minimumAllowedValue == null)
             {
                 ex = new ArgumentNullException(nameof(minimumAllowedValue));
             }
-            else if (maximumAllowedValue == null)
+            else if (maximumAllowedValue.CanBeNull() && maximumAllowedValue == null)
             {
                 ex = new ArgumentNullException(nameof(maximumAllowedValue));
             }
@@ -1115,7 +996,7 @@ namespace GuardAgainstLib
                 ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
             }
 
-            if (ex == null)
+            if (ex is null)
             {
                 return;
             }
@@ -1142,22 +1023,22 @@ namespace GuardAgainstLib
                                                       T maximumAllowedValue,
                                                       string exceptionMessage = default(string),
                                                       IDictionary<object, object> additionalData = default(IDictionary<object, object>))
-            where T : class, IComparable<T>
+            where T : IComparable<T>
         {
             var argumentValue = argumentExpression.Compile().Invoke();
 
             Exception ex = null;
 
-            if (argumentValue == null)
+            if (argumentValue.CanBeNull() && argumentValue == null)
             {
                 return;
             }
 
-            if (minimumAllowedValue == null)
+            if (minimumAllowedValue.CanBeNull() && minimumAllowedValue == null)
             {
                 ex = new ArgumentNullException(nameof(minimumAllowedValue));
             }
-            else if (maximumAllowedValue == null)
+            else if (maximumAllowedValue.CanBeNull() && maximumAllowedValue == null)
             {
                 ex = new ArgumentNullException(nameof(maximumAllowedValue));
             }
@@ -1167,7 +1048,7 @@ namespace GuardAgainstLib
                 ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
             }
 
-            if (ex == null)
+            if (ex is null)
             {
                 return;
             }
@@ -1177,75 +1058,6 @@ namespace GuardAgainstLib
         }
 
         #endregion ArgumentBeingOutOfRange
-
-        #region ArgumentBeingOutOfRangeForValueType
-
-        /// <summary>
-        ///     Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
-        ///     Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
-        /// </summary>
-        /// <param name="argumentValue">The argument value to check for null or if out of range.</param>
-        /// <param name="minimumAllowedValue">The minimum allowed value.</param>
-        /// <param name="maximumAllowedValue">The maximum allowed value.</param>
-        /// <param name="argumentName">Name of the argument. Can be optionally specified to be included in the raised exception.</param>
-        /// <param name="exceptionMessage">
-        ///     The exception message. An optional error message that describes the exception in more
-        ///     detail. If left null, the default .net message will be generated.
-        /// </param>
-        /// <param name="additionalData">Additional key/value data to add to the Data property of the exception.</param>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static void ArgumentBeingOutOfRangeForValueType<T>(T argumentValue,
-                                                                  T minimumAllowedValue,
-                                                                  T maximumAllowedValue,
-                                                                  string argumentName = default(string),
-                                                                  string exceptionMessage = default(string),
-                                                                  IDictionary<object, object> additionalData = default(IDictionary<object, object>))
-            where T : struct, IComparable<T>
-        {
-            if (argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
-            {
-                return;
-            }
-
-            var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
-            ex.AddData(additionalData);
-            throw ex;
-        }
-
-        /// <summary>
-        ///     Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
-        ///     Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
-        /// </summary>
-        /// <param name="argumentExpression">The argument expression to check for null or if out of range.</param>
-        /// <param name="minimumAllowedValue">The minimum allowed value.</param>
-        /// <param name="maximumAllowedValue">The maximum allowed value.</param>
-        /// <param name="exceptionMessage">
-        ///     The exception message. An optional error message that describes the exception in more
-        ///     detail. If left null, the default .net message will be generated.
-        /// </param>
-        /// <param name="additionalData">Additional key/value data to add to the Data property of the exception.</param>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static void ArgumentBeingOutOfRangeForValueType<T>(Expression<Func<T>> argumentExpression,
-                                                                  T minimumAllowedValue,
-                                                                  T maximumAllowedValue,
-                                                                  string exceptionMessage = default(string),
-                                                                  IDictionary<object, object> additionalData = default(IDictionary<object, object>))
-            where T : struct, IComparable<T>
-        {
-            var argumentValue = argumentExpression.Compile().Invoke();
-
-            if (argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
-            {
-                return;
-            }
-
-            var argumentName = argumentExpression.ToArgumentExpressionString();
-            var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
-            ex.AddData(additionalData);
-            throw ex;
-        }
-
-        #endregion ArgumentBeingOutOfRangeForValueType
 
         #region ArgumentBeingInvalid
 

@@ -13,7 +13,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 4;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingOutOfRangeForValueType(() => myArgument, 2, 4, null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingOutOfRange(() => myArgument, 2, 4, null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
@@ -26,7 +26,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 2;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingOutOfRangeForValueType(() => myArgument, 2, 4, null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingOutOfRange(() => myArgument, 2, 4, null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
@@ -39,7 +39,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 5;
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingOutOfRangeForValueType(() => myArgument, 2, 4, null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingOutOfRange(() => myArgument, 2, 4, null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
@@ -56,7 +56,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 3;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingOutOfRangeForValueType(() => myArgument, 2, 4, null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingOutOfRange(() => myArgument, 2, 4, null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
@@ -69,7 +69,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 1;
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingOutOfRangeForValueType(() => myArgument, 2, 4, null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingOutOfRange(() => myArgument, 2, 4, null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
@@ -86,7 +86,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 4;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingOutOfRangeForValueType(myArgument, 2, 4, nameof(myArgument), null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
@@ -99,7 +99,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 2;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingOutOfRangeForValueType(myArgument, 2, 4, nameof(myArgument), null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
@@ -112,7 +112,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 5;
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingOutOfRangeForValueType(myArgument, 2, 4, nameof(myArgument), null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
@@ -129,7 +129,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 3;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingOutOfRangeForValueType(myArgument, 2, 4, nameof(myArgument), null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
@@ -142,7 +142,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 1;
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingOutOfRangeForValueType(myArgument, 2, 4, nameof(myArgument), null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });

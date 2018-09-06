@@ -13,7 +13,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 1;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingGreaterThanMaximumForValueType(() => myArgument, 1, null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingGreaterThanMaximum(() => myArgument, 1, null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
@@ -26,7 +26,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 2;
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingGreaterThanMaximumForValueType(() => myArgument, 1, null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingGreaterThanMaximum(() => myArgument, 1, null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
@@ -43,7 +43,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 1;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingGreaterThanMaximumForValueType(() => myArgument, 2, null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingGreaterThanMaximum(() => myArgument, 2, null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
@@ -56,7 +56,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 1;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingGreaterThanMaximumForValueType(myArgument, 2, nameof(myArgument), null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 2, nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
@@ -69,7 +69,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 2;
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingGreaterThanMaximumForValueType(myArgument, 1, nameof(myArgument), null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 1, nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
@@ -86,7 +86,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 1;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingGreaterThanMaximumForValueType(myArgument, 2, nameof(myArgument), null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 2, nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });

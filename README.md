@@ -31,7 +31,7 @@ Code becomes more readable and concise. Consider the following example: a simple
 ```csharp
 private static string GetFullname(string firstname, string surname)
 {
-    if (firstname == null)
+    if (firstname is null)
     {
         throw new ArgumentNullException(nameof(firstname), "Firstname is required.");
     }
@@ -41,7 +41,7 @@ private static string GetFullname(string firstname, string surname)
         throw new ArgumentException("Firstname is required.", nameof(firstname));
     }
 
-    if (surname == null)
+    if (surname is null)
     {
         throw new ArgumentNullException(nameof(surname));
     }
