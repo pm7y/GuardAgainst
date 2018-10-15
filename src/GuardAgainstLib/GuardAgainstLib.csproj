@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>GuardAgainstLib</RootNamespace>
     <PackageId>GuardAgainst</PackageId>
     <Authors>Paul Mcilreavy</Authors>
@@ -26,11 +26,5 @@
     <DebugSymbols>true</DebugSymbols>
     <DocumentationFile>bin\Release\netstandard1.0\GuardAgainstLib.xml</DocumentationFile>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Reference Include="System.Runtime.InteropServices.RuntimeInformation">
-      <HintPath>..\..\..\..\..\..\..\.nuget\packages\microsoft.netcore.app\2.0.0\ref\netcoreapp2.0\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 
 </Project>
