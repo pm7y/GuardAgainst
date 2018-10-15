@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
 namespace GuardAgainstLib
@@ -15,90 +16,6 @@ namespace GuardAgainstLib
     //[DebuggerNonUserCode]
     public static class GuardAgainst
     {
-        /// <summary>
-        /// Indicates what the boolean condition flags means.
-        /// </summary>
-        public enum ConditionMeaning
-        {
-            /// <summary>
-            /// True means invalid
-            /// </summary>
-            TrueMeansInvalid,
-
-            /// <summary>
-            /// True means valid
-            /// </summary>
-            TrueMeansValid
-        }
-
-        #region private stuff
-
-        private static bool CanBeNull<T>(this T @this)
-        {
-            var typeInfo = typeof(T).GetTypeInfo();
-            return !typeInfo.IsValueType && typeInfo.IsClass;
-        }
-
-        private static readonly Regex ValueExpressionRegex = new Regex(@"(value\()(.*)(\).)", RegexOptions.CultureInvariant);
-
-        private static string ToArgumentExpressionString<T>(this Expression<Func<T>> argumentExpression)
-        {
-            var expressionBody = argumentExpression.Body.ToString();
-            var expressionMatch = ValueExpressionRegex.Match(expressionBody);
-            var argumentExpressionString = expressionMatch.Success ? expressionBody.Replace(expressionMatch.Value, string.Empty) : expressionBody;
-
-            return argumentExpressionString;
-        }
-
-        private static string ToNullIfWhitespace(this string @this)
-        {
-            return string.IsNullOrWhiteSpace(@this) ? default(string) : @this;
-        }
-
-        private static void AddData(this Exception ex,
-                                    IDictionary<object, object> additionalData)
-        {
-            if (ex?.Data is null || additionalData is null || !additionalData.Any())
-            {
-                return;
-            }
-
-            foreach (var key in additionalData.Keys)
-            {
-                ex.Data.Add(key, additionalData[key]);
-            }
-        }
-
-        private static bool IsInRange<T>(this T @this,
-                                         T lowerBound,
-                                         T upperBound)
-            where T : IComparable<T>
-        {
-            return @this.CompareTo(lowerBound) >= 0 && @this.CompareTo(upperBound) <= 0;
-        }
-
-        private static bool IsLessThan<T>(this T @this,
-                                          T lowerBound)
-            where T : IComparable<T>
-        {
-            return @this.CompareTo(lowerBound) < 0;
-        }
-
-        private static bool IsMoreThan<T>(this T @this,
-                                          T lowerBound)
-            where T : IComparable<T>
-        {
-            return @this.CompareTo(lowerBound) > 0;
-        }
-
-        private static bool IsInvalid(bool condition,
-                                      ConditionMeaning conditionMeaning)
-        {
-            return !condition && conditionMeaning == ConditionMeaning.TrueMeansValid || condition && conditionMeaning == ConditionMeaning.TrueMeansInvalid;
-        }
-
-        #endregion private stuff
-
         #region ArgumentBeingNull
 
         /// <summary>
@@ -650,7 +567,6 @@ namespace GuardAgainstLib
         }
 
         #endregion ArgumentBeingLessThanMinimum
-
 
         #region ArgumentBeingNullOrGreaterThanMaximum
 
@@ -1205,5 +1121,107 @@ namespace GuardAgainstLib
         }
 
         #endregion OperationBeingInvalid
+
+        #region PlatformNotSupported
+
+        public static void PlatformNotSupported(OSPlatform supportedPlatform,
+                                                string exceptionMessage = default(string),
+                                                IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+        {
+            if (RuntimeInformation.IsOSPlatform(supportedPlatform))
+            {
+                return;
+            }
+
+            var ex = new PlatformNotSupportedException(exceptionMessage.ToNullIfWhitespace());
+            ex.AddData(additionalData);
+            throw ex;
+        }
+
+        #endregion PlatformNotSupported
+
+        /// <summary>
+        /// Indicates what the boolean condition flags means.
+        /// </summary>
+        public enum ConditionMeaning
+        {
+            /// <summary>
+            /// True means invalid
+            /// </summary>
+            TrueMeansInvalid,
+
+            /// <summary>
+            /// True means valid
+            /// </summary>
+            TrueMeansValid
+        }
+
+        #region private stuff
+
+        private static bool CanBeNull<T>(this T @this)
+        {
+            var typeInfo = typeof(T).GetTypeInfo();
+            return !typeInfo.IsValueType && typeInfo.IsClass;
+        }
+
+        private static readonly Regex ValueExpressionRegex = new Regex(@"(value\()(.*)(\).)", RegexOptions.CultureInvariant);
+
+        private static string ToArgumentExpressionString<T>(this Expression<Func<T>> argumentExpression)
+        {
+            var expressionBody = argumentExpression.Body.ToString();
+            var expressionMatch = ValueExpressionRegex.Match(expressionBody);
+            var argumentExpressionString = expressionMatch.Success ? expressionBody.Replace(expressionMatch.Value, string.Empty) : expressionBody;
+
+            return argumentExpressionString;
+        }
+
+        private static string ToNullIfWhitespace(this string @this)
+        {
+            return string.IsNullOrWhiteSpace(@this) ? default(string) : @this;
+        }
+
+        private static void AddData(this Exception ex,
+                                    IDictionary<object, object> additionalData)
+        {
+            if (ex?.Data is null || additionalData is null || !additionalData.Any())
+            {
+                return;
+            }
+
+            foreach (var key in additionalData.Keys)
+            {
+                ex.Data.Add(key, additionalData[key]);
+            }
+        }
+
+        private static bool IsInRange<T>(this T @this,
+                                         T lowerBound,
+                                         T upperBound)
+            where T : IComparable<T>
+        {
+            return @this.CompareTo(lowerBound) >= 0 && @this.CompareTo(upperBound) <= 0;
+        }
+
+        private static bool IsLessThan<T>(this T @this,
+                                          T lowerBound)
+            where T : IComparable<T>
+        {
+            return @this.CompareTo(lowerBound) < 0;
+        }
+
+        private static bool IsMoreThan<T>(this T @this,
+                                          T lowerBound)
+            where T : IComparable<T>
+        {
+            return @this.CompareTo(lowerBound) > 0;
+        }
+
+        private static bool IsInvalid(bool condition,
+                                      ConditionMeaning conditionMeaning)
+        {
+            return !condition && conditionMeaning == ConditionMeaning.TrueMeansValid || condition && conditionMeaning == ConditionMeaning.TrueMeansInvalid;
+        }
+
+        #endregion private stuff
     }
 }
