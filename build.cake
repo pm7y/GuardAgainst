@@ -137,7 +137,7 @@ Task("Publish")
         var projectName = project.GetFilenameWithoutExtension().FullPath;
         var settings = new DotNetCorePublishSettings
         {
-            Framework = "netstandard1.0",
+            Framework = "netstandard2.0",
             Configuration = "Release",
             OutputDirectory = $"{binariesArtifactsFolder}/{projectName}/",
             NoRestore = true,
