@@ -182,7 +182,7 @@ Task("Pack")
                                       new NuSpecContent {Source = "./GuardAgainstLib.dll", Target = "lib/netstandard1.0/GuardAgainstLib.dll"},
                                       new NuSpecContent {Source = "./GuardAgainstLib.xml", Target = "lib/netstandard1.0/GuardAgainstLib.xml"},
                                      },
-                                     BasePath                = "./src/GuardAgainstLib/bin/release/netstandard1.0",
+                                     BasePath                = "./src/GuardAgainstLib/bin/release/netstandard2.0",
                                      OutputDirectory         = nugetArtifactsFolder.FullPath
                                  };
 

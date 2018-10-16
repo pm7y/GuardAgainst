@@ -1124,6 +1124,15 @@ namespace GuardAgainstLib
 
         #region PlatformNotSupported
 
+        /// <summary>
+        /// Throws a PlatformNotSupportedException if the specified platform is not supported.
+        /// </summary>
+        /// <param name="supportedPlatform">The platform that is suported.</param>
+        /// <param name="exceptionMessage">
+        ///     The exception message. An optional error message that describes the exception in more
+        ///     detail. If left null, the default .net message will be generated.
+        /// </param>
+        /// <param name="additionalData">Additional key/value data to add to the Data property of the exception.</param>
         public static void PlatformNotSupported(OSPlatform supportedPlatform,
                                                 string exceptionMessage = default(string),
                                                 IDictionary<object, object> additionalData = default(IDictionary<object, object>))
