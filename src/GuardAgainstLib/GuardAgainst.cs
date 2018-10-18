@@ -13,7 +13,6 @@ namespace GuardAgainstLib
     ///     checking.
     ///     More information @ https://github.com/pmcilreavy/GuardAgainst
     /// </summary>
-    //[DebuggerNonUserCode]
     public static class GuardAgainst
     {
         #region ArgumentBeingNull
