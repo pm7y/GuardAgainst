@@ -359,12 +359,66 @@ namespace GuardAgainstLib
         {
             var argumentValue = argumentExpression.Compile().Invoke();
 
-            if (argumentValue is null)
+            if (argumentValue is null ||
+                !string.IsNullOrEmpty(argumentValue))
             {
                 return;
             }
 
-            if (!string.IsNullOrEmpty(argumentValue))
+            var argumentName = argumentExpression.ToArgumentExpressionString();
+
+            var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
+            ex.AddData(additionalData);
+            throw ex;
+        }
+
+        /// <summary>
+        ///     Throws an ArgumentException if the argumentValue is empty only.
+        /// </summary>
+        /// <param name="argumentValue">The argument value to check for empty.</param>
+        /// <param name="argumentName">Name of the argument. Can be optionally specified to be included in the raised exception.</param>
+        /// <param name="exceptionMessage">
+        ///     The exception message. An optional error message that describes the exception in more
+        ///     detail. If left null, the default .net message will be generated.
+        /// </param>
+        /// <param name="additionalData">Additional key/value data to add to the Data property of the exception.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public static void ArgumentBeingEmpty<T>(IEnumerable<T> argumentValue,
+            string argumentName = default(string),
+            string exceptionMessage = default(string),
+            IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+        {
+            if (argumentValue is null ||
+                argumentValue.Any())
+            {
+                return;
+            }
+
+            var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
+            ex.AddData(additionalData);
+            throw ex;
+        }
+
+        /// <summary>
+        ///     Throws an ArgumentException if the argumentValue is empty only.
+        /// </summary>
+        /// <param name="argumentExpression">The argument expression to check for being empty.</param>
+        /// <param name="exceptionMessage">
+        ///     The exception message. An optional error message that describes the exception in more
+        ///     detail. If left null, the default .net message will be generated.
+        /// </param>
+        /// <param name="additionalData">Additional key/value data to add to the Data property of the exception.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public static void ArgumentBeingEmpty<T>(Expression<Func<IEnumerable<T>>> argumentExpression,
+            string exceptionMessage = default(string),
+            IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+        {
+            var argumentValue = argumentExpression.Compile().Invoke();
+
+            if (argumentValue is null ||
+                argumentValue.Any())
             {
                 return;
             }

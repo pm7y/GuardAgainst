@@ -147,8 +147,7 @@ Task("Publish")
         DotNetCorePublish(project.FullPath, settings);
 
         DeleteFiles($"{binariesArtifactsFolder}/{projectName}/*.deps.json");
-        DeleteFiles($"{binariesArtifactsFolder}/{projectName}/*.pdb");
-        
+
         Zip($"{binariesArtifactsFolder}/{projectName}/", $"{binariesArtifactsFolder}/{projectName}.zip");
 
         DeleteDirectory($"{binariesArtifactsFolder}/{projectName}/", new DeleteDirectorySettings {
@@ -176,7 +175,7 @@ Task("Pack")
                                      LicenseUrl              = new Uri("https://github.com/pmcilreavy/GuardAgainst/blob/master/LICENSE"),
                                      Tags                    = new [] {"GuardAgainst", "guard", "dotnet", "contracts", "arguments", "validity"},
                                      RequireLicenseAcceptance= false,
-                                     Symbols                 = false,
+                                     Symbols                 = true,
                                      NoPackageAnalysis       = true,
                                      Files                   = new [] { 
                                       new NuSpecContent {Source = "./GuardAgainstLib.dll", Target = "lib/netstandard1.0/GuardAgainstLib.dll"},

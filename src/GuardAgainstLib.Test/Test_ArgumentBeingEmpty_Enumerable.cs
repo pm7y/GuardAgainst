@@ -1,16 +1,17 @@
+using Shouldly;
 using System;
 using System.Collections.Generic;
-using Shouldly;
+using System.Linq;
 using Xunit;
 
 namespace GuardAgainstLib.Test
 {
-    public class Test_ArgumentBeingEmpty
+    public class Test_ArgumentBeingEmpty_Enumerable
     {
         [Fact]
-        public void WhenArgumentExpressionIsEmpty_ShouldThrowArgumentException()
+        public void WhenArgumentExpressionIsEmptyEnumerable_ShouldThrowArgumentException()
         {
-            var myArgument = "";
+            var myArgument = Enumerable.Empty<int>();
             var ex = Should.Throw<ArgumentException>(() =>
             {
                 GuardAgainst.ArgumentBeingEmpty(() => myArgument, null, new Dictionary<object, object>
@@ -25,9 +26,9 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
-        public void WhenArgumentExpressionIsNotNullOrEmpty_ShouldNotThrow()
+        public void WhenArgumentExpressionIsNotNullOrEmptyEnumerable_ShouldNotThrow()
         {
-            var myArgument = " blah ";
+            var myArgument = new[] { 1 };
             Should.NotThrow(() =>
             {
                 GuardAgainst.ArgumentBeingEmpty(() => myArgument, null, new Dictionary<object, object>
@@ -38,9 +39,9 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
-        public void WhenArgumentExpressionIsNull_ShouldNotThrow()
+        public void WhenArgumentExpressionIsNullEnumerable_ShouldNotThrow()
         {
-            var myArgument = default(string);
+            var myArgument = default(int[]);
             Should.NotThrow(() =>
             {
                 GuardAgainst.ArgumentBeingEmpty(() => myArgument, null, new Dictionary<object, object>
@@ -51,9 +52,9 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
-        public void WhenArgumentIsEmpty_ShouldThrowArgumentException()
+        public void WhenArgumentIsEmptyEnumerable_ShouldThrowArgumentException()
         {
-            var myArgument = "";
+            var myArgument = Enumerable.Empty<int>();
             var ex = Should.Throw<ArgumentException>(() =>
             {
                 GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
@@ -68,9 +69,9 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
-        public void WhenArgumentIsNotNullOrEmpty_ShouldNotThrow()
+        public void WhenArgumentIsNotNullOrEmptyString_ShouldNotThrow()
         {
-            var myArgument = " blah ";
+            var myArgument = new[] { 1 };
             Should.NotThrow(() =>
             {
                 GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
@@ -81,9 +82,9 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
-        public void WhenArgumentIsNull_ShouldNotThrow()
+        public void WhenArgumentIsNullEnumerable_ShouldNotThrow()
         {
-            var myArgument = default(string);
+            var myArgument = default(int[]);
             Should.NotThrow(() =>
             {
                 GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
