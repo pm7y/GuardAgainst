@@ -3,10 +3,7 @@
 
 # GuardAgainst [![Build status](https://ci.appveyor.com/api/projects/status/96fprgm7y092871s?svg=true)](https://ci.appveyor.com/project/fallenidol/guardagainst)
 
-A single class, containing static methods, to make your code more readable and to simplify argument validity checking.
-
-_Yet another argument validity checker thingy._ **Do we really need another one of these?**<br/> 
-Probably not, but this one is mine and I prefer it to the others I've seen.
+A single class, containing useful guard clauses, which aims to simplify argument validity checking whilst making your code more readable.
 
 <br/>
 
