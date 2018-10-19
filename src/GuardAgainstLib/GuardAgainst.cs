@@ -6,9 +6,9 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
-//namespace GuardAgainstLib
-//{
-    /// <summary>
+namespace GuardAgainstLib
+{
+    ///// <summary>
     /// A single class, containing static methods, to make your code more readable and to simplify argument validity
     /// checking.
     /// More information @ https://github.com/pmcilreavy/GuardAgainst
@@ -1493,4 +1493,4 @@ using System.Text.RegularExpressions;
 
         #endregion private stuff
     }
-//}
+}

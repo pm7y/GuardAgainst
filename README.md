@@ -1,4 +1,4 @@
-
+﻿
 <img src="https://raw.githubusercontent.com/pmcilreavy/GuardAgainst/master/GuardAgainst.png" width="64"> 
 
 # GuardAgainst [![Build status](https://ci.appveyor.com/api/projects/status/96fprgm7y092871s?svg=true)](https://ci.appveyor.com/project/fallenidol/guardagainst)
@@ -85,13 +85,13 @@ There are several other helper methods available that act in a similar fashioin.
 
 ## Available Methods
 
-| Guard against being _null, whitespace or empty_                  | Description |
-| :-                                         | :-            |
-| GuardAgainst.ArgumentBeingNull             | Throws an ArgumentNullException when the value is null. |
-| GuardAgainst.ArgumentBeingNullOrWhitespace | Throws an ArgumentNullException when the value is null. <br/>Throws an ArgumentException when the value is a whitespace only string. |
-| GuardAgainst.ArgumentBeingWhitespace       | Throws an ArgumentException when the value is a whitespace only string. |
-| GuardAgainst.ArgumentBeingNullOrEmpty      | Throws an ArgumentNullException when the value is null. <br/>Throws an ArgumentException when the value is an empty string. |
-| GuardAgainst.ArgumentBeingEmpty            | Throws an ArgumentException when the value is an empty string. |
+| Guard against being _null, whitespace or empty_    | Description |
+| :-                                                 | :-            |
+| GuardAgainst.ArgumentBeingNull                     | Throws an ArgumentNullException when the value is null. |
+| GuardAgainst.ArgumentBeingNullOrWhitespace         | Throws an ArgumentNullException when the value is null. <br/>Throws an ArgumentException when the value is a whitespace only string. |
+| GuardAgainst.ArgumentBeingWhitespace               | Throws an ArgumentException when the value is a whitespace only string. |
+| GuardAgainst.ArgumentBeingNullOrEmpty              | Throws an ArgumentNullException when the value is null. <br/>Throws an ArgumentException when the value is an empty string. |
+| GuardAgainst.ArgumentBeingEmpty                    | Throws an ArgumentException when the value is an empty string or Enumerable. |
 | **Guard against being _out of range_**                                    | **Description** |
 | GuardAgainst.ArgumentBeingNullOrLessThanMinimum    | Throws an ArgumentNullException when the value is null. <br/>Throws an ArgumentOutOfRangeException when the value is less than the minimum allowed value. |
 | GuardAgainst.ArgumentBeingLessThanMinimum          | Throws an ArgumentOutOfRangeException when the value is less than the minimum allowed value. |
@@ -99,32 +99,35 @@ There are several other helper methods available that act in a similar fashioin.
 | GuardAgainst.ArgumentBeingGreaterThanMaximum       | Throws an ArgumentOutOfRangeException when the value is greater than the maximum allowed value. |
 | GuardAgainst.ArgumentBeingNullOrOutOfRange         | Throws an ArgumentNullException when the value is null. <br/>Throws an ArgumentOutOfRangeException when the value is less than the minimum allowed value. <br/>Throws an ArgumentOutOfRangeException when the value is greater than the maximum allowed value. |
 | GuardAgainst.ArgumentBeingOutOfRange               | Throws an ArgumentOutOfRangeException when the value is less than the minimum allowed value. <br/>Throws an ArgumentOutOfRangeException when the value is greater than the maximum allowed value. |
-| **Guard against being _invalid_**                                          | **Description** |
-| GuardAgainst.ArgumentBeingInvalid      | Throws an ArgumentException based on whether the condition is met. |
-| GuardAgainst.InvalidOperation | Throws an InvalidOperationException based on whether the condition is met. |
+| **Other**                                          | **Description** |
+| GuardAgainst.ArgumentBeingInvalid                  | Throws an ArgumentException based on whether the condition is met. |
+| GuardAgainst.OperationBeingInvalid                 | Throws an InvalidOperationException if the condition is not satisfied. |
+| GuardAgainst.PlatformNotSupported                  | Throws a PlatformNotSupportedException if the specified platform is not supported. |
 
 <br/>
 
 ## Why wouldn't I use it?
 
-Using the _GuardAgainst_ helper methods will add another step in the stack trace of the exceptions that get thrown.
-It's a trade off at the end of the day. If we look at the code example above, using the GuardAgainst methods makes the code more concise and readable at the expense of that extra stack trace line.
-This is the same issue though that you'd have if you chose to tidy up your own hand rolled exception handling into a private method so it's probably not a big deal.
+There are actually a few reasons you might not want to use a guard clause library. Travis Illig has a nice blog post detailing a few of them.
 
-**Stack strace with GuardAgainst**
-```csharp
-  StackTrace:
-   at ExampleApp.GuardAgainst.ArgumentBeingNullOrWhitespace(String argumentValue, String argumentName, String exceptionMessage)
-   at ExampleApp.Program.GetFullName(String firstname, String surname)
-   at ExampleApp.Program.Main(String[] args)
-```
+[https://www.paraesthesia.com/archive/2011/09/30/six-reasons-not-to-use-guard-classes.aspx/](https://www.paraesthesia.com/archive/2011/09/30/six-reasons-not-to-use-guard-classes.aspx/)
 
-**Stack strace without GuardAgainst**
-```csharp
-  StackTrace:
-   at ExampleApp.Program.GetFullName(String firstname, String surname)
-   at ExampleApp.Program.Main(String[] args)
-```
+Here's the tl;dr; of his article with some of my counter arguments.
+
+* _"Guard classes defeat static analysis like FxCop."_
+  - **You shouldn't have to change your code to work around short comings in your static analysis tools. Your tools should work for you, not the other way around. Is FxCop still even a thing?**
+* _"Guard classes become giant validation dumping grounds."_
+  - **I like to think _GuardAgainst_ supports a useful and flexible set of scenarios.**
+* _"Guard classes mess up the call stack."_
+  - **True, There's no getting around it. _GuardAgainst_ will add one extra line. But when you look at the call stack of the error message this should be completely obvious and you should see exactly which parameter caused the exception and why.**
+* _"Guard classes become a single point of failure."_
+  - **That could be said of many libraries out there though (e.g. the npm padleft debacle). Pick a good library (like GuardAgainst 😉) and report bugs or raise a PR to fix issues if you encounter them.**
+* _"Guard classes tend to get used in the wrong places."_
+  - **Any language or tool can be used and abused in the wrong way. Bad developers will always find a way to do the wrong thing. That's not a problem unique guard clause libraries.**
+* _"Guard classes fool your unit test coverage."_
+  - **True, you do still have to take care to cover all the same test cases appropriate for your methods as you would if you weren't using a guard clause library.**
+
+It's a trade off at the end of the day and you have to weigh up the convenience and consistency with the possible downsides.
 
 <br/>
 
