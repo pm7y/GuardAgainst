@@ -119,11 +119,11 @@ Here's the tl;dr; of his article with some of my counter arguments.
 * _"Guard classes become giant validation dumping grounds."_
   - **I like to think _GuardAgainst_ supports a useful and flexible set of scenarios.**
 * _"Guard classes mess up the call stack."_
-  - **True, There's no getting around it. _GuardAgainst_ will add one extra line. But when you look at the call stack of the error message this should be completely obvious and you should see exactly which parameter caused the exception and why.**
+  - **True, there's no getting around it. _GuardAgainst_ will add one extra line. But when you look at the call stack of the error message this should be completely obvious and you should see exactly which parameter caused the exception and why.**
 * _"Guard classes become a single point of failure."_
   - **That could be said of many libraries out there though (e.g. the npm padleft debacle). Pick a good library (like GuardAgainst 😉) and report bugs or raise a PR to fix issues if you encounter them.**
 * _"Guard classes tend to get used in the wrong places."_
-  - **Any language or tool can be used and abused in the wrong way. Bad developers will always find a way to do the wrong thing. That's not a problem unique guard clause libraries.**
+  - **Any language or tool can be used and abused in the wrong way. Bad developers will always find a way to do the wrong thing. That's not a problem unique guard to clause libraries.**
 * _"Guard classes fool your unit test coverage."_
   - **True, you do still have to take care to cover all the same test cases appropriate for your methods as you would if you weren't using a guard clause library.**
 
