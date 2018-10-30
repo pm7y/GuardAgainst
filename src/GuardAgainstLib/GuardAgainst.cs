@@ -9,7 +9,7 @@ using FastExpressionCompiler;
 
 namespace GuardAgainstLib
 {
-    ///// <summary>
+    /// <summary>
     /// A single class, containing static methods, to make your code more readable and to simplify argument validity
     /// checking.
     /// More information @ https://github.com/pmcilreavy/GuardAgainst

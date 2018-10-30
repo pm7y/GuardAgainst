@@ -116,14 +116,14 @@ Task("TestAndCoverage")
           .Append($"-output:\"{testArtifactsFolder}/Cobertura-Coverage.xml\"")
           .Append($"-sources:\"{xunitTestLoggerFolder}\"")
           .Append($"-includeGettersSetters:true");
-                    
+
         StartProcess("./tools/OpenCoverToCoberturaConverter.0.3.4/tools/OpenCoverToCoberturaConverter.exe", new ProcessSettings { Arguments = openCoverToCoberturaConverterArguments });
 
         var reportGeneratorArguments = new ProcessArgumentBuilder()
           .Append($"-reports:\"{relativeCoverageResultPath}\"")
           .Append($"-targetdir:\"{testArtifactsFolder}/Coverage-Report/\"");
                     
-        StartProcess("./tools/ReportGenerator.3.1.2/tools/ReportGenerator.exe", new ProcessSettings { Arguments = reportGeneratorArguments });
+        StartProcess("./tools/ReportGenerator.4.0.2/tools/net47/ReportGenerator.exe", new ProcessSettings { Arguments = reportGeneratorArguments });
 });
 
 Task("Publish")
