@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using FastExpressionCompiler;
 
 namespace GuardAgainstLib
 {
@@ -119,7 +120,7 @@ namespace GuardAgainstLib
                                                 IDictionary<object, object> additionalData = default(IDictionary<object, object>))
             where T : class
         {
-            var argumentValue = argumentExpression.Compile().Invoke();
+            var argumentValue = argumentExpression.CompileFast().Invoke();
 
             if (argumentValue != null)
             {
@@ -203,7 +204,7 @@ namespace GuardAgainstLib
                                                          string exceptionMessage = default(string),
                                                          IDictionary<object, object> additionalData = default(IDictionary<object, object>))
         {
-            var argumentValue = argumentExpression.Compile().Invoke();
+            var argumentValue = argumentExpression.CompileFast().Invoke();
 
             if (!string.IsNullOrWhiteSpace(argumentValue))
             {
@@ -283,7 +284,7 @@ namespace GuardAgainstLib
                                                    string exceptionMessage = default(string),
                                                    IDictionary<object, object> additionalData = default(IDictionary<object, object>))
         {
-            var argumentValue = argumentExpression.Compile().Invoke();
+            var argumentValue = argumentExpression.CompileFast().Invoke();
 
             if (argumentValue is null ||
                 !string.IsNullOrWhiteSpace(argumentValue))
@@ -367,7 +368,7 @@ namespace GuardAgainstLib
                                                     string exceptionMessage = default(string),
                                                     IDictionary<object, object> additionalData = default(IDictionary<object, object>))
         {
-            var argumentValue = argumentExpression.Compile().Invoke();
+            var argumentValue = argumentExpression.CompileFast().Invoke();
 
             if (!string.IsNullOrEmpty(argumentValue))
             {
@@ -448,7 +449,7 @@ namespace GuardAgainstLib
                                               string exceptionMessage = default(string),
                                               IDictionary<object, object> additionalData = default(IDictionary<object, object>))
         {
-            var argumentValue = argumentExpression.Compile().Invoke();
+            var argumentValue = argumentExpression.CompileFast().Invoke();
 
             if (argumentValue is null ||
                 !string.IsNullOrEmpty(argumentValue))
@@ -516,7 +517,7 @@ namespace GuardAgainstLib
                                                  string exceptionMessage = default(string),
                                                  IDictionary<object, object> additionalData = default(IDictionary<object, object>))
         {
-            var argumentValue = argumentExpression.Compile().Invoke();
+            var argumentValue = argumentExpression.CompileFast().Invoke();
 
             if (argumentValue is null ||
                 argumentValue.Any())
@@ -615,7 +616,7 @@ namespace GuardAgainstLib
                                                                  IDictionary<object, object> additionalData = default(IDictionary<object, object>))
             where T : class, IComparable<T>
         {
-            var argumentValue = argumentExpression.Compile().Invoke();
+            var argumentValue = argumentExpression.CompileFast().Invoke();
 
             Exception ex = null;
 
@@ -725,7 +726,7 @@ namespace GuardAgainstLib
                                                            IDictionary<object, object> additionalData = default(IDictionary<object, object>))
             where T : IComparable<T>
         {
-            var argumentValue = argumentExpression.Compile().Invoke();
+            var argumentValue = argumentExpression.CompileFast().Invoke();
 
             if (argumentValue.CanBeNull() &&
                 argumentValue == null)
@@ -839,7 +840,7 @@ namespace GuardAgainstLib
                                                                     IDictionary<object, object> additionalData = default(IDictionary<object, object>))
             where T : class, IComparable<T>
         {
-            var argumentValue = argumentExpression.Compile().Invoke();
+            var argumentValue = argumentExpression.CompileFast().Invoke();
 
             Exception ex = null;
 
@@ -951,7 +952,7 @@ namespace GuardAgainstLib
                                                               IDictionary<object, object> additionalData = default(IDictionary<object, object>))
             where T : IComparable<T>
         {
-            var argumentValue = argumentExpression.Compile().Invoke();
+            var argumentValue = argumentExpression.CompileFast().Invoke();
 
             if (argumentValue.CanBeNull() &&
                 argumentValue == null)
@@ -1079,7 +1080,7 @@ namespace GuardAgainstLib
                                                             IDictionary<object, object> additionalData = default(IDictionary<object, object>))
             where T : class, IComparable<T>
         {
-            var argumentValue = argumentExpression.Compile().Invoke();
+            var argumentValue = argumentExpression.CompileFast().Invoke();
 
             Exception ex = null;
 
@@ -1210,7 +1211,7 @@ namespace GuardAgainstLib
                                                       IDictionary<object, object> additionalData = default(IDictionary<object, object>))
             where T : IComparable<T>
         {
-            var argumentValue = argumentExpression.Compile().Invoke();
+            var argumentValue = argumentExpression.CompileFast().Invoke();
 
             Exception ex = null;
 
@@ -1322,7 +1323,7 @@ namespace GuardAgainstLib
                                                 IDictionary<object, object> additionalData = default(IDictionary<object, object>),
                                                 ConditionMeaning conditionMeaning = ConditionMeaning.TrueMeansInvalid)
         {
-            var argumentValue = conditionExpression.Compile().Invoke();
+            var argumentValue = conditionExpression.CompileFast().Invoke();
 
             if (!IsInvalid(argumentValue, conditionMeaning))
             {
@@ -1407,7 +1408,7 @@ namespace GuardAgainstLib
                                                  IDictionary<object, object> additionalData = default(IDictionary<object, object>),
                                                  ConditionMeaning conditionMeaning = ConditionMeaning.TrueMeansInvalid)
         {
-            var argumentValue = conditionExpression.Compile().Invoke();
+            var argumentValue = conditionExpression.CompileFast().Invoke();
 
             if (!IsInvalid(argumentValue, conditionMeaning))
             {

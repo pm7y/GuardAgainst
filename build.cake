@@ -182,6 +182,9 @@ Task("Pack")
                                       new NuSpecContent {Source = "./GuardAgainstLib.pdb", Target = "lib/netstandard2.0/GuardAgainstLib.pdb"},
                                       new NuSpecContent {Source = "./GuardAgainstLib.xml", Target = "lib/netstandard2.0/GuardAgainstLib.xml"},
                                      },
+                                     Dependencies            = new [] { 
+                                      new NuSpecDependency {Id = "FastExpressionCompiler", Version = "1.10.1"},
+                                     },
                                      BasePath                = "./src/GuardAgainstLib/bin/release/netstandard2.0",
                                      OutputDirectory         = nugetArtifactsFolder.FullPath
                                  };
