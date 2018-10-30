@@ -1,12 +1,17 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Shouldly;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace GuardAgainstLib.Test
 {
-    public class Test_ArgumentBeingOutOfRangeForValueType
+    public class Test_ArgumentBeingOutOfRangeForValueType : TestBase
     {
+        public Test_ArgumentBeingOutOfRangeForValueType(ITestOutputHelper output) : base(output)
+        {
+        }
+
         [Fact]
         public void WhenArgumentExpressionIsEqualToMaximum_ShouldNotThrow()
         {

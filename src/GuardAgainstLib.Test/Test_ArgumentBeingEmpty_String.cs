@@ -1,12 +1,17 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Shouldly;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace GuardAgainstLib.Test
 {
-    public class Test_ArgumentBeingEmpty_String
+    public class Test_ArgumentBeingEmpty_String : TestBase
     {
+        public Test_ArgumentBeingEmpty_String(ITestOutputHelper output) : base(output)
+        {
+        }
+
         [Fact]
         public void WhenArgumentExpressionIsEmptyString_ShouldThrowArgumentException()
         {

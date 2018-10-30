@@ -1,12 +1,17 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Shouldly;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace GuardAgainstLib.Test
 {
-    public class Test_ArgumentBeingNullOrWhitespace
+    public class Test_ArgumentBeingNullOrWhitespace : TestBase
     {
+        public Test_ArgumentBeingNullOrWhitespace(ITestOutputHelper output) : base(output)
+        {
+        }
+
         [Fact]
         public void WhenArgumentExpressionIsNotNullOrWhitespace_ShouldNotThrow()
         {

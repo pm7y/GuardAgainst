@@ -1,13 +1,18 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Shouldly;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace GuardAgainstLib.Test
 {
-    public class Test_PlatformNotSupported
+    public class Test_PlatformNotSupported : TestBase
     {
+        public Test_PlatformNotSupported(ITestOutputHelper output) : base(output)
+        {
+        }
+
         [Fact]
         public void WhenPlatformIsSupported_ShouldNotThrow()
         {

@@ -1,13 +1,28 @@
-using Shouldly;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Shouldly;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace GuardAgainstLib.Test
 {
-    public class Test_ArgumentBeingEmpty_Enumerable
+    public class TestBase
     {
+        public TestBase(ITestOutputHelper output)
+        {
+            Output = output;
+        }
+
+        protected ITestOutputHelper Output { get; }
+    }
+
+    public class Test_ArgumentBeingEmpty_Enumerable : TestBase
+    {
+        public Test_ArgumentBeingEmpty_Enumerable(ITestOutputHelper output) : base(output)
+        {
+        }
+
         [Fact]
         public void WhenArgumentExpressionIsEmptyEnumerable_ShouldThrowArgumentException()
         {

@@ -1,12 +1,17 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Shouldly;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace GuardAgainstLib.Test
 {
-    public class Test_OperationBeingInvalid
+    public class Test_OperationBeingInvalid : TestBase
     {
+        public Test_OperationBeingInvalid(ITestOutputHelper output) : base(output)
+        {
+        }
+
         [Fact]
         public void WhenArgumentExpressionIsFalseAndTrueMeansInvalid_ShouldNotThrow()
         {
