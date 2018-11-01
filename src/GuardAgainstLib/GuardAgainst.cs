@@ -101,6 +101,8 @@ namespace GuardAgainstLib
         /// <summary>
         /// Throws an ArgumentNullException if the argumentValue is null.
         /// </summary>
+        /// <remarks>Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
         /// <typeparam name="T" ></typeparam>
         /// <param name="argumentExpression" >
         /// The argument expression to check for null.
@@ -186,6 +188,8 @@ namespace GuardAgainstLib
         /// Throws an ArgumentNullException if the argumentValue is null.
         /// Throws an ArgumentException if the argumentValue is a whitespace string only.
         /// </summary>
+        /// <remarks>Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check for null or whitespace.
         /// </param>
@@ -267,6 +271,8 @@ namespace GuardAgainstLib
         /// <summary>
         /// Throws an ArgumentException if the argumentValue is a whitespace string only.
         /// </summary>
+        /// <remarks>Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check for being whitespace.
         /// </param>
@@ -350,6 +356,8 @@ namespace GuardAgainstLib
         /// Throws an ArgumentNullException if the argumentValue is null.
         /// Throws an ArgumentException if the argumentValue is an empty string only.
         /// </summary>
+        /// <remarks>Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check for null or empty.
         /// </param>
@@ -431,6 +439,8 @@ namespace GuardAgainstLib
         /// <summary>
         /// Throws an ArgumentException if the argumentValue is an empty string only.
         /// </summary>
+        /// <remarks>Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check for being empty.
         /// </param>
@@ -499,6 +509,8 @@ namespace GuardAgainstLib
         /// <summary>
         /// Throws an ArgumentException if the argumentValue is empty only.
         /// </summary>
+        /// <remarks>Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check for being empty.
         /// </param>
@@ -593,6 +605,8 @@ namespace GuardAgainstLib
         /// Throws an ArgumentNullException if the argumentValue is null.
         /// Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
         /// </summary>
+        /// <remarks>Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check for null or less than minimum.
         /// </param>
@@ -704,6 +718,8 @@ namespace GuardAgainstLib
         /// <summary>
         /// Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
         /// </summary>
+        /// <remarks>Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check for being less than minimum.
         /// </param>
@@ -817,6 +833,8 @@ namespace GuardAgainstLib
         /// Throws an ArgumentNullException if the argumentValue is null.
         /// Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
         /// </summary>
+        /// <remarks>Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check for null or if greater than maximum.
         /// </param>
@@ -930,6 +948,8 @@ namespace GuardAgainstLib
         /// <summary>
         /// Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
         /// </summary>
+        /// <remarks>Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check if greater than maximum.
         /// </param>
@@ -1053,6 +1073,8 @@ namespace GuardAgainstLib
         /// Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
         /// Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
         /// </summary>
+        /// <remarks>Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check for null or if out of range.
         /// </param>
@@ -1185,6 +1207,8 @@ namespace GuardAgainstLib
         /// Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
         /// Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
         /// </summary>
+        /// <remarks>Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check for null or if out of range.
         /// </param>
@@ -1295,6 +1319,8 @@ namespace GuardAgainstLib
         /// <summary>
         /// Throws an ArgumentException if the argument is not valid.
         /// </summary>
+        /// <remarks>Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
         /// <param name="conditionExpression" >
         /// By default
         /// <c>
@@ -1380,6 +1406,8 @@ namespace GuardAgainstLib
         /// <summary>
         /// Throws an InvalidOperationException if the condition is not satisfied.
         /// </summary>
+        /// <remarks>Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
         /// <param name="conditionExpression" >
         /// By default
         /// <c>
@@ -1424,17 +1452,17 @@ namespace GuardAgainstLib
 
         private static bool CanBeNull<T>(this T @this)
         {
-            var typeInfo = @this.GetType().GetTypeInfo();
+            var typeInfo = typeof(T).GetTypeInfo();
             return !typeInfo.IsValueType && typeInfo.IsClass;
         }
 
-        private static readonly Regex ValueExpressionRegex =
+        private static readonly Regex _valueExpressionRegex =
             new Regex(@"(value\()(.*)(\).)", RegexOptions.CultureInvariant);
 
         private static string ToArgumentExpressionString<T>(this Expression<Func<T>> argumentExpression)
         {
             var expressionBody = argumentExpression.Body.ToString();
-            var expressionMatch = ValueExpressionRegex.Match(expressionBody);
+            var expressionMatch = _valueExpressionRegex.Match(expressionBody);
             var argumentExpressionString = expressionMatch.Success
                 ? expressionBody.Replace(expressionMatch.Value, string.Empty)
                 : expressionBody;
