@@ -3,7 +3,7 @@
 
 # GuardAgainst [![Build status](https://ci.appveyor.com/api/projects/status/96fprgm7y092871s?svg=true)](https://ci.appveyor.com/project/fallenidol/guardagainst)
 
-A single class, containing useful guard clauses, which aims to simplify argument validity checking whilst making your code more readable.
+A single class, containing useful guard clauses, that aims to simplify argument validity checking whilst making your code more readable.
 
 <br/>
 
