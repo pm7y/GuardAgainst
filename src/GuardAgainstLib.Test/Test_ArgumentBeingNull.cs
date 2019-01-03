@@ -84,7 +84,7 @@ namespace GuardAgainstLib.Test
             ex.Data["a"].ShouldBe("1");
         }
 
-        [Fact]
+        [Fact(Skip = "For info purposes.")]
         public void WhenUsingAnExpression_PerformanceShouldNotBeTerribleButProbablyIs()
         {
             var iterations = 1000d;

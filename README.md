@@ -99,6 +99,7 @@ There are several other helper methods available that act in a similar fashioin.
 | **Other**                                          | **Description** |
 | GuardAgainst.ArgumentBeingInvalid                  | Throws an ArgumentException based on whether the condition is met. |
 | GuardAgainst.OperationBeingInvalid                 | Throws an InvalidOperationException if the condition is not satisfied. |
+| GuardAgainst.ArgumentNotBeingUtcDateTime           | Throws an ArgumentException if the DateTime argument is not Utc. |
 | GuardAgainst.PlatformNotSupported                  | Throws a PlatformNotSupportedException if the specified platform is not supported. |
 
 <br/>

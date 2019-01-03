@@ -1448,6 +1448,73 @@ namespace GuardAgainstLib
 
         #endregion OperationBeingInvalid
 
+        #region ArgumentNotBeingUtcDateTime
+
+        /// <summary>
+        /// Throws an ArgumentException if the DateTime argument does not have a Utc Kind.
+        /// </summary>
+        /// <param name="argumentValue" >
+        /// The DateTime object to test for UTC.
+        /// </param>
+        /// <param name="argumentName" >
+        /// Name of the argument. Can be optionally specified to be included in the raised exception.
+        /// </param>
+        /// <param name="exceptionMessage" >
+        /// The exception message. An optional error message that describes the exception in more
+        /// detail. If left null, the default .net message will be generated.
+        /// </param>
+        /// <param name="additionalData" >
+        /// Additional key/value data to add to the Data property of the exception.
+        /// </param>
+        /// <exception cref="ArgumentException" ></exception>
+        public static void ArgumentNotBeingUtcDateTime(DateTime argumentValue,
+                                                       string argumentName = default(string),
+                                                       string exceptionMessage = default(string),
+                                                       IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+        {
+            if (argumentValue.Kind == DateTimeKind.Utc)
+            {
+                return;
+            }
+
+            var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
+            ex.AddData(additionalData);
+            throw ex;
+        }
+
+        /// <summary>
+        /// Throws an ArgumentException if the DateTime argument does not have a Utc Kind.
+        /// </summary>
+        /// <param name="argumentExpression" >
+        /// The DateTime object to test for UTC.
+        /// </param>
+        /// <param name="exceptionMessage" >
+        /// The exception message. An optional error message that describes the exception in more
+        /// detail. If left null, the default .net message will be generated.
+        /// </param>
+        /// <param name="additionalData" >
+        /// Additional key/value data to add to the Data property of the exception.
+        /// </param>
+        /// <exception cref="ArgumentException" ></exception>
+        public static void ArgumentNotBeingUtcDateTime(Expression<Func<DateTime>> argumentExpression,
+                                                       string exceptionMessage = default(string),
+                                                       IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+        {
+            var argumentValue = argumentExpression.Compile().Invoke();
+
+            if (argumentValue.Kind == DateTimeKind.Utc)
+            {
+                return;
+            }
+
+            var argumentName = argumentExpression.ToArgumentExpressionString();
+            var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
+            ex.AddData(additionalData);
+            throw ex;
+        }
+
+        #endregion ArgumentNotBeingUtcDateTime
+
         #region private stuff
 
         private static bool CanBeNull<T>(this T @this)
