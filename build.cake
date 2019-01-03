@@ -1,7 +1,7 @@
-#tool "nuget:?package=OpenCover"
-#tool "nuget:?package=XunitXml.TestLogger"
-#tool "nuget:?package=OpenCoverToCoberturaConverter"
-#tool "nuget:?package=ReportGenerator"
+#tool "nuget:?package=OpenCover&version=4.6.519"
+#tool "nuget:?package=XunitXml.TestLogger&version=2.1.26"
+#tool "nuget:?package=OpenCoverToCoberturaConverter&version=0.3.4"
+#tool "nuget:?package=ReportGenerator&version=4.0.4"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -29,7 +29,7 @@ var nuspecPath = MakeAbsolute(File("./src/GuardAgainst.nuspec")).FullPath;
 var binariesArtifactsFolder = MakeAbsolute(Directory("./Artifacts/Binaries/"));
 var nugetArtifactsFolder = MakeAbsolute(Directory("./Artifacts/NuGet/"));
 var testArtifactsFolder = MakeAbsolute(Directory("./Artifacts/TestOutput/"));
-var xunitTestLoggerFolder = MakeAbsolute(Directory("./tools/XunitXml.TestLogger.2.0.0/build/_common"));
+var xunitTestLoggerFolder = MakeAbsolute(Directory("./tools/XunitXml.TestLogger.2.1.26/build/_common"));
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -123,7 +123,7 @@ Task("TestAndCoverage")
           .Append($"-reports:\"{relativeCoverageResultPath}\"")
           .Append($"-targetdir:\"{testArtifactsFolder}/Coverage-Report/\"");
                     
-        StartProcess("./tools/ReportGenerator.4.0.2/tools/net47/ReportGenerator.exe", new ProcessSettings { Arguments = reportGeneratorArguments });
+        StartProcess("./tools/ReportGenerator.4.0.4/tools/net47/ReportGenerator.exe", new ProcessSettings { Arguments = reportGeneratorArguments });
 });
 
 Task("Publish")
