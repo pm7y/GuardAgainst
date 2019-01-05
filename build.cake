@@ -130,7 +130,7 @@ Task("Publish")
     .IsDependentOn("TestAndCoverage")
     .Does(() =>
 {
-    var projects = GetFiles("./src/**/*.csproj").Where(name => !name.FullPath.EndsWith("Test.csproj", StringComparison.OrdinalIgnoreCase));
+    var projects = GetFiles("./src/**/GuardAgainstLib.csproj");
 
     foreach(var project in projects)
     {
