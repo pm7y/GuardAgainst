@@ -18,7 +18,7 @@ namespace GuardAgainstLib.Test
             var myArgument = false;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingInvalid(() => myArgument, null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingInvalid(() => myArgument, nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 }, GuardAgainst.ConditionMeaning.TrueMeansInvalid);
@@ -31,7 +31,7 @@ namespace GuardAgainstLib.Test
             var myArgument = false;
             var ex = Should.Throw<ArgumentException>(() =>
             {
-                GuardAgainst.ArgumentBeingInvalid(() => myArgument, null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingInvalid(() => myArgument, nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 }, GuardAgainst.ConditionMeaning.TrueMeansValid);
@@ -48,7 +48,7 @@ namespace GuardAgainstLib.Test
             var myArgument = true;
             var ex = Should.Throw<ArgumentException>(() =>
             {
-                GuardAgainst.ArgumentBeingInvalid(() => myArgument, null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingInvalid(() => myArgument, nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 }, GuardAgainst.ConditionMeaning.TrueMeansInvalid);
@@ -65,7 +65,7 @@ namespace GuardAgainstLib.Test
             var myArgument = true;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingInvalid(() => myArgument, null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingInvalid(() => myArgument, nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 }, GuardAgainst.ConditionMeaning.TrueMeansValid);

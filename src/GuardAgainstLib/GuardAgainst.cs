@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -12,6 +13,7 @@ namespace GuardAgainstLib
     /// A single class, containing useful guard clauses, that aims to simplify argument validity checking whilst making your code more readable.
     /// More information @ https://github.com/pmcilreavy/GuardAgainst
     /// </summary>
+    [DebuggerStepThrough]
     public static class GuardAgainst
     {
         /// <summary>
@@ -1329,6 +1331,9 @@ namespace GuardAgainstLib
         /// indicates that the condition is invalid. This can be reversed by
         /// setting conditionMeaning = ConditionMeaning.TrueMeansValid.
         /// </param>
+        /// <param name="argumentName" >
+        /// Name of the argument. Can be optionally specified to be included in the raised exception.
+        /// </param>
         /// <param name="exceptionMessage" >
         /// The exception message. An optional error message that describes the exception in more
         /// detail. If left null, the default .net message will be generated.
@@ -1343,6 +1348,7 @@ namespace GuardAgainstLib
         /// </param>
         /// <exception cref="ArgumentException" ></exception>
         public static void ArgumentBeingInvalid(Expression<Func<bool>> conditionExpression,
+                                                string argumentName = default(string),
                                                 string exceptionMessage = default(string),
                                                 IDictionary<object, object> additionalData = default(IDictionary<object, object>),
                                                 ConditionMeaning conditionMeaning = ConditionMeaning.TrueMeansInvalid)
@@ -1354,8 +1360,8 @@ namespace GuardAgainstLib
                 return;
             }
 
-            var argumentName = conditionExpression.ToArgumentExpressionString();
-            var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
+            var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace() ?? conditionExpression.ToArgumentExpressionString(),
+                                           argumentName.ToNullIfWhitespace());
             ex.AddData(additionalData);
             throw ex;
         }
