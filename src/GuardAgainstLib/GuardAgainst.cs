@@ -15,8 +15,6 @@ namespace GuardAgainstLib
     [DebuggerStepThrough]
     public static class GuardAgainst
     {
-        private static readonly string _blah = "";
-
         /// <summary>
         /// Indicates what the boolean condition flags means.
         /// </summary>
@@ -399,13 +397,58 @@ namespace GuardAgainstLib
                 throw new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
             }
 
-
             if (argumentValue.Any())
             {
                 return;
             }
 
             var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
+            ex.AddData(additionalData);
+            throw ex;
+        }
+
+        /// <summary>
+        /// Throws an ArgumentException if the argumentValue is empty.
+        /// Throws an ArgumentNullException if the argumentValue is null.
+        /// </summary>
+        /// <remarks>Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
+        /// <param name="argumentExpression" >
+        /// The argument expression to check for being empty.
+        /// </param>
+        /// <param name="exceptionMessage" >
+        /// The exception message. An optional error message that describes the exception in more
+        /// detail. If left null, the default .net message will be generated.
+        /// </param>
+        /// <param name="additionalData" >
+        /// Additional key/value data to add to the Data property of the exception.
+        /// </param>
+        /// <exception cref="ArgumentNullException" ></exception>
+        /// <exception cref="ArgumentException" ></exception>
+        public static void ArgumentBeingNullOrBeingEmpty<T>(Expression<Func<IEnumerable<T>>> argumentExpression,
+                                                       string exceptionMessage = default(string),
+                                                       IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+        {
+            var argumentValue = argumentExpression.Compile().Invoke();
+
+            if (argumentValue != null && argumentValue.Any())
+            {
+                return;
+            }
+
+            var argumentName = argumentExpression.ToArgumentExpressionString();
+            Exception ex;
+
+            if (argumentValue is null)
+            {
+                ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+                                               exceptionMessage.ToNullIfWhitespace());
+            }
+            else
+            {
+                ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
+            }
+
             ex.AddData(additionalData);
             throw ex;
         }
