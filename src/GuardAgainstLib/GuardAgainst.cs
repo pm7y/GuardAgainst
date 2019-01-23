@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
 namespace GuardAgainstLib
@@ -16,6 +15,8 @@ namespace GuardAgainstLib
     [DebuggerStepThrough]
     public static class GuardAgainst
     {
+        private static readonly string _blah = "";
+
         /// <summary>
         /// Indicates what the boolean condition flags means.
         /// </summary>
@@ -31,37 +32,6 @@ namespace GuardAgainstLib
             /// </summary>
             TrueMeansValid
         }
-
-        #region PlatformNotSupported
-
-        /// <summary>
-        /// Throws a PlatformNotSupportedException if the specified platform is not supported.
-        /// </summary>
-        /// <param name="supportedPlatform" >
-        /// The platform that is supported.
-        /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
-        /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
-        /// </param>
-        public static void PlatformNotSupported(OSPlatform supportedPlatform,
-                                                string exceptionMessage = default(string),
-                                                IDictionary<object, object> additionalData = default(IDictionary<object, object>))
-        {
-            if (RuntimeInformation.IsOSPlatform(supportedPlatform))
-            {
-                return;
-            }
-
-            var ex = new PlatformNotSupportedException(exceptionMessage.ToNullIfWhitespace());
-            ex.AddData(additionalData);
-            throw ex;
-        }
-
-        #endregion PlatformNotSupported
 
         #region ArgumentBeingNull
 
@@ -396,6 +366,46 @@ namespace GuardAgainstLib
                 ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
             }
 
+            ex.AddData(additionalData);
+            throw ex;
+        }
+
+        /// <summary>
+        /// Throws an ArgumentException if the argumentValue contains no items.
+        /// Throws an ArgumentNullException if the argumentValue is null.
+        /// </summary>
+        /// <param name="argumentValue" >
+        /// The argument value to check for null or empty.
+        /// </param>
+        /// <param name="argumentName" >
+        /// Name of the argument. Can be optionally specified to be included in the raised exception.
+        /// </param>
+        /// <param name="exceptionMessage" >
+        /// The exception message. An optional error message that describes the exception in more
+        /// detail. If left null, the default .net message will be generated.
+        /// </param>
+        /// <param name="additionalData" >
+        /// Additional key/value data to add to the Data property of the exception.
+        /// </param>
+        /// <exception cref="ArgumentNullException" ></exception>
+        /// <exception cref="ArgumentException" ></exception>
+        public static void ArgumentBeingNullOrEmpty<T>(IEnumerable<T> argumentValue,
+                                                 string argumentName = default(string),
+                                                 string exceptionMessage = default(string),
+                                                 IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+        {
+            if (argumentValue is null)
+            {
+                throw new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
+            }
+
+
+            if (argumentValue.Any())
+            {
+                return;
+            }
+
+            var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
             ex.AddData(additionalData);
             throw ex;
         }
