@@ -179,7 +179,6 @@ Task("Pack")
                                      NoPackageAnalysis       = true,
                                      Files                   = new [] { 
                                       new NuSpecContent {Source = "./GuardAgainstLib.dll", Target = "lib/netstandard2.0/GuardAgainstLib.dll"},
-                                      new NuSpecContent {Source = "./GuardAgainstLib.pdb", Target = "lib/netstandard2.0/GuardAgainstLib.pdb"},
                                       new NuSpecContent {Source = "./GuardAgainstLib.xml", Target = "lib/netstandard2.0/GuardAgainstLib.xml"},
                                      },
                                      Dependencies            = new [] { 
