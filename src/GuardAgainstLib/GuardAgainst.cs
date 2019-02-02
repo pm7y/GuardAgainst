@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -12,7 +11,9 @@ namespace GuardAgainstLib
     /// A single class, containing useful guard clauses, that aims to simplify argument validity checking whilst making your code more readable.
     /// More information @ https://github.com/pmcilreavy/GuardAgainst
     /// </summary>
+#if !DEBUGGABLE
     [DebuggerStepThrough]
+#endif
     public static class GuardAgainst
     {
         /// <summary>
@@ -388,23 +389,23 @@ namespace GuardAgainstLib
         /// <exception cref="ArgumentNullException" ></exception>
         /// <exception cref="ArgumentException" ></exception>
         public static void ArgumentBeingNullOrEmpty<T>(IEnumerable<T> argumentValue,
-                                                 string argumentName = default(string),
-                                                 string exceptionMessage = default(string),
-                                                 IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+                                                       string argumentName = default(string),
+                                                       string exceptionMessage = default(string),
+                                                       IDictionary<object, object> additionalData = default(IDictionary<object, object>))
         {
             if (argumentValue is null)
             {
-                throw new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
+                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
+                ex.AddData(additionalData);
+                throw ex;
             }
 
-            if (argumentValue.Any())
+            if (!argumentValue.Any())
             {
-                return;
+                var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
+                ex.AddData(additionalData);
+                throw ex;
             }
-
-            var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
-            ex.AddData(additionalData);
-            throw ex;
         }
 
         /// <summary>
@@ -425,7 +426,7 @@ namespace GuardAgainstLib
         /// </param>
         /// <exception cref="ArgumentNullException" ></exception>
         /// <exception cref="ArgumentException" ></exception>
-        public static void ArgumentBeingNullOrBeingEmpty<T>(Expression<Func<IEnumerable<T>>> argumentExpression,
+        public static void ArgumentBeingNullOrEmpty<T>(Expression<Func<IEnumerable<T>>> argumentExpression,
                                                        string exceptionMessage = default(string),
                                                        IDictionary<object, object> additionalData = default(IDictionary<object, object>))
         {

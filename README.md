@@ -3,7 +3,7 @@
 
 # GuardAgainst [![Build status](https://ci.appveyor.com/api/projects/status/96fprgm7y092871s?svg=true)](https://ci.appveyor.com/project/fallenidol/guardagainst)
 
-A single class, containing useful guard clauses, that aims to simplify argument validity checking whilst making your code more readable.
+A single class, containing useful guard clauses, that simplifies argument validity checking whilst making your code more readable.
 
 <br/>
 
@@ -63,8 +63,8 @@ Hopefully you'll agree that this is much simpler and easier to read...
 ```csharp
 private static string GetFullname(string firstname, string surname)
 {
-    GuardAgainst.ArgumentBeingNullOrWhitespace(() => firstname, "Firstname is required.");
-    GuardAgainst.ArgumentBeingNullOrWhitespace(() => surname, "Surname is required.");
+    GuardAgainst.ArgumentBeingNullOrWhitespace(firstname, nameof(firstname), "Firstname is required.");
+    GuardAgainst.ArgumentBeingNullOrWhitespace(surname, nameof(surname), "Surname is required.");
 
     return $"{firstname} {surname}";
 }
@@ -72,13 +72,28 @@ private static string GetFullname(string firstname, string surname)
 
 Both implementations of `GetFullname` are achieving the exact same thing.
 
-`GuardAgainst.ArgumentBeingNullOrWhitespace` accepts 2 main arguments: `argumentExpression` and `exceptionMessage`.
+`GuardAgainst.ArgumentBeingNullOrWhitespace` accepts 2 main arguments: -
 - `argumentValue` is required. This is the value that you want to validate.
-- `exceptionMessage` is optional. Allows you to give a additional specific error message to pass to the exception constructor.
+- `argumentName` is optional. Supplying this makes the exception more useful particularly if the method has several parameters.
+- `exceptionMessage` is optional. Allows you to give an additional specific error message to pass to the exception constructor.
 
-There are several other helper methods available that act in a similar fashioin. See table below for the full list.
+We can further simplify this by using the _expression_ based overload like so...
+
+```csharp
+private static string GetFullname(string firstname, string surname)
+{
+    GuardAgainst.ArgumentBeingNullOrWhitespace(() => firstname);
+    GuardAgainst.ArgumentBeingNullOrWhitespace(() => surname);
+
+    return $"{firstname} {surname}";
+}
+```
+This is even more concise. From the expression, the GuardAgainst method is able to derive the value and the name of the argument we're trying to validate. The downside though is that expressions have to be jit'd each time they are run. 
 
 <br/>
+
+There are several other helper methods available that act in a similar fashion. See table below for the full list.
+
 
 ## Available Methods
 
@@ -100,7 +115,6 @@ There are several other helper methods available that act in a similar fashioin.
 | GuardAgainst.ArgumentBeingInvalid                  | Throws an ArgumentException based on whether the condition is met. |
 | GuardAgainst.OperationBeingInvalid                 | Throws an InvalidOperationException if the condition is not satisfied. |
 | GuardAgainst.ArgumentNotBeingUtcDateTime           | Throws an ArgumentException if the DateTime argument is not Utc. |
-| GuardAgainst.PlatformNotSupported                  | Throws a PlatformNotSupportedException if the specified platform is not supported. |
 
 <br/>
 

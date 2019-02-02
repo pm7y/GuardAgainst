@@ -6,9 +6,9 @@ using Xunit.Abstractions;
 
 namespace GuardAgainstLib.Test
 {
-    public class Test_ArgumentBeingNullOrEmpty : TestBase
+    public class Test_ArgumentBeingNullOrEmpty_String : TestBase
     {
-        public Test_ArgumentBeingNullOrEmpty(ITestOutputHelper output) : base(output)
+        public Test_ArgumentBeingNullOrEmpty_String(ITestOutputHelper output) : base(output)
         {
         }
 
