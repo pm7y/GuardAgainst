@@ -12,7 +12,7 @@ namespace GuardAgainstLib
     /// More information @ https://github.com/pmcilreavy/GuardAgainst
     /// </summary>
 #if !DEBUGGABLE
-    [DebuggerStepThrough]
+    [System.Diagnostics.DebuggerStepThrough]
 #endif
     public static class GuardAgainst
     {
