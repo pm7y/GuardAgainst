@@ -18,8 +18,8 @@ namespace GuardAgainstLib.Analyzers
                                                                                       "Consider using GuardAgainst equivalent to throw an {0}",
                                                                                       "Refactoring",
                                                                                       DiagnosticSeverity.Info,
-                                                                                      isEnabledByDefault: true,
-                                                                                      description: "Reduce code size and increase guard clause readability by using GuardAgainst.");
+                                                                                      true,
+                                                                                      "Make code more concise and more readable by using GuardAgainst.");
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(_rule);
 
@@ -54,9 +54,9 @@ namespace GuardAgainstLib.Analyzers
 
                 var exceptionType = o.Exception?.Type?.MetadataName;
 
-                if (string.IsNullOrWhiteSpace(exceptionType) || (exceptionType != typeof(ArgumentException).Name && exceptionType != typeof(ArgumentNullException).Name &&
-                                                                 exceptionType != typeof(InvalidOperationException).Name &&
-                                                                 exceptionType != typeof(ArgumentOutOfRangeException).Name))
+                if (string.IsNullOrWhiteSpace(exceptionType) || exceptionType != typeof(ArgumentException).Name && exceptionType != typeof(ArgumentNullException).Name &&
+                    exceptionType != typeof(InvalidOperationException).Name &&
+                    exceptionType != typeof(ArgumentOutOfRangeException).Name)
                 {
                     return;
                 }
