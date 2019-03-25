@@ -16,6 +16,9 @@ namespace GuardAgainstLib
 #endif
     public static class GuardAgainst
     {
+        private const string ObsoleteExpressionText =
+            "This expression based overload has a severe performance overhead and does not perform well on high load code paths. For this reason it is deprecated and will be removed in future versions. Please switch to the non-expression equivalent.";
+
         /// <summary>
         /// Indicates what the boolean condition flags means.
         /// </summary>
@@ -72,8 +75,10 @@ namespace GuardAgainstLib
         /// <summary>
         /// Throws an ArgumentNullException if the argumentValue is null.
         /// </summary>
-        /// <remarks>Using an expression can be more convenient but it comes at a cost.
-        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
+        /// <remarks>
+        /// Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.
+        /// </remarks>
         /// <typeparam name="T" ></typeparam>
         /// <param name="argumentExpression" >
         /// The argument expression to check for null.
@@ -86,6 +91,7 @@ namespace GuardAgainstLib
         /// Additional key/value data to add to the Data property of the exception.
         /// </param>
         /// <exception cref="ArgumentNullException" ></exception>
+        [Obsolete(ObsoleteExpressionText, error: false)]
         public static void ArgumentBeingNull<T>(Expression<Func<T>> argumentExpression,
                                                 string exceptionMessage = default(string),
                                                 IDictionary<object, object> additionalData = default(IDictionary<object, object>))
@@ -159,8 +165,10 @@ namespace GuardAgainstLib
         /// Throws an ArgumentNullException if the argumentValue is null.
         /// Throws an ArgumentException if the argumentValue is a whitespace string only.
         /// </summary>
-        /// <remarks>Using an expression can be more convenient but it comes at a cost.
-        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
+        /// <remarks>
+        /// Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.
+        /// </remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check for null or whitespace.
         /// </param>
@@ -173,6 +181,7 @@ namespace GuardAgainstLib
         /// </param>
         /// <exception cref="ArgumentNullException" ></exception>
         /// <exception cref="ArgumentException" ></exception>
+        [Obsolete(ObsoleteExpressionText, error: false)]
         public static void ArgumentBeingNullOrWhitespace(Expression<Func<string>> argumentExpression,
                                                          string exceptionMessage = default(string),
                                                          IDictionary<object, object> additionalData = default(IDictionary<object, object>))
@@ -242,8 +251,10 @@ namespace GuardAgainstLib
         /// <summary>
         /// Throws an ArgumentException if the argumentValue is a whitespace string only.
         /// </summary>
-        /// <remarks>Using an expression can be more convenient but it comes at a cost.
-        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
+        /// <remarks>
+        /// Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.
+        /// </remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check for being whitespace.
         /// </param>
@@ -255,6 +266,7 @@ namespace GuardAgainstLib
         /// Additional key/value data to add to the Data property of the exception.
         /// </param>
         /// <exception cref="ArgumentException" ></exception>
+        [Obsolete(ObsoleteExpressionText, error: false)]
         public static void ArgumentBeingWhitespace(Expression<Func<string>> argumentExpression,
                                                    string exceptionMessage = default(string),
                                                    IDictionary<object, object> additionalData = default(IDictionary<object, object>))
@@ -327,8 +339,10 @@ namespace GuardAgainstLib
         /// Throws an ArgumentNullException if the argumentValue is null.
         /// Throws an ArgumentException if the argumentValue is an empty string only.
         /// </summary>
-        /// <remarks>Using an expression can be more convenient but it comes at a cost.
-        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
+        /// <remarks>
+        /// Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.
+        /// </remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check for null or empty.
         /// </param>
@@ -341,6 +355,7 @@ namespace GuardAgainstLib
         /// </param>
         /// <exception cref="ArgumentNullException" ></exception>
         /// <exception cref="ArgumentException" ></exception>
+        [Obsolete(ObsoleteExpressionText, error: false)]
         public static void ArgumentBeingNullOrEmpty(Expression<Func<string>> argumentExpression,
                                                     string exceptionMessage = default(string),
                                                     IDictionary<object, object> additionalData = default(IDictionary<object, object>))
@@ -412,8 +427,10 @@ namespace GuardAgainstLib
         /// Throws an ArgumentException if the argumentValue is empty.
         /// Throws an ArgumentNullException if the argumentValue is null.
         /// </summary>
-        /// <remarks>Using an expression can be more convenient but it comes at a cost.
-        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
+        /// <remarks>
+        /// Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.
+        /// </remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check for being empty.
         /// </param>
@@ -426,6 +443,7 @@ namespace GuardAgainstLib
         /// </param>
         /// <exception cref="ArgumentNullException" ></exception>
         /// <exception cref="ArgumentException" ></exception>
+        [Obsolete(ObsoleteExpressionText, error: false)]
         public static void ArgumentBeingNullOrEmpty<T>(Expression<Func<IEnumerable<T>>> argumentExpression,
                                                        string exceptionMessage = default(string),
                                                        IDictionary<object, object> additionalData = default(IDictionary<object, object>))
@@ -495,8 +513,10 @@ namespace GuardAgainstLib
         /// <summary>
         /// Throws an ArgumentException if the argumentValue is an empty string only.
         /// </summary>
-        /// <remarks>Using an expression can be more convenient but it comes at a cost.
-        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
+        /// <remarks>
+        /// Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.
+        /// </remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check for being empty.
         /// </param>
@@ -509,6 +529,7 @@ namespace GuardAgainstLib
         /// </param>
         /// <exception cref="ArgumentNullException" ></exception>
         /// <exception cref="ArgumentException" ></exception>
+        [Obsolete(ObsoleteExpressionText, error: false)]
         public static void ArgumentBeingEmpty(Expression<Func<string>> argumentExpression,
                                               string exceptionMessage = default(string),
                                               IDictionary<object, object> additionalData = default(IDictionary<object, object>))
@@ -565,8 +586,10 @@ namespace GuardAgainstLib
         /// <summary>
         /// Throws an ArgumentException if the argumentValue is empty only.
         /// </summary>
-        /// <remarks>Using an expression can be more convenient but it comes at a cost.
-        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
+        /// <remarks>
+        /// Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.
+        /// </remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check for being empty.
         /// </param>
@@ -579,6 +602,7 @@ namespace GuardAgainstLib
         /// </param>
         /// <exception cref="ArgumentNullException" ></exception>
         /// <exception cref="ArgumentException" ></exception>
+        [Obsolete(ObsoleteExpressionText, error: false)]
         public static void ArgumentBeingEmpty<T>(Expression<Func<IEnumerable<T>>> argumentExpression,
                                                  string exceptionMessage = default(string),
                                                  IDictionary<object, object> additionalData = default(IDictionary<object, object>))
@@ -661,8 +685,10 @@ namespace GuardAgainstLib
         /// Throws an ArgumentNullException if the argumentValue is null.
         /// Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
         /// </summary>
-        /// <remarks>Using an expression can be more convenient but it comes at a cost.
-        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
+        /// <remarks>
+        /// Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.
+        /// </remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check for null or less than minimum.
         /// </param>
@@ -678,6 +704,7 @@ namespace GuardAgainstLib
         /// </param>
         /// <exception cref="ArgumentNullException" ></exception>
         /// <exception cref="ArgumentOutOfRangeException" ></exception>
+        [Obsolete(ObsoleteExpressionText, error: false)]
         public static void ArgumentBeingNullOrLessThanMinimum<T>(Expression<Func<T>> argumentExpression,
                                                                  T minimumAllowedValue,
                                                                  string exceptionMessage = default(string),
@@ -774,8 +801,10 @@ namespace GuardAgainstLib
         /// <summary>
         /// Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
         /// </summary>
-        /// <remarks>Using an expression can be more convenient but it comes at a cost.
-        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
+        /// <remarks>
+        /// Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.
+        /// </remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check for being less than minimum.
         /// </param>
@@ -790,6 +819,7 @@ namespace GuardAgainstLib
         /// Additional key/value data to add to the Data property of the exception.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException" ></exception>
+        [Obsolete(ObsoleteExpressionText, error: false)]
         public static void ArgumentBeingLessThanMinimum<T>(Expression<Func<T>> argumentExpression,
                                                            T minimumAllowedValue,
                                                            string exceptionMessage = default(string),
@@ -889,8 +919,10 @@ namespace GuardAgainstLib
         /// Throws an ArgumentNullException if the argumentValue is null.
         /// Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
         /// </summary>
-        /// <remarks>Using an expression can be more convenient but it comes at a cost.
-        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
+        /// <remarks>
+        /// Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.
+        /// </remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check for null or if greater than maximum.
         /// </param>
@@ -906,6 +938,7 @@ namespace GuardAgainstLib
         /// </param>
         /// <exception cref="ArgumentNullException" ></exception>
         /// <exception cref="ArgumentOutOfRangeException" ></exception>
+        [Obsolete(ObsoleteExpressionText, error: false)]
         public static void ArgumentBeingNullOrGreaterThanMaximum<T>(Expression<Func<T>> argumentExpression,
                                                                     T maximumAllowedValue,
                                                                     string exceptionMessage = default(string),
@@ -1004,8 +1037,10 @@ namespace GuardAgainstLib
         /// <summary>
         /// Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
         /// </summary>
-        /// <remarks>Using an expression can be more convenient but it comes at a cost.
-        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
+        /// <remarks>
+        /// Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.
+        /// </remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check if greater than maximum.
         /// </param>
@@ -1020,6 +1055,7 @@ namespace GuardAgainstLib
         /// Additional key/value data to add to the Data property of the exception.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException" ></exception>
+        [Obsolete(ObsoleteExpressionText, error: false)]
         public static void ArgumentBeingGreaterThanMaximum<T>(Expression<Func<T>> argumentExpression,
                                                               T maximumAllowedValue,
                                                               string exceptionMessage = default(string),
@@ -1129,8 +1165,10 @@ namespace GuardAgainstLib
         /// Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
         /// Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
         /// </summary>
-        /// <remarks>Using an expression can be more convenient but it comes at a cost.
-        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
+        /// <remarks>
+        /// Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.
+        /// </remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check for null or if out of range.
         /// </param>
@@ -1149,6 +1187,7 @@ namespace GuardAgainstLib
         /// </param>
         /// <exception cref="ArgumentNullException" ></exception>
         /// <exception cref="ArgumentOutOfRangeException" ></exception>
+        [Obsolete(ObsoleteExpressionText, error: false)]
         public static void ArgumentBeingNullOrOutOfRange<T>(Expression<Func<T>> argumentExpression,
                                                             T minimumAllowedValue,
                                                             T maximumAllowedValue,
@@ -1263,8 +1302,10 @@ namespace GuardAgainstLib
         /// Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
         /// Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
         /// </summary>
-        /// <remarks>Using an expression can be more convenient but it comes at a cost.
-        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
+        /// <remarks>
+        /// Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.
+        /// </remarks>
         /// <param name="argumentExpression" >
         /// The argument expression to check for null or if out of range.
         /// </param>
@@ -1282,6 +1323,7 @@ namespace GuardAgainstLib
         /// Additional key/value data to add to the Data property of the exception.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException" ></exception>
+        [Obsolete(ObsoleteExpressionText, error: false)]
         public static void ArgumentBeingOutOfRange<T>(Expression<Func<T>> argumentExpression,
                                                       T minimumAllowedValue,
                                                       T maximumAllowedValue,
@@ -1375,8 +1417,10 @@ namespace GuardAgainstLib
         /// <summary>
         /// Throws an ArgumentException if the argument is not valid.
         /// </summary>
-        /// <remarks>Using an expression can be more convenient but it comes at a cost.
-        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
+        /// <remarks>
+        /// Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.
+        /// </remarks>
         /// <param name="conditionExpression" >
         /// By default
         /// <c>
@@ -1401,6 +1445,7 @@ namespace GuardAgainstLib
         /// the exception.
         /// </param>
         /// <exception cref="ArgumentException" ></exception>
+        [Obsolete(ObsoleteExpressionText, error: false)]
         public static void ArgumentBeingInvalid(Expression<Func<bool>> conditionExpression,
                                                 string argumentName = default(string),
                                                 string exceptionMessage = default(string),
@@ -1466,8 +1511,10 @@ namespace GuardAgainstLib
         /// <summary>
         /// Throws an InvalidOperationException if the condition is not satisfied.
         /// </summary>
-        /// <remarks>Using an expression can be more convenient but it comes at a cost.
-        /// Expressions have a performance penalty as they need to be compiled during each execution.</remarks>
+        /// <remarks>
+        /// Using an expression can be more convenient but it comes at a cost.
+        /// Expressions have a performance penalty as they need to be compiled during each execution.
+        /// </remarks>
         /// <param name="conditionExpression" >
         /// By default
         /// <c>
@@ -1489,6 +1536,7 @@ namespace GuardAgainstLib
         /// the exception.
         /// </param>
         /// <exception cref="InvalidOperationException" ></exception>
+        [Obsolete(ObsoleteExpressionText, error: false)]
         public static void OperationBeingInvalid(Expression<Func<bool>> conditionExpression,
                                                  string exceptionMessage = default(string),
                                                  IDictionary<object, object> additionalData = default(IDictionary<object, object>),
@@ -1556,6 +1604,7 @@ namespace GuardAgainstLib
         /// Additional key/value data to add to the Data property of the exception.
         /// </param>
         /// <exception cref="ArgumentException" ></exception>
+        [Obsolete(ObsoleteExpressionText, error: false)]
         public static void ArgumentNotBeingUtcDateTime(Expression<Func<DateTime>> argumentExpression,
                                                        string exceptionMessage = default(string),
                                                        IDictionary<object, object> additionalData = default(IDictionary<object, object>))
