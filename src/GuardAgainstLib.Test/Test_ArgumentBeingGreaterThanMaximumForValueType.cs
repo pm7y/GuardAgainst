@@ -13,49 +13,6 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
-        public void WhenArgumentExpressionIsEqualToMaximum_ShouldNotThrow()
-        {
-            var myArgument = 1;
-            Should.NotThrow(() =>
-            {
-                GuardAgainst.ArgumentBeingGreaterThanMaximum(() => myArgument, 1, null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            });
-        }
-
-        [Fact]
-        public void WhenArgumentExpressionIsGreaterThanMaximum_ShouldThrowArgumentOutOfRangeException()
-        {
-            var myArgument = 2;
-            var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
-            {
-                GuardAgainst.ArgumentBeingGreaterThanMaximum(() => myArgument, 1, null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            });
-
-            ex.ParamName.ShouldBe(nameof(myArgument));
-            ex.Data.Count.ShouldBe(1);
-            ex.Data["a"].ShouldBe("1");
-        }
-
-        [Fact]
-        public void WhenArgumentExpressionIsLessThanMaximum_ShouldNotThrow()
-        {
-            var myArgument = 1;
-            Should.NotThrow(() =>
-            {
-                GuardAgainst.ArgumentBeingGreaterThanMaximum(() => myArgument, 2, null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            });
-        }
-
-        [Fact]
         public void WhenArgumentIsEqualToMaximum_ShouldNotThrow()
         {
             var myArgument = 1;

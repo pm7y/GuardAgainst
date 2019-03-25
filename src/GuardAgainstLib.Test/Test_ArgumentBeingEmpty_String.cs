@@ -13,49 +13,6 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
-        public void WhenArgumentExpressionIsEmptyString_ShouldThrowArgumentException()
-        {
-            var myArgument = "";
-            var ex = Should.Throw<ArgumentException>(() =>
-            {
-                GuardAgainst.ArgumentBeingEmpty(() => myArgument, null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            });
-
-            ex.ParamName.ShouldBe(nameof(myArgument));
-            ex.Data.Count.ShouldBe(1);
-            ex.Data["a"].ShouldBe("1");
-        }
-
-        [Fact]
-        public void WhenArgumentExpressionIsNotNullOrEmptyString_ShouldNotThrow()
-        {
-            var myArgument = " blah ";
-            Should.NotThrow(() =>
-            {
-                GuardAgainst.ArgumentBeingEmpty(() => myArgument, null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            });
-        }
-
-        [Fact]
-        public void WhenArgumentExpressionIsNullString_ShouldNotThrow()
-        {
-            var myArgument = default(string);
-            Should.NotThrow(() =>
-            {
-                GuardAgainst.ArgumentBeingEmpty(() => myArgument, null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            });
-        }
-
-        [Fact]
         public void WhenArgumentIsEmptyString_ShouldThrowArgumentException()
         {
             var myArgument = "";
@@ -96,6 +53,32 @@ namespace GuardAgainstLib.Test
                     { "a", "1" }
                 });
             });
+        }
+
+        [Fact]
+        public void WhenArgumentIsNotNullOrEmptyString_ShouldNotBeSlow()
+        {
+            var myArgument = " blah ";
+            Should.CompleteIn(() =>
+            {
+                GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            }, TimeSpan.FromMilliseconds(1));
+        }
+
+        [Fact]
+        public void WhenArgumentIsNullString_ShouldNotBeSlow()
+        {
+            var myArgument = default(string);
+            Should.CompleteIn(() =>
+            {
+                GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            }, TimeSpan.FromMilliseconds(1));
         }
     }
 }
