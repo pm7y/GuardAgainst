@@ -87,5 +87,31 @@ namespace GuardAgainstLib.Test
             ex.ParamName.ShouldBe("maximumAllowedValue");
             ex.Data.Count.ShouldBe(1);
         }
+
+        [Fact]
+        public void WhenArgumentIsEqualToMaximum_ShouldNotBeSlow()
+        {
+            var myArgument = "A";
+            Should.CompleteIn(() =>
+            {
+                GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "A", nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            }, TimeSpan.FromMilliseconds(1));
+        }
+
+        [Fact]
+        public void WhenArgumentIsLessThanMaximum_ShouldNotBeSlow()
+        {
+            var myArgument = "A";
+            Should.CompleteIn(() =>
+            {
+                GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "B", nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            }, TimeSpan.FromMilliseconds(1));
+        }
     }
 }

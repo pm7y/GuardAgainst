@@ -43,6 +43,22 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
+        public void WhenMaximumValueIsNull_ShouldThrowArgumentNullException()
+        {
+            var myArgument = "A";
+            var ex = Should.Throw<ArgumentNullException>(() =>
+            {
+                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, null, nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            });
+
+            ex.ParamName.ShouldBe("maximumAllowedValue");
+            ex.Data.Count.ShouldBe(1);
+        }
+
+        [Fact]
         public void WhenArgumentIsLessThanMaximum_ShouldNotThrow()
         {
             var myArgument = "A";
@@ -69,19 +85,29 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
-        public void WhenMaximumValueIsNull_ShouldThrowArgumentNullException()
+        public void WhenArgumentIsLessThanMaximum_ShouldNotBeSlow()
         {
             var myArgument = "A";
-            var ex = Should.Throw<ArgumentNullException>(() =>
+            Should.CompleteIn(() =>
             {
-                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, null, nameof(myArgument), null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, "B", nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
-            });
+            }, TimeSpan.FromMilliseconds(1));
+        }
 
-            ex.ParamName.ShouldBe("maximumAllowedValue");
-            ex.Data.Count.ShouldBe(1);
+        [Fact]
+        public void WhenArgumentIsNull_ShouldNotBeSlow()
+        {
+            var myArgument = default(string);
+            Should.CompleteIn(() =>
+            {
+                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, "B", nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            }, TimeSpan.FromMilliseconds(1));
         }
     }
 }

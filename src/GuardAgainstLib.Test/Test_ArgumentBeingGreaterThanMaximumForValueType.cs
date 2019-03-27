@@ -54,5 +54,31 @@ namespace GuardAgainstLib.Test
                 });
             });
         }
+
+        [Fact]
+        public void WhenArgumentIsEqualToMaximum_ShouldNotBeSlow()
+        {
+            var myArgument = 1;
+            Should.CompleteIn(() =>
+            {
+                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 2, nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            }, TimeSpan.FromMilliseconds(1));
+        }
+
+        [Fact]
+        public void WhenArgumentIsLessThanMaximum_ShouldNotBeSlow()
+        {
+            var myArgument = 1;
+            Should.CompleteIn(() =>
+            {
+                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 2, nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            }, TimeSpan.FromMilliseconds(1));
+        }
     }
 }

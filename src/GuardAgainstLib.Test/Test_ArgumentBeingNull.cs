@@ -24,7 +24,7 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
-        public void WhenArgumentIsNotNull_ShouldNotThrowException()
+        public void WhenArgumentIsNotNull_ShouldNotThrow()
         {
             var myArgument = "Hello, World!";
             Should.NotThrow(() =>
@@ -51,6 +51,19 @@ namespace GuardAgainstLib.Test
             ex.ParamName.ShouldBe(nameof(myArgument));
             ex.Data.Count.ShouldBe(1);
             ex.Data["a"].ShouldBe("1");
+        }
+
+        [Fact]
+        public void WhenArgumentIsNotNull_ShouldNotBeSlow()
+        {
+            var myArgument = "Hello, World!";
+            Should.CompleteIn(() =>
+            {
+                GuardAgainst.ArgumentBeingNull(myArgument, nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            }, TimeSpan.FromMilliseconds(1));
         }
     }
 }

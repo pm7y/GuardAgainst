@@ -71,5 +71,31 @@ namespace GuardAgainstLib.Test
                 }, GuardAgainst.ConditionMeaning.TrueMeansValid);
             });
         }
+
+        [Fact]
+        public void WhenArgumentIsFalseAndTrueMeansInvalid_ShouldNotBeSlow()
+        {
+            var myArgument = false;
+            Should.CompleteIn(() =>
+            {
+                GuardAgainst.OperationBeingInvalid(myArgument, null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                }, GuardAgainst.ConditionMeaning.TrueMeansInvalid);
+            }, TimeSpan.FromMilliseconds(1));
+        }
+
+        [Fact]
+        public void WhenArgumentIsTrueAndTrueMeansValid_ShouldNotBeSlow()
+        {
+            var myArgument = true;
+            Should.CompleteIn(() =>
+            {
+                GuardAgainst.OperationBeingInvalid(myArgument, null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                }, GuardAgainst.ConditionMeaning.TrueMeansValid);
+            }, TimeSpan.FromMilliseconds(1));
+        }
     }
 }

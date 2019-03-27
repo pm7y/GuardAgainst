@@ -54,5 +54,31 @@ namespace GuardAgainstLib.Test
             ex.Data.Count.ShouldBe(1);
             ex.Data["a"].ShouldBe("1");
         }
+
+        [Fact]
+        public void WhenArgumentIsEqualToMinimum_ShouldNotBeSlow()
+        {
+            var myArgument = 1;
+            Should.CompleteIn(() =>
+            {
+                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            }, TimeSpan.FromMilliseconds(1));
+        }
+
+        [Fact]
+        public void WhenArgumentIsGreaterThanMinimum_ShouldNotBeSlow()
+        {
+            var myArgument = 2;
+            Should.CompleteIn(() =>
+            {
+                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            }, TimeSpan.FromMilliseconds(1));
+        }
     }
 }

@@ -58,5 +58,18 @@ namespace GuardAgainstLib.Test
             ex.Data.Count.ShouldBe(1);
             ex.Data["a"].ShouldBe("1");
         }
+
+        [Fact]
+        public void WhenArgumentIsNotNullOrEmpty_ShouldNotBeSlow()
+        {
+            var myArgument = " blah ";
+            Should.CompleteIn(() =>
+            {
+                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
+                {
+                    { "a", "1" }
+                });
+            }, TimeSpan.FromMilliseconds(1));
+        }
     }
 }
