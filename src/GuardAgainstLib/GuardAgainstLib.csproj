@@ -12,6 +12,7 @@
     <RepositoryUrl>https://github.com/pmcilreavy/GuardAgainst</RepositoryUrl>
     <PackageTags>GuardAgainst dotnet contracts arguments validity</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
