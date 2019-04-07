@@ -8,7 +8,6 @@
 //////////////////////////////////////////////////////////////////////
 
 var buildVersion = Argument("buildVersion", default(string));
-var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 
 if (buildVersion == null)
@@ -53,7 +52,6 @@ Task("Clean")
 });
 
 Task("Restore")
-    .IsDependentOn("Clean")
     .Does(() => 
 {
     DotNetCoreRestore(solutionPath, new DotNetCoreRestoreSettings
@@ -63,19 +61,23 @@ Task("Restore")
 });
 
 Task("Build")
-    .IsDependentOn("Restore")
     .Does(() =>
 {
-    DotNetCoreBuild(solutionPath, new DotNetCoreBuildSettings
+    var settings = new DotNetCoreBuildSettings
     {
         Configuration = configuration,
         NoRestore = true,
         Verbosity = DotNetCoreVerbosity.Minimal
-    });
-});
+    };
     
+    if (!string.IsNullOrWhiteSpace(buildVersion)) {
+        settings.ArgumentCustomization = args => args.Append($"-p:Version={buildVersion}");
+    }
+    
+    DotNetCoreBuild(solutionPath, settings);
+});
+
 Task("TestAndCoverage")
-    .IsDependentOn("Build")
     .Does(() =>
 {       
         CreateDirectory(testArtifactsFolder);
@@ -127,7 +129,6 @@ Task("TestAndCoverage")
 });
 
 Task("Publish")
-    .IsDependentOn("TestAndCoverage")
     .Does(() =>
 {
     var projects = GetFiles("./src/**/GuardAgainstLib.csproj");
@@ -143,10 +144,15 @@ Task("Publish")
             NoRestore = true,
             SelfContained = false
         };
+        
+        if (!string.IsNullOrWhiteSpace(buildVersion)) {
+            settings.ArgumentCustomization = args => args.Append($"-p:Version={buildVersion}");
+        }
 
         DotNetCorePublish(project.FullPath, settings);
 
         DeleteFiles($"{binariesArtifactsFolder}/{projectName}/*.deps.json");
+        DeleteFiles($"{binariesArtifactsFolder}/{projectName}/*.pdb");
 
         Zip($"{binariesArtifactsFolder}/{projectName}/", $"{binariesArtifactsFolder}/{projectName}.zip");
 
@@ -159,8 +165,6 @@ Task("Publish")
 });
 
 Task("Pack")
-    //.WithCriteria(() => buildVersion != null)
-    .IsDependentOn("Publish")
     .Does(() =>
 {
                   var nuGetPackSettings   = new NuGetPackSettings {
@@ -189,14 +193,12 @@ Task("Pack")
 });
 
 //////////////////////////////////////////////////////////////////////
-// TASK TARGETS
-//////////////////////////////////////////////////////////////////////
-
-Task("Default")
-    .IsDependentOn("Pack");
-
-//////////////////////////////////////////////////////////////////////
 // EXECUTION
 //////////////////////////////////////////////////////////////////////
 
-RunTarget(target);
+RunTarget("Clean");
+RunTarget("Restore");
+RunTarget("Build");
+RunTarget("TestAndCoverage");
+RunTarget("Publish");
+RunTarget("Pack");
