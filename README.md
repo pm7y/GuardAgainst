@@ -3,7 +3,7 @@
 
 # GuardAgainst [![Build status](https://ci.appveyor.com/api/projects/status/96fprgm7y092871s?svg=true)](https://ci.appveyor.com/project/fallenidol/guardagainst)
 
-A single class, containing useful guard clauses, that simplifies argument validity checking whilst making your code more readable.
+Useful guard clauses that simplify argument validity checking and make your code more readable.
 
 <br/>
 
@@ -76,21 +76,6 @@ Both implementations of `GetFullname` are achieving the exact same thing.
 - `argumentValue` is required. This is the value that you want to validate.
 - `argumentName` is optional. Supplying this makes the exception more useful particularly if the method has several parameters.
 - `exceptionMessage` is optional. Allows you to give an additional specific error message to pass to the exception constructor.
-
-~~We can further simplify this by using the _expression_ based overload like so...~~
-
-```csharp
-private static string GetFullname(string firstname, string surname)
-{
-    GuardAgainst.ArgumentBeingNullOrWhitespace(() => firstname);
-    GuardAgainst.ArgumentBeingNullOrWhitespace(() => surname);
-
-    return $"{firstname} {surname}";
-}
-```
-~~This is even more concise. From the expression, the GuardAgainst method is able to derive the value and the name of the argument we're trying to validate.~~
-<br/>
-**The downside is that expressions have to be jit'd each time they are run. It's recommended to not use these expression based versions as the performance overhead is nearly always too high. These are now deprecated and will be removed in version 3.0.**
 
 <br/>
 
