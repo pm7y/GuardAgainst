@@ -169,7 +169,7 @@ Task("Pack")
                                      Title                   = "GuardAgainst",
                                      Authors                 = new[] {"Paul Mcilreavy"},
                                      Owners                  = new[] {"Paul Mcilreavy"},
-                                     Description             = "Static methods to simplify argument validity checking.",
+                                     Description             = "Useful guard clauses that simplify argument validity checking and make your code more readable.",
                                      ProjectUrl              = new Uri("https://github.com/pmcilreavy/GuardAgainst"),
                                      IconUrl                 = new Uri("http://cdn.rawgit.com/pmcilreavy/GuardAgainst/master/GuardAgainst.png"),
                                      LicenseUrl              = new Uri("https://github.com/pmcilreavy/GuardAgainst/blob/master/LICENSE"),
@@ -180,9 +180,6 @@ Task("Pack")
                                      Files                   = new [] { 
                                       new NuSpecContent {Source = "./GuardAgainstLib.dll", Target = "lib/netstandard2.0/GuardAgainstLib.dll"},
                                       new NuSpecContent {Source = "./GuardAgainstLib.xml", Target = "lib/netstandard2.0/GuardAgainstLib.xml"},
-                                     },
-                                     Dependencies            = new [] { 
-                                      new NuSpecDependency {Id = "FastExpressionCompiler", Version = "1.10.1"},
                                      },
                                      BasePath                = "./src/GuardAgainstLib/bin/release/netstandard2.0",
                                      OutputDirectory         = nugetArtifactsFolder.FullPath

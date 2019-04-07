@@ -12,18 +12,19 @@
     <RepositoryUrl>https://github.com/pmcilreavy/GuardAgainst</RepositoryUrl>
     <PackageTags>GuardAgainst dotnet contracts arguments validity</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <LangVersion>default</LangVersion>
+    <LangVersion>latest</LangVersion>
     <DefineConstants>TRACE;DEBUG;NETSTANDARD;NETSTANDARD2_0;DEBUGGABLE</DefineConstants>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>none</DebugType>
-    <DebugSymbols>false</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
     <DocumentationFile>bin\Release\netstandard2.0\GuardAgainstLib.xml</DocumentationFile>
   </PropertyGroup>
 </Project>

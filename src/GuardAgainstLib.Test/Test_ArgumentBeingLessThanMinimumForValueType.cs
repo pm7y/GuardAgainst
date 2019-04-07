@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
@@ -13,46 +14,19 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
-        public void WhenArgumentExpressionIsEqualToMinimum_ShouldNotThrow()
+        public void WhenArgumentIsEqualToMinimum_ShouldNotBeSlow()
         {
             var myArgument = 1;
-            Should.NotThrow(() =>
-            {
-                GuardAgainst.ArgumentBeingLessThanMinimum(() => myArgument, 1, null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            });
-        }
-
-        [Fact]
-        public void WhenArgumentExpressionIsGreaterThanMinimum_ShouldNotThrow()
-        {
-            var myArgument = 2;
-            Should.NotThrow(() =>
-            {
-                GuardAgainst.ArgumentBeingLessThanMinimum(() => myArgument, 1, null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            });
-        }
-
-        [Fact]
-        public void WhenArgumentExpressionIsLessThanMinimum_ShouldThrowArgumentOutOfRangeException()
-        {
-            var myArgument = 1;
-            var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
-            {
-                GuardAgainst.ArgumentBeingLessThanMinimum(() => myArgument, 2, null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            });
-
-            ex.ParamName.ShouldBe(nameof(myArgument));
-            ex.Data.Count.ShouldBe(1);
-            ex.Data["a"].ShouldBe("1");
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
         }
 
         [Fact]
@@ -66,6 +40,22 @@ namespace GuardAgainstLib.Test
                     { "a", "1" }
                 });
             });
+        }
+
+        [Fact]
+        public void WhenArgumentIsGreaterThanMinimum_ShouldNotBeSlow()
+        {
+            var myArgument = 2;
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
         }
 
         [Fact]

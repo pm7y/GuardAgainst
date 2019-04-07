@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
+
+// ReSharper disable ExpressionIsAlwaysNull
 
 namespace GuardAgainstLib.Test
 {
@@ -13,63 +16,19 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
-        public void WhenArgumentExpressionIsEqualToMinimum_ShouldNotThrow()
+        public void WhenArgumentIsEqualToMinimum_ShouldNotBeSlow()
         {
             var myArgument = "A";
-            Should.NotThrow(() =>
-            {
-                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(() => myArgument, "A", null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            });
-        }
-
-        [Fact]
-        public void WhenArgumentExpressionIsGreaterThanMinimum_ShouldNotThrow()
-        {
-            var myArgument = "B";
-            Should.NotThrow(() =>
-            {
-                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(() => myArgument, "A", null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            });
-        }
-
-        [Fact]
-        public void WhenArgumentExpressionIsLessThanMinimum_ShouldThrowArgumentOutOfRangeException()
-        {
-            var myArgument = "A";
-            var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
-            {
-                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(() => myArgument, "B", null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            });
-
-            ex.ParamName.ShouldBe(nameof(myArgument));
-            ex.Data.Count.ShouldBe(1);
-            ex.Data["a"].ShouldBe("1");
-        }
-
-        [Fact]
-        public void WhenArgumentExpressionIsNull_ShouldThrowArgumentNullException()
-        {
-            var myArgument = default(string);
-            var ex = Should.Throw<ArgumentNullException>(() =>
-            {
-                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(() => myArgument, "B", null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            });
-
-            ex.ParamName.ShouldBe(nameof(myArgument));
-            ex.Data.Count.ShouldBe(1);
-            ex.Data["a"].ShouldBe("1");
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingNullOrLessThanMinimum(myArgument, "A", nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
         }
 
         [Fact]
@@ -83,6 +42,22 @@ namespace GuardAgainstLib.Test
                     { "a", "1" }
                 });
             });
+        }
+
+        [Fact]
+        public void WhenArgumentIsGreaterThanMinimum_ShouldNotBeSlow()
+        {
+            var myArgument = "B";
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingNullOrLessThanMinimum(myArgument, "A", nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
         }
 
         [Fact]
@@ -130,22 +105,6 @@ namespace GuardAgainstLib.Test
             ex.ParamName.ShouldBe(nameof(myArgument));
             ex.Data.Count.ShouldBe(1);
             ex.Data["a"].ShouldBe("1");
-        }
-
-        [Fact]
-        public void WhenExpressionMinimumValueIsNull_ShouldThrowArgumentNullException()
-        {
-            var myArgument = "A";
-            var ex = Should.Throw<ArgumentNullException>(() =>
-            {
-                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(() => myArgument, null, null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            });
-
-            ex.ParamName.ShouldBe("minimumAllowedValue");
-            ex.Data.Count.ShouldBe(1);
         }
 
         [Fact]
