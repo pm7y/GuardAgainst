@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
+
+// ReSharper disable ExpressionIsAlwaysNull
 
 namespace GuardAgainstLib.Test
 {
@@ -10,6 +13,22 @@ namespace GuardAgainstLib.Test
     {
         public Test_ArgumentBeingOutOfRange(ITestOutputHelper output) : base(output)
         {
+        }
+
+        [Fact]
+        public void WhenArgumentIsEqualToMaximum_ShouldNotBeSlow()
+        {
+            var myArgument = "D";
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingOutOfRange(myArgument, "B", "D", nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
         }
 
         [Fact]
@@ -23,6 +42,22 @@ namespace GuardAgainstLib.Test
                     { "a", "1" }
                 });
             });
+        }
+
+        [Fact]
+        public void WhenArgumentIsEqualToMinimum_ShouldNotBeSlow()
+        {
+            var myArgument = "B";
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingOutOfRange(myArgument, "B", "D", nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
         }
 
         [Fact]
@@ -56,6 +91,22 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
+        public void WhenArgumentIsInRange_ShouldNotBeSlow()
+        {
+            var myArgument = "C";
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingOutOfRange(myArgument, "B", "D", nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
+        }
+
+        [Fact]
         public void WhenArgumentIsInRange_ShouldNotThrow()
         {
             var myArgument = "C";
@@ -86,6 +137,22 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
+        public void WhenArgumentValueIsNull_ShouldNotBeSlow()
+        {
+            var myArgument = default(string);
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingOutOfRange(myArgument, "B", "D", nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
+        }
+
+        [Fact]
         public void WhenArgumentValueIsNull_ShouldNotThrow()
         {
             var myArgument = default(string);
@@ -97,7 +164,7 @@ namespace GuardAgainstLib.Test
                 });
             });
         }
-        
+
         [Fact]
         public void WhenMaximumValueIsNull_ShouldThrowArgumentNullException()
         {
@@ -128,58 +195,6 @@ namespace GuardAgainstLib.Test
 
             ex.ParamName.ShouldBe("minimumAllowedValue");
             ex.Data.Count.ShouldBe(1);
-        }
-
-        [Fact]
-        public void WhenArgumentIsEqualToMaximum_ShouldNotBeSlow()
-        {
-            var myArgument = "D";
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.ArgumentBeingOutOfRange(myArgument, "B", "D", nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            }, TimeSpan.FromMilliseconds(1));
-        }
-
-        [Fact]
-        public void WhenArgumentIsEqualToMinimum_ShouldNotBeSlow()
-        {
-            var myArgument = "B";
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.ArgumentBeingOutOfRange(myArgument, "B", "D", nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            }, TimeSpan.FromMilliseconds(1));
-        }
-
-        [Fact]
-        public void WhenArgumentIsInRange_ShouldNotBeSlow()
-        {
-            var myArgument = "C";
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.ArgumentBeingOutOfRange(myArgument, "B", "D", nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            }, TimeSpan.FromMilliseconds(1));
-        }
-
-        [Fact]
-        public void WhenArgumentValueIsNull_ShouldNotBeSlow()
-        {
-            var myArgument = default(string);
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.ArgumentBeingOutOfRange(myArgument, "B", "D", nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            }, TimeSpan.FromMilliseconds(1));
         }
     }
 }

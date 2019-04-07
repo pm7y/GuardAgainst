@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
+
+// ReSharper disable InconsistentNaming
+// ReSharper disable ExpressionIsAlwaysNull
 
 namespace GuardAgainstLib.Test
 {
@@ -11,7 +15,6 @@ namespace GuardAgainstLib.Test
     {
         public Test_ArgumentBeingEmpty_Enumerable(ITestOutputHelper output) : base(output)
         {
-
         }
 
         [Fact]
@@ -32,22 +35,25 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
-        public void WhenArgumentIsNotNullOrEmptyString_ShouldNotThrow()
+        public void WhenArgumentIsNotEmptyEnumerable_ShouldNotBeSlow()
         {
             var myArgument = new[] { 1 };
-            Should.NotThrow(() =>
-            {
-                GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            });
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
         }
 
         [Fact]
-        public void WhenArgumentIsNullEnumerable_ShouldNotThrow()
+        public void WhenArgumentIsNotNullOrEmptyString_ShouldNotThrow()
         {
-            var myArgument = default(int[]);
+            var myArgument = new[] { 1 };
             Should.NotThrow(() =>
             {
                 GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
@@ -62,26 +68,29 @@ namespace GuardAgainstLib.Test
         {
             var myArgument = default(int[]);
 
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            }, TimeSpan.FromMilliseconds(1));
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
         }
 
         [Fact]
-        public void WhenArgumentIsNotNullOrEmptyString_ShouldNotBeSlow()
+        public void WhenArgumentIsNullEnumerable_ShouldNotThrow()
         {
-            var myArgument = new[] { 1 };
-            Should.CompleteIn(() =>
+            var myArgument = default(int[]);
+            Should.NotThrow(() =>
             {
                 GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
-            }, TimeSpan.FromMilliseconds(1));
+            });
         }
     }
 }

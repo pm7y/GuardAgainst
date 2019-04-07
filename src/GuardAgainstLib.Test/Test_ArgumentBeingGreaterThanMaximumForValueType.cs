@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
@@ -10,6 +11,22 @@ namespace GuardAgainstLib.Test
     {
         public Test_ArgumentBeingGreaterThanMaximumForValueType(ITestOutputHelper output) : base(output)
         {
+        }
+
+        [Fact]
+        public void WhenArgumentIsEqualToMaximum_ShouldNotBeSlow()
+        {
+            var myArgument = 1;
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 2, nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
         }
 
         [Fact]
@@ -43,6 +60,22 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
+        public void WhenArgumentIsLessThanMaximum_ShouldNotBeSlow()
+        {
+            var myArgument = 1;
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 2, nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
+        }
+
+        [Fact]
         public void WhenArgumentIsLessThanMaximum_ShouldNotThrow()
         {
             var myArgument = 1;
@@ -53,32 +86,6 @@ namespace GuardAgainstLib.Test
                     { "a", "1" }
                 });
             });
-        }
-
-        [Fact]
-        public void WhenArgumentIsEqualToMaximum_ShouldNotBeSlow()
-        {
-            var myArgument = 1;
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 2, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            }, TimeSpan.FromMilliseconds(1));
-        }
-
-        [Fact]
-        public void WhenArgumentIsLessThanMaximum_ShouldNotBeSlow()
-        {
-            var myArgument = 1;
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 2, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            }, TimeSpan.FromMilliseconds(1));
         }
     }
 }

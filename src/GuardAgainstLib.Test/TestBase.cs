@@ -1,5 +1,6 @@
-﻿using System;
-using Xunit.Abstractions;
+﻿using Xunit.Abstractions;
+
+// ReSharper disable InconsistentNaming
 
 namespace GuardAgainstLib.Test
 {

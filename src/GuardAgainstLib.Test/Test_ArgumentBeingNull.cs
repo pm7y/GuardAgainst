@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Reflection;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
+
+// ReSharper disable ExpressionIsAlwaysNull
 
 namespace GuardAgainstLib.Test
 {
@@ -17,10 +19,26 @@ namespace GuardAgainstLib.Test
         public void WhenAdditionalData_ShouldThrowArgumentNullException()
         {
             var myArgument = default(object);
-            var ex = Should.Throw<ArgumentNullException>(() => { GuardAgainst.ArgumentBeingNull(myArgument, nameof(myArgument), null, null); });
+            var ex = Should.Throw<ArgumentNullException>(() => { GuardAgainst.ArgumentBeingNull(myArgument, nameof(myArgument)); });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
             ex.Data.Count.ShouldBe(0);
+        }
+
+        [Fact]
+        public void WhenArgumentIsNotNull_ShouldNotBeSlow()
+        {
+            var myArgument = "Hello, World!";
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingNull(myArgument, nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
         }
 
         [Fact]
@@ -51,19 +69,6 @@ namespace GuardAgainstLib.Test
             ex.ParamName.ShouldBe(nameof(myArgument));
             ex.Data.Count.ShouldBe(1);
             ex.Data["a"].ShouldBe("1");
-        }
-
-        [Fact]
-        public void WhenArgumentIsNotNull_ShouldNotBeSlow()
-        {
-            var myArgument = "Hello, World!";
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.ArgumentBeingNull(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            }, TimeSpan.FromMilliseconds(1));
         }
     }
 }

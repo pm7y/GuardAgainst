@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.Reflection;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
+
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
 
 namespace GuardAgainstLib.Test
 {
@@ -11,11 +13,26 @@ namespace GuardAgainstLib.Test
     {
         public Test_OperationBeingInvalid(ITestOutputHelper output) : base(output)
         {
-
         }
 
         [Fact]
-        public void WhenArgumentIsFalseAndTrueMeansInvalid_ShouldNotThrow()
+        public void WhenArgumentIsFalse_ShouldNotBeSlow()
+        {
+            var myArgument = false;
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.OperationBeingInvalid(myArgument, null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
+        }
+
+        [Fact]
+        public void WhenArgumentIsFalse_ShouldNotThrow()
         {
             var myArgument = false;
             Should.NotThrow(() =>
@@ -23,28 +40,12 @@ namespace GuardAgainstLib.Test
                 GuardAgainst.OperationBeingInvalid(myArgument, null, new Dictionary<object, object>
                 {
                     { "a", "1" }
-                }, GuardAgainst.ConditionMeaning.TrueMeansInvalid);
+                });
             });
         }
 
         [Fact]
-        public void WhenArgumentIsFalseAndTrueMeansValid_ShouldThrowArgumentException()
-        {
-            var myArgument = false;
-            var ex = Should.Throw<InvalidOperationException>(() =>
-            {
-                GuardAgainst.OperationBeingInvalid(myArgument, null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                }, GuardAgainst.ConditionMeaning.TrueMeansValid);
-            });
-
-            ex.Data.Count.ShouldBe(1);
-            ex.Data["a"].ShouldBe("1");
-        }
-
-        [Fact]
-        public void WhenArgumentIsTrueAndTrueMeansInvalid_ShouldThrowArgumentException()
+        public void WhenArgumentIsTrue_ShouldThrowArgumentException()
         {
             var myArgument = true;
             var ex = Should.Throw<InvalidOperationException>(() =>
@@ -52,50 +53,11 @@ namespace GuardAgainstLib.Test
                 GuardAgainst.OperationBeingInvalid(myArgument, null, new Dictionary<object, object>
                 {
                     { "a", "1" }
-                }, GuardAgainst.ConditionMeaning.TrueMeansInvalid);
+                });
             });
 
             ex.Data.Count.ShouldBe(1);
             ex.Data["a"].ShouldBe("1");
-        }
-
-        [Fact]
-        public void WhenArgumentIsTrueAndTrueMeansValid_ShouldNotThrow()
-        {
-            var myArgument = true;
-            Should.NotThrow(() =>
-            {
-                GuardAgainst.OperationBeingInvalid(myArgument, null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                }, GuardAgainst.ConditionMeaning.TrueMeansValid);
-            });
-        }
-
-        [Fact]
-        public void WhenArgumentIsFalseAndTrueMeansInvalid_ShouldNotBeSlow()
-        {
-            var myArgument = false;
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.OperationBeingInvalid(myArgument, null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                }, GuardAgainst.ConditionMeaning.TrueMeansInvalid);
-            }, TimeSpan.FromMilliseconds(1));
-        }
-
-        [Fact]
-        public void WhenArgumentIsTrueAndTrueMeansValid_ShouldNotBeSlow()
-        {
-            var myArgument = true;
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.OperationBeingInvalid(myArgument, null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                }, GuardAgainst.ConditionMeaning.TrueMeansValid);
-            }, TimeSpan.FromMilliseconds(1));
         }
     }
 }

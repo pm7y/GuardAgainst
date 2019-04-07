@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
@@ -11,7 +12,23 @@ namespace GuardAgainstLib.Test
         public Test_ArgumentBeingOutOfRangeForValueType(ITestOutputHelper output) : base(output)
         {
         }
-        
+
+        [Fact]
+        public void WhenArgumentIsEqualToMaximum_ShouldNotBeSlow()
+        {
+            var myArgument = 4;
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
+        }
+
         [Fact]
         public void WhenArgumentIsEqualToMaximum_ShouldNotThrow()
         {
@@ -23,6 +40,22 @@ namespace GuardAgainstLib.Test
                     { "a", "1" }
                 });
             });
+        }
+
+        [Fact]
+        public void WhenArgumentIsEqualToMinimum_ShouldNotBeSlow()
+        {
+            var myArgument = 2;
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
         }
 
         [Fact]
@@ -56,6 +89,22 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
+        public void WhenArgumentIsInRange_ShouldNotBeSlow()
+        {
+            var myArgument = 3;
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
+        }
+
+        [Fact]
         public void WhenArgumentIsInRange_ShouldNotThrow()
         {
             var myArgument = 3;
@@ -83,45 +132,6 @@ namespace GuardAgainstLib.Test
             ex.ParamName.ShouldBe(nameof(myArgument));
             ex.Data.Count.ShouldBe(1);
             ex.Data["a"].ShouldBe("1");
-        }
-
-        [Fact]
-        public void WhenArgumentIsEqualToMaximum_ShouldNotBeSlow()
-        {
-            var myArgument = 4;
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            }, TimeSpan.FromMilliseconds(1));
-        }
-
-        [Fact]
-        public void WhenArgumentIsEqualToMinimum_ShouldNotBeSlow()
-        {
-            var myArgument = 2;
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            }, TimeSpan.FromMilliseconds(1));
-        }
-
-        [Fact]
-        public void WhenArgumentIsInRange_ShouldNotBeSlow()
-        {
-            var myArgument = 3;
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            }, TimeSpan.FromMilliseconds(1));
         }
     }
 }

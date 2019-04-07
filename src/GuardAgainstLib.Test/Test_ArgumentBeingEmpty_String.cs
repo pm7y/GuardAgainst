@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
+
+// ReSharper disable InconsistentNaming
+// ReSharper disable ExpressionIsAlwaysNull
 
 namespace GuardAgainstLib.Test
 {
@@ -30,6 +34,22 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
+        public void WhenArgumentIsNotNullOrEmptyString_ShouldNotBeSlow()
+        {
+            var myArgument = " blah ";
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
+        }
+
+        [Fact]
         public void WhenArgumentIsNotNullOrEmptyString_ShouldNotThrow()
         {
             var myArgument = " blah ";
@@ -43,6 +63,22 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
+        public void WhenArgumentIsNullString_ShouldNotBeSlow()
+        {
+            var myArgument = default(string);
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
+        }
+
+        [Fact]
         public void WhenArgumentIsNullString_ShouldNotThrow()
         {
             var myArgument = default(string);
@@ -53,32 +89,6 @@ namespace GuardAgainstLib.Test
                     { "a", "1" }
                 });
             });
-        }
-
-        [Fact]
-        public void WhenArgumentIsNotNullOrEmptyString_ShouldNotBeSlow()
-        {
-            var myArgument = " blah ";
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            }, TimeSpan.FromMilliseconds(1));
-        }
-
-        [Fact]
-        public void WhenArgumentIsNullString_ShouldNotBeSlow()
-        {
-            var myArgument = default(string);
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            }, TimeSpan.FromMilliseconds(1));
         }
     }
 }

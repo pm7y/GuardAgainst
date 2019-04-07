@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
+
+// ReSharper disable ExpressionIsAlwaysNull
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
 
 namespace GuardAgainstLib.Test
 {
@@ -13,7 +17,23 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
-        public void WhenArgumentIsFalseAndTrueMeansInvalid_ShouldNotThrow()
+        public void WhenArgumentIsFalse_ShouldNotBeSlow()
+        {
+            var myArgument = false;
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingInvalid(myArgument, nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
+        }
+
+        [Fact]
+        public void WhenArgumentIsFalse_ShouldNotThrow()
         {
             var myArgument = false;
             Should.NotThrow(() =>
@@ -21,29 +41,12 @@ namespace GuardAgainstLib.Test
                 GuardAgainst.ArgumentBeingInvalid(myArgument, nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
-                }, GuardAgainst.ConditionMeaning.TrueMeansInvalid);
+                });
             });
         }
 
         [Fact]
-        public void WhenArgumentIsFalseAndTrueMeansValid_ShouldThrowArgumentException()
-        {
-            var myArgument = false;
-            var ex = Should.Throw<ArgumentException>(() =>
-            {
-                GuardAgainst.ArgumentBeingInvalid(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                }, GuardAgainst.ConditionMeaning.TrueMeansValid);
-            });
-
-            ex.ParamName.ShouldBe(nameof(myArgument));
-            ex.Data.Count.ShouldBe(1);
-            ex.Data["a"].ShouldBe("1");
-        }
-
-        [Fact]
-        public void WhenArgumentIsTrueAndTrueMeansInvalid_ShouldThrowArgumentException()
+        public void WhenArgumentIsTrue_ShouldThrowArgumentException()
         {
             var myArgument = true;
             var ex = Should.Throw<ArgumentException>(() =>
@@ -51,51 +54,12 @@ namespace GuardAgainstLib.Test
                 GuardAgainst.ArgumentBeingInvalid(myArgument, nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
-                }, GuardAgainst.ConditionMeaning.TrueMeansInvalid);
+                });
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
             ex.Data.Count.ShouldBe(1);
             ex.Data["a"].ShouldBe("1");
-        }
-
-        [Fact]
-        public void WhenArgumentIsTrueAndTrueMeansValid_ShouldNotThrow()
-        {
-            var myArgument = true;
-            Should.NotThrow(() =>
-            {
-                GuardAgainst.ArgumentBeingInvalid(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                }, GuardAgainst.ConditionMeaning.TrueMeansValid);
-            });
-        }
-
-        [Fact]
-        public void WhenArgumentIsFalseAndTrueMeansInvalid_ShouldNotBeSlow()
-        {
-            var myArgument = false;
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.ArgumentBeingInvalid(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                }, GuardAgainst.ConditionMeaning.TrueMeansInvalid);
-            }, TimeSpan.FromMilliseconds(1));
-        }
-
-        [Fact]
-        public void WhenArgumentIsTrueAndTrueMeansValid_ShouldNotBeSlow()
-        {
-            var myArgument = true;
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.ArgumentBeingInvalid(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                }, GuardAgainst.ConditionMeaning.TrueMeansValid);
-            }, TimeSpan.FromMilliseconds(1));
         }
     }
 }

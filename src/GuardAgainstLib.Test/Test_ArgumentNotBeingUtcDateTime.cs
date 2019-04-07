@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
@@ -10,20 +11,6 @@ namespace GuardAgainstLib.Test
     {
         public Test_ArgumentNotBeingUtcDateTime(ITestOutputHelper output) : base(output)
         {
-        }
-
-        [Fact]
-        public void WhenArgumentValueIsUtc_ShouldNotThrow()
-        {
-            var myArgument = DateTime.UtcNow;
-
-            Should.NotThrow(() =>
-            {
-                GuardAgainst.ArgumentNotBeingUtcDateTime(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            });
         }
 
         [Fact]
@@ -65,13 +52,30 @@ namespace GuardAgainstLib.Test
         {
             var myArgument = DateTime.UtcNow;
 
-            Should.CompleteIn(() =>
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentNotBeingUtcDateTime(myArgument, nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
+        }
+
+        [Fact]
+        public void WhenArgumentValueIsUtc_ShouldNotThrow()
+        {
+            var myArgument = DateTime.UtcNow;
+
+            Should.NotThrow(() =>
             {
                 GuardAgainst.ArgumentNotBeingUtcDateTime(myArgument, nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
-            }, TimeSpan.FromMilliseconds(1));
+            });
         }
     }
 }

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
+
+// ReSharper disable ExpressionIsAlwaysNull
 
 namespace GuardAgainstLib.Test
 {
@@ -11,7 +14,7 @@ namespace GuardAgainstLib.Test
         public Test_ArgumentBeingGreaterThanMaximum(ITestOutputHelper output) : base(output)
         {
         }
-        
+
         [Fact]
         public void WhenArgumentIsEqualToMaximum_ShouldNotThrow()
         {
@@ -43,19 +46,19 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
-        public void WhenMaximumValueIsNull_ShouldThrowArgumentNullException()
+        public void WhenArgumentIsLessThanMaximum_ShouldNotBeSlow()
         {
             var myArgument = "A";
-            var ex = Should.Throw<ArgumentNullException>(() =>
-            {
-                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, null, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            });
-
-            ex.ParamName.ShouldBe("maximumAllowedValue");
-            ex.Data.Count.ShouldBe(1);
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, "B", nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
         }
 
         [Fact]
@@ -72,6 +75,22 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
+        public void WhenArgumentIsNull_ShouldNotBeSlow()
+        {
+            var myArgument = default(string);
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, "B", nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
+        }
+
+        [Fact]
         public void WhenArgumentIsNull_ShouldNotThrow()
         {
             var myArgument = default(string);
@@ -85,29 +104,19 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
-        public void WhenArgumentIsLessThanMaximum_ShouldNotBeSlow()
+        public void WhenMaximumValueIsNull_ShouldThrowArgumentNullException()
         {
             var myArgument = "A";
-            Should.CompleteIn(() =>
+            var ex = Should.Throw<ArgumentNullException>(() =>
             {
-                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, "B", nameof(myArgument), null, new Dictionary<object, object>
+                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, null, nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
-            }, TimeSpan.FromMilliseconds(1));
-        }
+            });
 
-        [Fact]
-        public void WhenArgumentIsNull_ShouldNotBeSlow()
-        {
-            var myArgument = default(string);
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, "B", nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            }, TimeSpan.FromMilliseconds(1));
+            ex.ParamName.ShouldBe("maximumAllowedValue");
+            ex.Data.Count.ShouldBe(1);
         }
     }
 }

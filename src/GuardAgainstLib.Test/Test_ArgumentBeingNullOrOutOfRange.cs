@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
+
+// ReSharper disable ExpressionIsAlwaysNull
 
 namespace GuardAgainstLib.Test
 {
@@ -10,6 +13,22 @@ namespace GuardAgainstLib.Test
     {
         public Test_ArgumentBeingNullOrOutOfRange(ITestOutputHelper output) : base(output)
         {
+        }
+
+        [Fact]
+        public void WhenArgumentIsEqualToMaximum_ShouldNotBeSlow()
+        {
+            var myArgument = "D";
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingNullOrOutOfRange(myArgument, "B", "D", nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
         }
 
         [Fact]
@@ -23,6 +42,22 @@ namespace GuardAgainstLib.Test
                     { "a", "1" }
                 });
             });
+        }
+
+        [Fact]
+        public void WhenArgumentIsEqualToMinimum_ShouldNotBeSlow()
+        {
+            var myArgument = "B";
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingNullOrOutOfRange(myArgument, "B", "D", nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
         }
 
         [Fact]
@@ -53,6 +88,22 @@ namespace GuardAgainstLib.Test
             ex.ParamName.ShouldBe(nameof(myArgument));
             ex.Data.Count.ShouldBe(1);
             ex.Data["a"].ShouldBe("1");
+        }
+
+        [Fact]
+        public void WhenArgumentIsInRange_ShouldNotBeSlow()
+        {
+            var myArgument = "C";
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingNullOrOutOfRange(myArgument, "B", "D", nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
         }
 
         [Fact]
@@ -131,45 +182,6 @@ namespace GuardAgainstLib.Test
 
             ex.ParamName.ShouldBe("minimumAllowedValue");
             ex.Data.Count.ShouldBe(1);
-        }
-
-        [Fact]
-        public void WhenArgumentIsEqualToMaximum_ShouldNotBeSlow()
-        {
-            var myArgument = "D";
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.ArgumentBeingNullOrOutOfRange(myArgument, "B", "D", nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            }, TimeSpan.FromMilliseconds(1));
-        }
-
-        [Fact]
-        public void WhenArgumentIsEqualToMinimum_ShouldNotBeSlow()
-        {
-            var myArgument = "B";
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.ArgumentBeingNullOrOutOfRange(myArgument, "B", "D", nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            }, TimeSpan.FromMilliseconds(1));
-        }
-
-        [Fact]
-        public void WhenArgumentIsInRange_ShouldNotBeSlow()
-        {
-            var myArgument = "C";
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.ArgumentBeingNullOrOutOfRange(myArgument, "B", "D", nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            }, TimeSpan.FromMilliseconds(1));
         }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text.RegularExpressions;
 
 namespace GuardAgainstLib
 {
@@ -16,25 +13,6 @@ namespace GuardAgainstLib
 #endif
     public static class GuardAgainst
     {
-        private const string ObsoleteExpressionText =
-            "This expression based overload has a severe performance overhead and does not perform well on high load code paths. For this reason it is deprecated and will be removed in future versions. Please switch to the non-expression equivalent.";
-
-        /// <summary>
-        /// Indicates what the boolean condition flags means.
-        /// </summary>
-        public enum ConditionMeaning
-        {
-            /// <summary>
-            /// True means invalid
-            /// </summary>
-            TrueMeansInvalid,
-
-            /// <summary>
-            /// True means valid
-            /// </summary>
-            TrueMeansValid
-        }
-
         #region ArgumentBeingNull
 
         /// <summary>
@@ -56,9 +34,9 @@ namespace GuardAgainstLib
         /// </param>
         /// <exception cref="ArgumentNullException" ></exception>
         public static void ArgumentBeingNull<T>(T argumentValue,
-                                                string argumentName = default(string),
-                                                string exceptionMessage = default(string),
-                                                IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+                                                string argumentName = default,
+                                                string exceptionMessage = default,
+                                                IDictionary<object, object> additionalData = default)
             where T : class
         {
             if (argumentValue != null)
@@ -96,9 +74,9 @@ namespace GuardAgainstLib
         /// <exception cref="ArgumentNullException" ></exception>
         /// <exception cref="ArgumentException" ></exception>
         public static void ArgumentBeingNullOrWhitespace(string argumentValue,
-                                                         string argumentName = default(string),
-                                                         string exceptionMessage = default(string),
-                                                         IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+                                                         string argumentName = default,
+                                                         string exceptionMessage = default,
+                                                         IDictionary<object, object> additionalData = default)
         {
             if (!string.IsNullOrWhiteSpace(argumentValue))
             {
@@ -143,9 +121,9 @@ namespace GuardAgainstLib
         /// </param>
         /// <exception cref="ArgumentException" ></exception>
         public static void ArgumentBeingWhitespace(string argumentValue,
-                                                   string argumentName = default(string),
-                                                   string exceptionMessage = default(string),
-                                                   IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+                                                   string argumentName = default,
+                                                   string exceptionMessage = default,
+                                                   IDictionary<object, object> additionalData = default)
         {
             if (argumentValue is null ||
                 !string.IsNullOrWhiteSpace(argumentValue))
@@ -182,9 +160,9 @@ namespace GuardAgainstLib
         /// <exception cref="ArgumentNullException" ></exception>
         /// <exception cref="ArgumentException" ></exception>
         public static void ArgumentBeingNullOrEmpty(string argumentValue,
-                                                    string argumentName = default(string),
-                                                    string exceptionMessage = default(string),
-                                                    IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+                                                    string argumentName = default,
+                                                    string exceptionMessage = default,
+                                                    IDictionary<object, object> additionalData = default)
         {
             if (!string.IsNullOrEmpty(argumentValue))
             {
@@ -227,9 +205,9 @@ namespace GuardAgainstLib
         /// <exception cref="ArgumentNullException" ></exception>
         /// <exception cref="ArgumentException" ></exception>
         public static void ArgumentBeingNullOrEmpty<T>(IEnumerable<T> argumentValue,
-                                                       string argumentName = default(string),
-                                                       string exceptionMessage = default(string),
-                                                       IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+                                                       string argumentName = default,
+                                                       string exceptionMessage = default,
+                                                       IDictionary<object, object> additionalData = default)
         {
             if (argumentValue is null)
             {
@@ -266,12 +244,11 @@ namespace GuardAgainstLib
         /// <param name="additionalData" >
         /// Additional key/value data to add to the Data property of the exception.
         /// </param>
-        /// <exception cref="ArgumentNullException" ></exception>
         /// <exception cref="ArgumentException" ></exception>
         public static void ArgumentBeingEmpty(string argumentValue,
-                                              string argumentName = default(string),
-                                              string exceptionMessage = default(string),
-                                              IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+                                              string argumentName = default,
+                                              string exceptionMessage = default,
+                                              IDictionary<object, object> additionalData = default)
         {
             if (argumentValue is null ||
                 !string.IsNullOrEmpty(argumentValue))
@@ -300,12 +277,11 @@ namespace GuardAgainstLib
         /// <param name="additionalData" >
         /// Additional key/value data to add to the Data property of the exception.
         /// </param>
-        /// <exception cref="ArgumentNullException" ></exception>
         /// <exception cref="ArgumentException" ></exception>
         public static void ArgumentBeingEmpty<T>(IEnumerable<T> argumentValue,
-                                                 string argumentName = default(string),
-                                                 string exceptionMessage = default(string),
-                                                 IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+                                                 string argumentName = default,
+                                                 string exceptionMessage = default,
+                                                 IDictionary<object, object> additionalData = default)
         {
             if (argumentValue is null ||
                 argumentValue.Any())
@@ -346,9 +322,9 @@ namespace GuardAgainstLib
         /// <exception cref="ArgumentOutOfRangeException" ></exception>
         public static void ArgumentBeingNullOrLessThanMinimum<T>(T argumentValue,
                                                                  T minimumAllowedValue,
-                                                                 string argumentName = default(string),
-                                                                 string exceptionMessage = default(string),
-                                                                 IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+                                                                 string argumentName = default,
+                                                                 string exceptionMessage = default,
+                                                                 IDictionary<object, object> additionalData = default)
             where T : class, IComparable<T>
         {
             Exception ex = null;
@@ -400,28 +376,30 @@ namespace GuardAgainstLib
         /// <param name="additionalData" >
         /// Additional key/value data to add to the Data property of the exception.
         /// </param>
+        /// <exception cref="ArgumentNullException" ></exception>
         /// <exception cref="ArgumentOutOfRangeException" ></exception>
         public static void ArgumentBeingLessThanMinimum<T>(T argumentValue,
                                                            T minimumAllowedValue,
-                                                           string argumentName = default(string),
-                                                           string exceptionMessage = default(string),
-                                                           IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+                                                           string argumentName = default,
+                                                           string exceptionMessage = default,
+                                                           IDictionary<object, object> additionalData = default)
             where T : IComparable<T>
         {
-            if (argumentValue.CanBeNull() && argumentValue == null)
+            if (argumentValue.TypeOfCanBeNull() && argumentValue == null)
             {
                 return;
             }
 
             Exception ex = null;
 
-            if (minimumAllowedValue.CanBeNull() && minimumAllowedValue == null)
+            if (minimumAllowedValue.TypeOfCanBeNull() && minimumAllowedValue == null)
             {
                 ex = new ArgumentNullException(nameof(minimumAllowedValue));
             }
             else if (argumentValue.IsLessThan(minimumAllowedValue))
             {
-                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
+                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(),
+                                                     argumentValue,
                                                      exceptionMessage.ToNullIfWhitespace());
             }
 
@@ -462,9 +440,9 @@ namespace GuardAgainstLib
         /// <exception cref="ArgumentOutOfRangeException" ></exception>
         public static void ArgumentBeingNullOrGreaterThanMaximum<T>(T argumentValue,
                                                                     T maximumAllowedValue,
-                                                                    string argumentName = default(string),
-                                                                    string exceptionMessage = default(string),
-                                                                    IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+                                                                    string argumentName = default,
+                                                                    string exceptionMessage = default,
+                                                                    IDictionary<object, object> additionalData = default)
             where T : class, IComparable<T>
         {
             Exception ex = null;
@@ -516,23 +494,23 @@ namespace GuardAgainstLib
         /// <param name="additionalData" >
         /// Additional key/value data to add to the Data property of the exception.
         /// </param>
+        /// <exception cref="ArgumentNullException" ></exception>
         /// <exception cref="ArgumentOutOfRangeException" ></exception>
         public static void ArgumentBeingGreaterThanMaximum<T>(T argumentValue,
                                                               T maximumAllowedValue,
-                                                              string argumentName = default(string),
-                                                              string exceptionMessage = default(string),
-                                                              IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+                                                              string argumentName = default,
+                                                              string exceptionMessage = default,
+                                                              IDictionary<object, object> additionalData = default)
             where T : IComparable<T>
         {
-            if (argumentValue.CanBeNull() &&
-                argumentValue == null)
+            if (argumentValue.TypeOfCanBeNull() && argumentValue == null)
             {
                 return;
             }
 
             Exception ex = null;
 
-            if (maximumAllowedValue.CanBeNull() && maximumAllowedValue == null)
+            if (maximumAllowedValue.TypeOfCanBeNull() && maximumAllowedValue == null)
             {
                 ex = new ArgumentNullException(nameof(maximumAllowedValue));
             }
@@ -584,9 +562,9 @@ namespace GuardAgainstLib
         public static void ArgumentBeingNullOrOutOfRange<T>(T argumentValue,
                                                             T minimumAllowedValue,
                                                             T maximumAllowedValue,
-                                                            string argumentName = default(string),
-                                                            string exceptionMessage = default(string),
-                                                            IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+                                                            string argumentName = default,
+                                                            string exceptionMessage = default,
+                                                            IDictionary<object, object> additionalData = default)
             where T : class, IComparable<T>
         {
             Exception ex = null;
@@ -606,7 +584,8 @@ namespace GuardAgainstLib
             }
             else if (!argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
             {
-                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
+                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(),
+                                                     argumentValue,
                                                      exceptionMessage.ToNullIfWhitespace());
             }
 
@@ -646,36 +625,35 @@ namespace GuardAgainstLib
         /// <param name="additionalData" >
         /// Additional key/value data to add to the Data property of the exception.
         /// </param>
+        /// <exception cref="ArgumentNullException" ></exception>
         /// <exception cref="ArgumentOutOfRangeException" ></exception>
         public static void ArgumentBeingOutOfRange<T>(T argumentValue,
                                                       T minimumAllowedValue,
                                                       T maximumAllowedValue,
-                                                      string argumentName = default(string),
-                                                      string exceptionMessage = default(string),
-                                                      IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+                                                      string argumentName = default,
+                                                      string exceptionMessage = default,
+                                                      IDictionary<object, object> additionalData = default)
             where T : IComparable<T>
         {
             Exception ex = null;
 
-            if (argumentValue.CanBeNull() &&
-                argumentValue == null)
+            if (argumentValue.TypeOfCanBeNull() && argumentValue == null)
             {
                 return;
             }
 
-            if (minimumAllowedValue.CanBeNull() &&
-                minimumAllowedValue == null)
+            if (minimumAllowedValue.TypeOfCanBeNull() && minimumAllowedValue == null)
             {
                 ex = new ArgumentNullException(nameof(minimumAllowedValue));
             }
-            else if (maximumAllowedValue.CanBeNull() &&
-                     maximumAllowedValue == null)
+            else if (maximumAllowedValue.TypeOfCanBeNull() && maximumAllowedValue == null)
             {
                 ex = new ArgumentNullException(nameof(maximumAllowedValue));
             }
             else if (!argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
             {
-                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
+                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(),
+                                                     argumentValue,
                                                      exceptionMessage.ToNullIfWhitespace());
             }
 
@@ -695,13 +673,8 @@ namespace GuardAgainstLib
         /// <summary>
         /// Throws an ArgumentException if the argument is not valid.
         /// </summary>
-        /// <param name="argumentValue" >
-        /// By default passing
-        /// <c>
-        /// true
-        /// </c>
-        /// indicates that the argument value is invalid. This can be reversed by
-        /// setting conditionMeaning = ConditionMeaning.TrueMeansValid.
+        /// <param name="argumentValueInvalid" >Passing <c>true</c>
+        /// indicates that the argument value is invalid.
         /// </param>
         /// <param name="argumentName" >
         /// Name of the argument. Can be optionally specified to be included in the raised exception.
@@ -713,19 +686,13 @@ namespace GuardAgainstLib
         /// <param name="additionalData" >
         /// Additional key/value data to add to the Data property of the exception.
         /// </param>
-        /// <param name="conditionMeaning" >
-        /// Can be used to change the polarity of the condition.
-        /// Defaults to TrueMeansInvalid. Is used in conjunction with the condition flag to determine whether or not to raise
-        /// the exception.
-        /// </param>
         /// <exception cref="ArgumentException" ></exception>
-        public static void ArgumentBeingInvalid(bool argumentValue,
-                                                string argumentName = default(string),
-                                                string exceptionMessage = default(string),
-                                                IDictionary<object, object> additionalData = default(IDictionary<object, object>),
-                                                ConditionMeaning conditionMeaning = ConditionMeaning.TrueMeansInvalid)
+        public static void ArgumentBeingInvalid(bool argumentValueInvalid,
+                                                string argumentName = default,
+                                                string exceptionMessage = default,
+                                                IDictionary<object, object> additionalData = default)
         {
-            if (!IsInvalid(argumentValue, conditionMeaning))
+            if (!argumentValueInvalid)
             {
                 return;
             }
@@ -734,7 +701,7 @@ namespace GuardAgainstLib
             ex.AddData(additionalData);
             throw ex;
         }
-        
+
         #endregion ArgumentBeingInvalid
 
         #region OperationBeingInvalid
@@ -742,13 +709,12 @@ namespace GuardAgainstLib
         /// <summary>
         /// Throws an InvalidOperationException if the condition is not satisfied.
         /// </summary>
-        /// <param name="condition" >
-        /// By default
+        /// <param name="operationInvalid" >
+        /// Passing
         /// <c>
         /// true
         /// </c>
-        /// indicates that the condition is invalid.
-        /// This can be reversed by setting conditionMeaning = ConditionMeaning.TrueMeansValid.
+        /// indicates that the operation is invalid.
         /// </param>
         /// <param name="exceptionMessage" >
         /// The exception message. An optional error message that describes the exception in more
@@ -757,18 +723,12 @@ namespace GuardAgainstLib
         /// <param name="additionalData" >
         /// Additional key/value data to add to the Data property of the exception.
         /// </param>
-        /// <param name="conditionMeaning" >
-        /// Can be used to change the polarity of the condition.
-        /// Defaults to TrueMeansInvalid. Is used in conjunction with the condition flag to determine whether or not to raise
-        /// the exception.
-        /// </param>
         /// <exception cref="InvalidOperationException" ></exception>
-        public static void OperationBeingInvalid(bool condition,
-                                                 string exceptionMessage = default(string),
-                                                 IDictionary<object, object> additionalData = default(IDictionary<object, object>),
-                                                 ConditionMeaning conditionMeaning = ConditionMeaning.TrueMeansInvalid)
+        public static void OperationBeingInvalid(bool operationInvalid,
+                                                 string exceptionMessage = default,
+                                                 IDictionary<object, object> additionalData = default)
         {
-            if (!IsInvalid(condition, conditionMeaning))
+            if (!operationInvalid)
             {
                 return;
             }
@@ -800,9 +760,9 @@ namespace GuardAgainstLib
         /// </param>
         /// <exception cref="ArgumentException" ></exception>
         public static void ArgumentNotBeingUtcDateTime(DateTime argumentValue,
-                                                       string argumentName = default(string),
-                                                       string exceptionMessage = default(string),
-                                                       IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+                                                       string argumentName = default,
+                                                       string exceptionMessage = default,
+                                                       IDictionary<object, object> additionalData = default)
         {
             if (argumentValue.Kind == DateTimeKind.Utc)
             {
@@ -818,15 +778,14 @@ namespace GuardAgainstLib
 
         #region private stuff
 
-        private static bool CanBeNull<T>(this T @this)
+        private static bool TypeOfCanBeNull<T>(this T _)
         {
-            var typeInfo = typeof(T).GetTypeInfo();
-            return !typeInfo.IsValueType && typeInfo.IsClass;
+            return !typeof(T).IsValueType;
         }
 
         private static string ToNullIfWhitespace(this string @this)
         {
-            return string.IsNullOrWhiteSpace(@this) ? default(string) : @this;
+            return string.IsNullOrWhiteSpace(@this) ? default : @this;
         }
 
         private static void AddData(this Exception ex,
@@ -863,13 +822,6 @@ namespace GuardAgainstLib
             where T : IComparable<T>
         {
             return @this.CompareTo(lowerBound) > 0;
-        }
-
-        private static bool IsInvalid(bool condition,
-                                      ConditionMeaning conditionMeaning)
-        {
-            return !condition && conditionMeaning == ConditionMeaning.TrueMeansValid ||
-                   condition && conditionMeaning == ConditionMeaning.TrueMeansInvalid;
         }
 
         #endregion private stuff

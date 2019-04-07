@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
+
+// ReSharper disable ExpressionIsAlwaysNull
 
 namespace GuardAgainstLib.Test
 {
@@ -10,6 +13,22 @@ namespace GuardAgainstLib.Test
     {
         public Test_ArgumentBeingNullOrLessThanMinimum(ITestOutputHelper output) : base(output)
         {
+        }
+
+        [Fact]
+        public void WhenArgumentIsEqualToMinimum_ShouldNotBeSlow()
+        {
+            var myArgument = "A";
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingNullOrLessThanMinimum(myArgument, "A", nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
         }
 
         [Fact]
@@ -23,6 +42,22 @@ namespace GuardAgainstLib.Test
                     { "a", "1" }
                 });
             });
+        }
+
+        [Fact]
+        public void WhenArgumentIsGreaterThanMinimum_ShouldNotBeSlow()
+        {
+            var myArgument = "B";
+            Benchmark.Do(() =>
+                         {
+                             GuardAgainst.ArgumentBeingNullOrLessThanMinimum(myArgument, "A", nameof(myArgument), null, new Dictionary<object, object>
+                             {
+                                 { "a", "1" }
+                             });
+                         },
+                         1000,
+                         MethodBase.GetCurrentMethod().Name,
+                         Output);
         }
 
         [Fact]
@@ -86,32 +121,6 @@ namespace GuardAgainstLib.Test
 
             ex.ParamName.ShouldBe("minimumAllowedValue");
             ex.Data.Count.ShouldBe(1);
-        }
-
-        [Fact]
-        public void WhenArgumentIsEqualToMinimum_ShouldNotBeSlow()
-        {
-            var myArgument = "A";
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(myArgument, "A", nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            }, TimeSpan.FromMilliseconds(1));
-        }
-
-        [Fact]
-        public void WhenArgumentIsGreaterThanMinimum_ShouldNotBeSlow()
-        {
-            var myArgument = "B";
-            Should.CompleteIn(() =>
-            {
-                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(myArgument, "A", nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            }, TimeSpan.FromMilliseconds(1));
         }
     }
 }
