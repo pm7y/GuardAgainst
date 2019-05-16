@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Linq;
-#if !DEBUGGABLE
-using System.Diagnostics;
-#endif
+
 // ReSharper disable InconsistentNaming
 
 namespace GuardAgainstLib
@@ -176,7 +173,7 @@ namespace GuardAgainstLib
                                                                  IDictionary<object, object> additionalData = default)
             where T : class, IComparable<T>
         {
-            Exception ex;
+            Exception ex = null;
 
             if (argumentValue is null)
             {
@@ -192,7 +189,8 @@ namespace GuardAgainstLib
                 ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
                                                      exceptionMessage.ToNullIfWhitespace());
             }
-            else
+
+            if (ex is null)
             {
                 return;
             }
@@ -229,14 +227,14 @@ namespace GuardAgainstLib
                                                            IDictionary<object, object> additionalData = default)
             where T : IComparable<T>
         {
-            if (argumentValue is null)
+            if (argumentValue.TypeOfCanBeNull() && argumentValue == null)
             {
                 return;
             }
 
-            Exception ex;
+            Exception ex = null;
 
-            if (minimumAllowedValue is null)
+            if (minimumAllowedValue.TypeOfCanBeNull() && minimumAllowedValue == null)
             {
                 ex = new ArgumentNullException(nameof(minimumAllowedValue));
             }
@@ -246,7 +244,8 @@ namespace GuardAgainstLib
                                                      argumentValue,
                                                      exceptionMessage.ToNullIfWhitespace());
             }
-            else
+
+            if (ex is null)
             {
                 return;
             }
@@ -284,7 +283,7 @@ namespace GuardAgainstLib
                                                                     IDictionary<object, object> additionalData = default)
             where T : class, IComparable<T>
         {
-            Exception ex;
+            Exception ex = null;
 
             if (argumentValue is null)
             {
@@ -300,7 +299,8 @@ namespace GuardAgainstLib
                 ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
                                                      exceptionMessage.ToNullIfWhitespace());
             }
-            else
+
+            if (ex is null)
             {
                 return;
             }
@@ -337,14 +337,14 @@ namespace GuardAgainstLib
                                                               IDictionary<object, object> additionalData = default)
             where T : IComparable<T>
         {
-            if (argumentValue is null)
+            if (argumentValue.TypeOfCanBeNull() && argumentValue == null)
             {
                 return;
             }
 
-            Exception ex;
+            Exception ex = null;
 
-            if (maximumAllowedValue is null)
+            if (maximumAllowedValue.TypeOfCanBeNull() && maximumAllowedValue == null)
             {
                 ex = new ArgumentNullException(nameof(maximumAllowedValue));
             }
@@ -353,7 +353,8 @@ namespace GuardAgainstLib
                 ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
                                                      exceptionMessage.ToNullIfWhitespace());
             }
-            else
+
+            if (ex is null)
             {
                 return;
             }
@@ -396,7 +397,7 @@ namespace GuardAgainstLib
                                                             IDictionary<object, object> additionalData = default)
             where T : class, IComparable<T>
         {
-            Exception ex;
+            Exception ex = null;
 
             if (argumentValue is null)
             {
@@ -417,7 +418,8 @@ namespace GuardAgainstLib
                                                      argumentValue,
                                                      exceptionMessage.ToNullIfWhitespace());
             }
-            else
+
+            if (ex is null)
             {
                 return;
             }
@@ -459,18 +461,18 @@ namespace GuardAgainstLib
                                                       IDictionary<object, object> additionalData = default)
             where T : IComparable<T>
         {
-            Exception ex;
+            Exception ex = null;
 
-            if (argumentValue is null)
+            if (argumentValue.TypeOfCanBeNull() && argumentValue == null)
             {
                 return;
             }
 
-            if (minimumAllowedValue is null)
+            if (minimumAllowedValue.TypeOfCanBeNull() && minimumAllowedValue == null)
             {
                 ex = new ArgumentNullException(nameof(minimumAllowedValue));
             }
-            else if (maximumAllowedValue is null)
+            else if (maximumAllowedValue.TypeOfCanBeNull() && maximumAllowedValue == null)
             {
                 ex = new ArgumentNullException(nameof(maximumAllowedValue));
             }
@@ -480,7 +482,8 @@ namespace GuardAgainstLib
                                                      argumentValue,
                                                      exceptionMessage.ToNullIfWhitespace());
             }
-            else
+
+            if (ex is null)
             {
                 return;
             }
@@ -735,28 +738,30 @@ namespace GuardAgainstLib
             throw ex;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool TypeOfCanBeNull<T>(this T _)
+        {
+            return !typeof(T).IsValueType;
+        }
+
         private static string ToNullIfWhitespace(this string @this)
         {
             return string.IsNullOrWhiteSpace(@this) ? default : @this;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void AddData(this Exception @this,
-                                    IDictionary<object, object> additionalExceptionData)
+        private static void AddData(this Exception ex,
+                                    IDictionary<object, object> additionalData)
         {
-            if (@this?.Data is null || additionalExceptionData is null || !additionalExceptionData.Any())
+            if (ex?.Data is null || additionalData is null || !additionalData.Any())
             {
                 return;
             }
 
-            foreach (var key in additionalExceptionData.Keys)
+            foreach (var key in additionalData.Keys)
             {
-                @this.Data.Add(key, additionalExceptionData[key]);
+                ex.Data.Add(key, additionalData[key]);
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsInRange<T>(this T @this,
                                          T lowerBound,
                                          T upperBound)
@@ -765,7 +770,6 @@ namespace GuardAgainstLib
             return @this.CompareTo(lowerBound) >= 0 && @this.CompareTo(upperBound) <= 0;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsLessThan<T>(this T @this,
                                           T lowerBound)
             where T : IComparable<T>
@@ -773,7 +777,6 @@ namespace GuardAgainstLib
             return @this.CompareTo(lowerBound) < 0;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsMoreThan<T>(this T @this,
                                           T lowerBound)
             where T : IComparable<T>
