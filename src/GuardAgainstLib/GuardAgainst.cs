@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+// ReSharper disable InconsistentNaming
+
 namespace GuardAgainstLib
 {
     /// <summary>
@@ -9,30 +11,37 @@ namespace GuardAgainstLib
     /// More information @ https://github.com/pmcilreavy/GuardAgainst
     /// </summary>
 #if !DEBUGGABLE
-    [System.Diagnostics.DebuggerStepThrough]
+    [DebuggerStepThrough]
 #endif
     public static class GuardAgainst
     {
-        #region ArgumentBeingNull
-
         /// <summary>
-        /// Throws an ArgumentNullException if the argumentValue is null.
+        /// Guards against an argument being null. Will throw an <see cref="ArgumentNullException">ArgumentNullException</see> if the argument is null.
         /// </summary>
-        /// <typeparam name="T" ></typeparam>
+        /// <typeparam name="T">A reference type.</typeparam>
         /// <param name="argumentValue" >
-        /// The argument value to check for null.
+        /// The argument value to guard.
         /// </param>
-        /// <param name="argumentName" >
-        /// Name of the argument. Can be optionally specified to be included in the raised exception.
+        /// <param name="argumentName">
+        /// (Optional) Name of the argument. If specified it will be included in the thrown exception and therefore make it more informative.
         /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
+        /// <param name="exceptionMessage">
+        /// (Optional) Custom error message. A specific error message that can be used to describe the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
+        /// <param name="additionalData">
+        /// (Optional) Additional information to add to the Data property of the thrown exception.
         /// </param>
-        /// <exception cref="ArgumentNullException" ></exception>
+        /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is <c>null</c>.</exception>
+        /// <example>
+        /// <code>
+        /// public void MyAmazingMethod(string myArgument)
+        /// {
+        ///     GuardAgainst.ArgumentBeingNull(myArgument, nameof(myArgument));
+        ///
+        ///     // Remaining code omitted.
+        /// }
+        /// </code>
+        /// </example>
         public static void ArgumentBeingNull<T>(T argumentValue,
                                                 string argumentName = default,
                                                 string exceptionMessage = default,
@@ -50,29 +59,35 @@ namespace GuardAgainstLib
             throw ex;
         }
 
-        #endregion ArgumentBeingNull
-
-        #region ArgumentBeingNullOrWhitespace
-
         /// <summary>
-        /// Throws an ArgumentNullException if the argumentValue is null.
-        /// Throws an ArgumentException if the argumentValue is a whitespace string only.
+        /// Guards against an argument being null or whitespace.
+        /// Will throw an <see cref="ArgumentNullException">ArgumentNullException</see> if the argument is null.
+        /// Will throw an <see cref="ArgumentException">ArgumentException</see> if the argument is whitespace.
         /// </summary>
         /// <param name="argumentValue" >
-        /// The argument value to check for null or whitespace.
+        /// The argument value to guard.
         /// </param>
-        /// <param name="argumentName" >
-        /// Name of the argument. Can be optionally specified to be included in the raised exception.
+        /// <param name="argumentName">
+        /// (Optional) Name of the argument. If specified it will be included in the thrown exception and therefore make it more informative.
         /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
+        /// <param name="exceptionMessage">
+        /// (Optional) Custom error message. A specific error message that can be used to describe the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
+        /// <param name="additionalData">
+        /// (Optional) Additional information to add to the Data property of the thrown exception.
         /// </param>
-        /// <exception cref="ArgumentNullException" ></exception>
-        /// <exception cref="ArgumentException" ></exception>
+        /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Will be thrown when <c>argumentValue</c> is whitespace.</exception>
+        /// <example>
+        /// <code>
+        /// public void MyAmazingMethod(string myArgument)
+        /// {
+        ///     GuardAgainst.ArgumentBeingNullOrWhitespace(myArgument, nameof(myArgument));
+        ///
+        ///     // Remaining code omitted.
+        /// }
+        /// </code>
+        /// </example>
         public static void ArgumentBeingNullOrWhitespace(string argumentValue,
                                                          string argumentName = default,
                                                          string exceptionMessage = default,
@@ -98,10 +113,6 @@ namespace GuardAgainstLib
             ex.AddData(additionalData);
             throw ex;
         }
-
-        #endregion ArgumentBeingNullOrWhitespace
-
-        #region ArgumentBeingWhitespace
 
         /// <summary>
         /// Throws an ArgumentException if the argumentValue is a whitespace string only.
@@ -136,9 +147,449 @@ namespace GuardAgainstLib
             throw ex;
         }
 
-        #endregion ArgumentBeingWhitespace
+        /// <summary>
+        /// Throws an ArgumentNullException if the argumentValue is null.
+        /// Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
+        /// </summary>
+        /// <param name="argumentValue" >
+        /// The argument value to check for null or if less than minimum.
+        /// </param>
+        /// <param name="minimumAllowedValue" >
+        /// The minimum allowed value.
+        /// </param>
+        /// <param name="argumentName" >
+        /// Name of the argument. Can be optionally specified to be included in the raised exception.
+        /// </param>
+        /// <param name="exceptionMessage" >
+        /// The exception message. An optional error message that describes the exception in more
+        /// detail. If left null, the default .net message will be generated.
+        /// </param>
+        /// <param name="additionalData" >
+        /// Additional key/value data to add to the Data property of the exception.
+        /// </param>
+        /// <exception cref="ArgumentNullException" ></exception>
+        /// <exception cref="ArgumentOutOfRangeException" ></exception>
+        public static void ArgumentBeingNullOrLessThanMinimum<T>(T argumentValue,
+                                                                 T minimumAllowedValue,
+                                                                 string argumentName = default,
+                                                                 string exceptionMessage = default,
+                                                                 IDictionary<object, object> additionalData = default)
+            where T : class, IComparable<T>
+        {
+            Exception ex = null;
 
-        #region ArgumentBeingNullOrEmpty
+            if (argumentValue is null)
+            {
+                ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+                                               exceptionMessage.ToNullIfWhitespace());
+            }
+            else if (minimumAllowedValue is null)
+            {
+                ex = new ArgumentNullException(nameof(minimumAllowedValue));
+            }
+            else if (argumentValue.IsLessThan(minimumAllowedValue))
+            {
+                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
+                                                     exceptionMessage.ToNullIfWhitespace());
+            }
+
+            if (ex is null)
+            {
+                return;
+            }
+
+            ex.AddData(additionalData);
+            throw ex;
+        }
+
+        /// <summary>
+        /// Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
+        /// </summary>
+        /// <param name="argumentValue" >
+        /// The argument value to check if less than minimum.
+        /// </param>
+        /// <param name="minimumAllowedValue" >
+        /// The minimum allowed value.
+        /// </param>
+        /// <param name="argumentName" >
+        /// Name of the argument. Can be optionally specified to be included in the raised exception.
+        /// </param>
+        /// <param name="exceptionMessage" >
+        /// The exception message. An optional error message that describes the exception in more
+        /// detail. If left null, the default .net message will be generated.
+        /// </param>
+        /// <param name="additionalData" >
+        /// Additional key/value data to add to the Data property of the exception.
+        /// </param>
+        /// <exception cref="ArgumentNullException" ></exception>
+        /// <exception cref="ArgumentOutOfRangeException" ></exception>
+        public static void ArgumentBeingLessThanMinimum<T>(T argumentValue,
+                                                           T minimumAllowedValue,
+                                                           string argumentName = default,
+                                                           string exceptionMessage = default,
+                                                           IDictionary<object, object> additionalData = default)
+            where T : IComparable<T>
+        {
+            if (argumentValue.TypeOfCanBeNull() && argumentValue == null)
+            {
+                return;
+            }
+
+            Exception ex = null;
+
+            if (minimumAllowedValue.TypeOfCanBeNull() && minimumAllowedValue == null)
+            {
+                ex = new ArgumentNullException(nameof(minimumAllowedValue));
+            }
+            else if (argumentValue.IsLessThan(minimumAllowedValue))
+            {
+                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(),
+                                                     argumentValue,
+                                                     exceptionMessage.ToNullIfWhitespace());
+            }
+
+            if (ex is null)
+            {
+                return;
+            }
+
+            ex.AddData(additionalData);
+            throw ex;
+        }
+
+        /// <summary>
+        /// Throws an ArgumentNullException if the argumentValue is null.
+        /// Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
+        /// </summary>
+        /// <param name="argumentValue" >
+        /// The argument value to check for null or if greater than maximum.
+        /// </param>
+        /// <param name="maximumAllowedValue" >
+        /// The maximum allowed value.
+        /// </param>
+        /// <param name="argumentName" >
+        /// Name of the argument. Can be optionally specified to be included in the raised exception.
+        /// </param>
+        /// <param name="exceptionMessage" >
+        /// The exception message. An optional error message that describes the exception in more
+        /// detail. If left null, the default .net message will be generated.
+        /// </param>
+        /// <param name="additionalData" >
+        /// Additional key/value data to add to the Data property of the exception.
+        /// </param>
+        /// <exception cref="ArgumentNullException" ></exception>
+        /// <exception cref="ArgumentOutOfRangeException" ></exception>
+        public static void ArgumentBeingNullOrGreaterThanMaximum<T>(T argumentValue,
+                                                                    T maximumAllowedValue,
+                                                                    string argumentName = default,
+                                                                    string exceptionMessage = default,
+                                                                    IDictionary<object, object> additionalData = default)
+            where T : class, IComparable<T>
+        {
+            Exception ex = null;
+
+            if (argumentValue is null)
+            {
+                ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+                                               exceptionMessage.ToNullIfWhitespace());
+            }
+            else if (maximumAllowedValue is null)
+            {
+                ex = new ArgumentNullException(nameof(maximumAllowedValue));
+            }
+            else if (argumentValue.IsMoreThan(maximumAllowedValue))
+            {
+                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
+                                                     exceptionMessage.ToNullIfWhitespace());
+            }
+
+            if (ex is null)
+            {
+                return;
+            }
+
+            ex.AddData(additionalData);
+            throw ex;
+        }
+
+        /// <summary>
+        /// Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
+        /// </summary>
+        /// <param name="argumentValue" >
+        /// The argument value to check if greater than maximum.
+        /// </param>
+        /// <param name="maximumAllowedValue" >
+        /// The maximum allowed value.
+        /// </param>
+        /// <param name="argumentName" >
+        /// Name of the argument. Can be optionally specified to be included in the raised exception.
+        /// </param>
+        /// <param name="exceptionMessage" >
+        /// The exception message. An optional error message that describes the exception in more
+        /// detail. If left null, the default .net message will be generated.
+        /// </param>
+        /// <param name="additionalData" >
+        /// Additional key/value data to add to the Data property of the exception.
+        /// </param>
+        /// <exception cref="ArgumentNullException" ></exception>
+        /// <exception cref="ArgumentOutOfRangeException" ></exception>
+        public static void ArgumentBeingGreaterThanMaximum<T>(T argumentValue,
+                                                              T maximumAllowedValue,
+                                                              string argumentName = default,
+                                                              string exceptionMessage = default,
+                                                              IDictionary<object, object> additionalData = default)
+            where T : IComparable<T>
+        {
+            if (argumentValue.TypeOfCanBeNull() && argumentValue == null)
+            {
+                return;
+            }
+
+            Exception ex = null;
+
+            if (maximumAllowedValue.TypeOfCanBeNull() && maximumAllowedValue == null)
+            {
+                ex = new ArgumentNullException(nameof(maximumAllowedValue));
+            }
+            else if (argumentValue.IsMoreThan(maximumAllowedValue))
+            {
+                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
+                                                     exceptionMessage.ToNullIfWhitespace());
+            }
+
+            if (ex is null)
+            {
+                return;
+            }
+
+            ex.AddData(additionalData);
+            throw ex;
+        }
+
+        /// <summary>
+        /// Throws an ArgumentNullException if the argumentValue is null.
+        /// Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
+        /// Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
+        /// </summary>
+        /// <param name="argumentValue" >
+        /// The argument value to check for null or if out of range.
+        /// </param>
+        /// <param name="minimumAllowedValue" >
+        /// The minimum allowed value.
+        /// </param>
+        /// <param name="maximumAllowedValue" >
+        /// The maximum allowed value.
+        /// </param>
+        /// <param name="argumentName" >
+        /// Name of the argument. Can be optionally specified to be included in the raised exception.
+        /// </param>
+        /// <param name="exceptionMessage" >
+        /// The exception message. An optional error message that describes the exception in more
+        /// detail. If left null, the default .net message will be generated.
+        /// </param>
+        /// <param name="additionalData" >
+        /// Additional key/value data to add to the Data property of the exception.
+        /// </param>
+        /// <exception cref="ArgumentNullException" ></exception>
+        /// <exception cref="ArgumentOutOfRangeException" ></exception>
+        public static void ArgumentBeingNullOrOutOfRange<T>(T argumentValue,
+                                                            T minimumAllowedValue,
+                                                            T maximumAllowedValue,
+                                                            string argumentName = default,
+                                                            string exceptionMessage = default,
+                                                            IDictionary<object, object> additionalData = default)
+            where T : class, IComparable<T>
+        {
+            Exception ex = null;
+
+            if (argumentValue is null)
+            {
+                ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+                                               exceptionMessage.ToNullIfWhitespace());
+            }
+            else if (minimumAllowedValue is null)
+            {
+                ex = new ArgumentNullException(nameof(minimumAllowedValue));
+            }
+            else if (maximumAllowedValue is null)
+            {
+                ex = new ArgumentNullException(nameof(maximumAllowedValue));
+            }
+            else if (!argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
+            {
+                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(),
+                                                     argumentValue,
+                                                     exceptionMessage.ToNullIfWhitespace());
+            }
+
+            if (ex is null)
+            {
+                return;
+            }
+
+            ex.AddData(additionalData);
+            throw ex;
+        }
+
+        /// <summary>
+        /// Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
+        /// Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
+        /// </summary>
+        /// <param name="argumentValue" >
+        /// The argument value to check for null or if out of range.
+        /// </param>
+        /// <param name="minimumAllowedValue" >
+        /// The minimum allowed value.
+        /// </param>
+        /// <param name="maximumAllowedValue" >
+        /// The maximum allowed value.
+        /// </param>
+        /// <param name="argumentName" >
+        /// Name of the argument. Can be optionally specified to be included in the raised exception.
+        /// </param>
+        /// <param name="exceptionMessage" >
+        /// The exception message. An optional error message that describes the exception in more
+        /// detail. If left null, the default .net message will be generated.
+        /// </param>
+        /// <param name="additionalData" >
+        /// Additional key/value data to add to the Data property of the exception.
+        /// </param>
+        /// <exception cref="ArgumentNullException" ></exception>
+        /// <exception cref="ArgumentOutOfRangeException" ></exception>
+        public static void ArgumentBeingOutOfRange<T>(T argumentValue,
+                                                      T minimumAllowedValue,
+                                                      T maximumAllowedValue,
+                                                      string argumentName = default,
+                                                      string exceptionMessage = default,
+                                                      IDictionary<object, object> additionalData = default)
+            where T : IComparable<T>
+        {
+            Exception ex = null;
+
+            if (argumentValue.TypeOfCanBeNull() && argumentValue == null)
+            {
+                return;
+            }
+
+            if (minimumAllowedValue.TypeOfCanBeNull() && minimumAllowedValue == null)
+            {
+                ex = new ArgumentNullException(nameof(minimumAllowedValue));
+            }
+            else if (maximumAllowedValue.TypeOfCanBeNull() && maximumAllowedValue == null)
+            {
+                ex = new ArgumentNullException(nameof(maximumAllowedValue));
+            }
+            else if (!argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
+            {
+                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(),
+                                                     argumentValue,
+                                                     exceptionMessage.ToNullIfWhitespace());
+            }
+
+            if (ex is null)
+            {
+                return;
+            }
+
+            ex.AddData(additionalData);
+            throw ex;
+        }
+
+        /// <summary>
+        /// Throws an ArgumentException if the argument is not valid.
+        /// </summary>
+        /// <param name="argumentValueInvalid" >Passing <c>true</c>
+        /// indicates that the argument value is invalid.
+        /// </param>
+        /// <param name="argumentName" >
+        /// Name of the argument. Can be optionally specified to be included in the raised exception.
+        /// </param>
+        /// <param name="exceptionMessage" >
+        /// The exception message. An optional error message that describes the exception in more
+        /// detail. If left null, the default .net message will be generated.
+        /// </param>
+        /// <param name="additionalData" >
+        /// Additional key/value data to add to the Data property of the exception.
+        /// </param>
+        /// <exception cref="ArgumentException" ></exception>
+        public static void ArgumentBeingInvalid(bool argumentValueInvalid,
+                                                string argumentName = default,
+                                                string exceptionMessage = default,
+                                                IDictionary<object, object> additionalData = default)
+        {
+            if (!argumentValueInvalid)
+            {
+                return;
+            }
+
+            var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
+            ex.AddData(additionalData);
+            throw ex;
+        }
+
+        /// <summary>
+        /// Throws an InvalidOperationException if the condition is not satisfied.
+        /// </summary>
+        /// <param name="operationInvalid" >
+        /// Passing
+        /// <c>
+        /// true
+        /// </c>
+        /// indicates that the operation is invalid.
+        /// </param>
+        /// <param name="exceptionMessage" >
+        /// The exception message. An optional error message that describes the exception in more
+        /// detail. If left null, the default .net message will be generated.
+        /// </param>
+        /// <param name="additionalData" >
+        /// Additional key/value data to add to the Data property of the exception.
+        /// </param>
+        /// <exception cref="InvalidOperationException" ></exception>
+        public static void OperationBeingInvalid(bool operationInvalid,
+                                                 string exceptionMessage = default,
+                                                 IDictionary<object, object> additionalData = default)
+        {
+            if (!operationInvalid)
+            {
+                return;
+            }
+
+            var ex = new InvalidOperationException(exceptionMessage.ToNullIfWhitespace());
+            ex.AddData(additionalData);
+            throw ex;
+        }
+
+        /// <summary>
+        /// Throws an ArgumentException if the DateTime argument does not have a Utc Kind.
+        /// </summary>
+        /// <param name="argumentValue" >
+        /// The DateTime object to test for UTC.
+        /// </param>
+        /// <param name="argumentName" >
+        /// Name of the argument. Can be optionally specified to be included in the raised exception.
+        /// </param>
+        /// <param name="exceptionMessage" >
+        /// The exception message. An optional error message that describes the exception in more
+        /// detail. If left null, the default .net message will be generated.
+        /// </param>
+        /// <param name="additionalData" >
+        /// Additional key/value data to add to the Data property of the exception.
+        /// </param>
+        /// <exception cref="ArgumentException" ></exception>
+        public static void ArgumentNotBeingUtcDateTime(DateTime argumentValue,
+                                                       string argumentName = default,
+                                                       string exceptionMessage = default,
+                                                       IDictionary<object, object> additionalData = default)
+        {
+            if (argumentValue.Kind == DateTimeKind.Utc)
+            {
+                return;
+            }
+
+            var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
+            ex.AddData(additionalData);
+            throw ex;
+        }
 
         /// <summary>
         /// Throws an ArgumentNullException if the argumentValue is null.
@@ -224,10 +675,6 @@ namespace GuardAgainstLib
             }
         }
 
-        #endregion ArgumentBeingNullOrEmpty
-
-        #region ArgumentBeingEmpty
-
         /// <summary>
         /// Throws an ArgumentException if the argumentValue is an empty string only.
         /// </summary>
@@ -294,490 +741,6 @@ namespace GuardAgainstLib
             throw ex;
         }
 
-        #endregion ArgumentBeingEmpty
-
-        #region ArgumentBeingNullOrLessThanMinimum
-
-        /// <summary>
-        /// Throws an ArgumentNullException if the argumentValue is null.
-        /// Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
-        /// </summary>
-        /// <param name="argumentValue" >
-        /// The argument value to check for null or if less than minimum.
-        /// </param>
-        /// <param name="minimumAllowedValue" >
-        /// The minimum allowed value.
-        /// </param>
-        /// <param name="argumentName" >
-        /// Name of the argument. Can be optionally specified to be included in the raised exception.
-        /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
-        /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
-        /// </param>
-        /// <exception cref="ArgumentNullException" ></exception>
-        /// <exception cref="ArgumentOutOfRangeException" ></exception>
-        public static void ArgumentBeingNullOrLessThanMinimum<T>(T argumentValue,
-                                                                 T minimumAllowedValue,
-                                                                 string argumentName = default,
-                                                                 string exceptionMessage = default,
-                                                                 IDictionary<object, object> additionalData = default)
-            where T : class, IComparable<T>
-        {
-            Exception ex = null;
-
-            if (argumentValue is null)
-            {
-                ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
-                                               exceptionMessage.ToNullIfWhitespace());
-            }
-            else if (minimumAllowedValue is null)
-            {
-                ex = new ArgumentNullException(nameof(minimumAllowedValue));
-            }
-            else if (argumentValue.IsLessThan(minimumAllowedValue))
-            {
-                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
-                                                     exceptionMessage.ToNullIfWhitespace());
-            }
-
-            if (ex is null)
-            {
-                return;
-            }
-
-            ex.AddData(additionalData);
-            throw ex;
-        }
-
-        #endregion ArgumentBeingNullOrLessThanMinimum
-
-        #region ArgumentBeingLessThanMinimum
-
-        /// <summary>
-        /// Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
-        /// </summary>
-        /// <param name="argumentValue" >
-        /// The argument value to check if less than minimum.
-        /// </param>
-        /// <param name="minimumAllowedValue" >
-        /// The minimum allowed value.
-        /// </param>
-        /// <param name="argumentName" >
-        /// Name of the argument. Can be optionally specified to be included in the raised exception.
-        /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
-        /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
-        /// </param>
-        /// <exception cref="ArgumentNullException" ></exception>
-        /// <exception cref="ArgumentOutOfRangeException" ></exception>
-        public static void ArgumentBeingLessThanMinimum<T>(T argumentValue,
-                                                           T minimumAllowedValue,
-                                                           string argumentName = default,
-                                                           string exceptionMessage = default,
-                                                           IDictionary<object, object> additionalData = default)
-            where T : IComparable<T>
-        {
-            if (argumentValue.TypeOfCanBeNull() && argumentValue == null)
-            {
-                return;
-            }
-
-            Exception ex = null;
-
-            if (minimumAllowedValue.TypeOfCanBeNull() && minimumAllowedValue == null)
-            {
-                ex = new ArgumentNullException(nameof(minimumAllowedValue));
-            }
-            else if (argumentValue.IsLessThan(minimumAllowedValue))
-            {
-                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(),
-                                                     argumentValue,
-                                                     exceptionMessage.ToNullIfWhitespace());
-            }
-
-            if (ex is null)
-            {
-                return;
-            }
-
-            ex.AddData(additionalData);
-            throw ex;
-        }
-
-        #endregion ArgumentBeingLessThanMinimum
-
-        #region ArgumentBeingNullOrGreaterThanMaximum
-
-        /// <summary>
-        /// Throws an ArgumentNullException if the argumentValue is null.
-        /// Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
-        /// </summary>
-        /// <param name="argumentValue" >
-        /// The argument value to check for null or if greater than maximum.
-        /// </param>
-        /// <param name="maximumAllowedValue" >
-        /// The maximum allowed value.
-        /// </param>
-        /// <param name="argumentName" >
-        /// Name of the argument. Can be optionally specified to be included in the raised exception.
-        /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
-        /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
-        /// </param>
-        /// <exception cref="ArgumentNullException" ></exception>
-        /// <exception cref="ArgumentOutOfRangeException" ></exception>
-        public static void ArgumentBeingNullOrGreaterThanMaximum<T>(T argumentValue,
-                                                                    T maximumAllowedValue,
-                                                                    string argumentName = default,
-                                                                    string exceptionMessage = default,
-                                                                    IDictionary<object, object> additionalData = default)
-            where T : class, IComparable<T>
-        {
-            Exception ex = null;
-
-            if (argumentValue is null)
-            {
-                ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
-                                               exceptionMessage.ToNullIfWhitespace());
-            }
-            else if (maximumAllowedValue is null)
-            {
-                ex = new ArgumentNullException(nameof(maximumAllowedValue));
-            }
-            else if (argumentValue.IsMoreThan(maximumAllowedValue))
-            {
-                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
-                                                     exceptionMessage.ToNullIfWhitespace());
-            }
-
-            if (ex is null)
-            {
-                return;
-            }
-
-            ex.AddData(additionalData);
-            throw ex;
-        }
-
-        #endregion ArgumentBeingNullOrGreaterThanMaximum
-
-        #region ArgumentBeingGreaterThanMaximum
-
-        /// <summary>
-        /// Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
-        /// </summary>
-        /// <param name="argumentValue" >
-        /// The argument value to check if greater than maximum.
-        /// </param>
-        /// <param name="maximumAllowedValue" >
-        /// The maximum allowed value.
-        /// </param>
-        /// <param name="argumentName" >
-        /// Name of the argument. Can be optionally specified to be included in the raised exception.
-        /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
-        /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
-        /// </param>
-        /// <exception cref="ArgumentNullException" ></exception>
-        /// <exception cref="ArgumentOutOfRangeException" ></exception>
-        public static void ArgumentBeingGreaterThanMaximum<T>(T argumentValue,
-                                                              T maximumAllowedValue,
-                                                              string argumentName = default,
-                                                              string exceptionMessage = default,
-                                                              IDictionary<object, object> additionalData = default)
-            where T : IComparable<T>
-        {
-            if (argumentValue.TypeOfCanBeNull() && argumentValue == null)
-            {
-                return;
-            }
-
-            Exception ex = null;
-
-            if (maximumAllowedValue.TypeOfCanBeNull() && maximumAllowedValue == null)
-            {
-                ex = new ArgumentNullException(nameof(maximumAllowedValue));
-            }
-            else if (argumentValue.IsMoreThan(maximumAllowedValue))
-            {
-                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
-                                                     exceptionMessage.ToNullIfWhitespace());
-            }
-
-            if (ex is null)
-            {
-                return;
-            }
-
-            ex.AddData(additionalData);
-            throw ex;
-        }
-
-        #endregion ArgumentBeingGreaterThanMaximum
-
-        #region ArgumentBeingNullOrOutOfRange
-
-        /// <summary>
-        /// Throws an ArgumentNullException if the argumentValue is null.
-        /// Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
-        /// Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
-        /// </summary>
-        /// <param name="argumentValue" >
-        /// The argument value to check for null or if out of range.
-        /// </param>
-        /// <param name="minimumAllowedValue" >
-        /// The minimum allowed value.
-        /// </param>
-        /// <param name="maximumAllowedValue" >
-        /// The maximum allowed value.
-        /// </param>
-        /// <param name="argumentName" >
-        /// Name of the argument. Can be optionally specified to be included in the raised exception.
-        /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
-        /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
-        /// </param>
-        /// <exception cref="ArgumentNullException" ></exception>
-        /// <exception cref="ArgumentOutOfRangeException" ></exception>
-        public static void ArgumentBeingNullOrOutOfRange<T>(T argumentValue,
-                                                            T minimumAllowedValue,
-                                                            T maximumAllowedValue,
-                                                            string argumentName = default,
-                                                            string exceptionMessage = default,
-                                                            IDictionary<object, object> additionalData = default)
-            where T : class, IComparable<T>
-        {
-            Exception ex = null;
-
-            if (argumentValue is null)
-            {
-                ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
-                                               exceptionMessage.ToNullIfWhitespace());
-            }
-            else if (minimumAllowedValue is null)
-            {
-                ex = new ArgumentNullException(nameof(minimumAllowedValue));
-            }
-            else if (maximumAllowedValue is null)
-            {
-                ex = new ArgumentNullException(nameof(maximumAllowedValue));
-            }
-            else if (!argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
-            {
-                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(),
-                                                     argumentValue,
-                                                     exceptionMessage.ToNullIfWhitespace());
-            }
-
-            if (ex is null)
-            {
-                return;
-            }
-
-            ex.AddData(additionalData);
-            throw ex;
-        }
-
-        #endregion ArgumentBeingNullOrOutOfRange
-
-        #region ArgumentBeingOutOfRange
-
-        /// <summary>
-        /// Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
-        /// Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
-        /// </summary>
-        /// <param name="argumentValue" >
-        /// The argument value to check for null or if out of range.
-        /// </param>
-        /// <param name="minimumAllowedValue" >
-        /// The minimum allowed value.
-        /// </param>
-        /// <param name="maximumAllowedValue" >
-        /// The maximum allowed value.
-        /// </param>
-        /// <param name="argumentName" >
-        /// Name of the argument. Can be optionally specified to be included in the raised exception.
-        /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
-        /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
-        /// </param>
-        /// <exception cref="ArgumentNullException" ></exception>
-        /// <exception cref="ArgumentOutOfRangeException" ></exception>
-        public static void ArgumentBeingOutOfRange<T>(T argumentValue,
-                                                      T minimumAllowedValue,
-                                                      T maximumAllowedValue,
-                                                      string argumentName = default,
-                                                      string exceptionMessage = default,
-                                                      IDictionary<object, object> additionalData = default)
-            where T : IComparable<T>
-        {
-            Exception ex = null;
-
-            if (argumentValue.TypeOfCanBeNull() && argumentValue == null)
-            {
-                return;
-            }
-
-            if (minimumAllowedValue.TypeOfCanBeNull() && minimumAllowedValue == null)
-            {
-                ex = new ArgumentNullException(nameof(minimumAllowedValue));
-            }
-            else if (maximumAllowedValue.TypeOfCanBeNull() && maximumAllowedValue == null)
-            {
-                ex = new ArgumentNullException(nameof(maximumAllowedValue));
-            }
-            else if (!argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
-            {
-                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(),
-                                                     argumentValue,
-                                                     exceptionMessage.ToNullIfWhitespace());
-            }
-
-            if (ex is null)
-            {
-                return;
-            }
-
-            ex.AddData(additionalData);
-            throw ex;
-        }
-
-        #endregion ArgumentBeingOutOfRange
-
-        #region ArgumentBeingInvalid
-
-        /// <summary>
-        /// Throws an ArgumentException if the argument is not valid.
-        /// </summary>
-        /// <param name="argumentValueInvalid" >Passing <c>true</c>
-        /// indicates that the argument value is invalid.
-        /// </param>
-        /// <param name="argumentName" >
-        /// Name of the argument. Can be optionally specified to be included in the raised exception.
-        /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
-        /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
-        /// </param>
-        /// <exception cref="ArgumentException" ></exception>
-        public static void ArgumentBeingInvalid(bool argumentValueInvalid,
-                                                string argumentName = default,
-                                                string exceptionMessage = default,
-                                                IDictionary<object, object> additionalData = default)
-        {
-            if (!argumentValueInvalid)
-            {
-                return;
-            }
-
-            var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
-            ex.AddData(additionalData);
-            throw ex;
-        }
-
-        #endregion ArgumentBeingInvalid
-
-        #region OperationBeingInvalid
-
-        /// <summary>
-        /// Throws an InvalidOperationException if the condition is not satisfied.
-        /// </summary>
-        /// <param name="operationInvalid" >
-        /// Passing
-        /// <c>
-        /// true
-        /// </c>
-        /// indicates that the operation is invalid.
-        /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
-        /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
-        /// </param>
-        /// <exception cref="InvalidOperationException" ></exception>
-        public static void OperationBeingInvalid(bool operationInvalid,
-                                                 string exceptionMessage = default,
-                                                 IDictionary<object, object> additionalData = default)
-        {
-            if (!operationInvalid)
-            {
-                return;
-            }
-
-            var ex = new InvalidOperationException(exceptionMessage.ToNullIfWhitespace());
-            ex.AddData(additionalData);
-            throw ex;
-        }
-
-        #endregion OperationBeingInvalid
-
-        #region ArgumentNotBeingUtcDateTime
-
-        /// <summary>
-        /// Throws an ArgumentException if the DateTime argument does not have a Utc Kind.
-        /// </summary>
-        /// <param name="argumentValue" >
-        /// The DateTime object to test for UTC.
-        /// </param>
-        /// <param name="argumentName" >
-        /// Name of the argument. Can be optionally specified to be included in the raised exception.
-        /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
-        /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
-        /// </param>
-        /// <exception cref="ArgumentException" ></exception>
-        public static void ArgumentNotBeingUtcDateTime(DateTime argumentValue,
-                                                       string argumentName = default,
-                                                       string exceptionMessage = default,
-                                                       IDictionary<object, object> additionalData = default)
-        {
-            if (argumentValue.Kind == DateTimeKind.Utc)
-            {
-                return;
-            }
-
-            var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
-            ex.AddData(additionalData);
-            throw ex;
-        }
-
-        #endregion ArgumentNotBeingUtcDateTime
-
-        #region private stuff
-
         private static bool TypeOfCanBeNull<T>(this T _)
         {
             return !typeof(T).IsValueType;
@@ -823,7 +786,5 @@ namespace GuardAgainstLib
         {
             return @this.CompareTo(lowerBound) > 0;
         }
-
-        #endregion private stuff
     }
 }
