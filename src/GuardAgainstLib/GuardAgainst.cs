@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-
+using System.Linq;
+#if !DEBUGGABLE
+using System.Diagnostics;
+#endif
 // ReSharper disable InconsistentNaming
 
 namespace GuardAgainstLib
