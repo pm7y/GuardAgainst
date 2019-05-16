@@ -10,9 +10,6 @@ namespace GuardAgainstLib
     /// A single class, containing useful guard clauses, that aims to simplify argument validity checking whilst making your code more readable.
     /// More information @ https://github.com/pmcilreavy/GuardAgainst
     /// </summary>
-#if !DEBUGGABLE
-    [DebuggerStepThrough]
-#endif
     public static class GuardAgainst
     {
         /// <summary>
