@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 // ReSharper disable InconsistentNaming
-
 namespace GuardAgainstLib
 {
     /// <summary>
@@ -227,14 +227,14 @@ namespace GuardAgainstLib
                                                            IDictionary<object, object> additionalData = default)
             where T : IComparable<T>
         {
-            if (argumentValue.TypeOfCanBeNull() && argumentValue == null)
+            if (argumentValue == null)
             {
                 return;
             }
 
             Exception ex = null;
 
-            if (minimumAllowedValue.TypeOfCanBeNull() && minimumAllowedValue == null)
+            if (minimumAllowedValue == null)
             {
                 ex = new ArgumentNullException(nameof(minimumAllowedValue));
             }
@@ -337,14 +337,14 @@ namespace GuardAgainstLib
                                                               IDictionary<object, object> additionalData = default)
             where T : IComparable<T>
         {
-            if (argumentValue.TypeOfCanBeNull() && argumentValue == null)
+            if (argumentValue == null)
             {
                 return;
             }
 
             Exception ex = null;
 
-            if (maximumAllowedValue.TypeOfCanBeNull() && maximumAllowedValue == null)
+            if (maximumAllowedValue == null)
             {
                 ex = new ArgumentNullException(nameof(maximumAllowedValue));
             }
@@ -463,16 +463,16 @@ namespace GuardAgainstLib
         {
             Exception ex = null;
 
-            if (argumentValue.TypeOfCanBeNull() && argumentValue == null)
+            if (argumentValue == null)
             {
                 return;
             }
 
-            if (minimumAllowedValue.TypeOfCanBeNull() && minimumAllowedValue == null)
+            if (minimumAllowedValue == null)
             {
                 ex = new ArgumentNullException(nameof(minimumAllowedValue));
             }
-            else if (maximumAllowedValue.TypeOfCanBeNull() && maximumAllowedValue == null)
+            else if (maximumAllowedValue == null)
             {
                 ex = new ArgumentNullException(nameof(maximumAllowedValue));
             }
@@ -738,16 +738,13 @@ namespace GuardAgainstLib
             throw ex;
         }
 
-        private static bool TypeOfCanBeNull<T>(this T _)
-        {
-            return !typeof(T).IsValueType;
-        }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static string ToNullIfWhitespace(this string @this)
         {
             return string.IsNullOrWhiteSpace(@this) ? default : @this;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void AddData(this Exception ex,
                                     IDictionary<object, object> additionalData)
         {
@@ -762,26 +759,66 @@ namespace GuardAgainstLib
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool IsStringInRange(this string @this,
+                                            string lowerBound,
+                                            string upperBound)
+        {
+            return string.CompareOrdinal(@this, lowerBound) >= 0 && string.CompareOrdinal(@this, upperBound) <= 0;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsInRange<T>(this T @this,
                                          T lowerBound,
                                          T upperBound)
             where T : IComparable<T>
         {
+            if (typeof(T) == typeof(string))
+            {
+                return IsStringInRange(@this as string, lowerBound as string, upperBound as string);
+            }
+
             return @this.CompareTo(lowerBound) >= 0 && @this.CompareTo(upperBound) <= 0;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool IsStringLessThan(this string @this,
+                                             string lowerBound)
+        {
+            return string.CompareOrdinal(@this, lowerBound) < 0;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsLessThan<T>(this T @this,
                                           T lowerBound)
             where T : IComparable<T>
         {
+            if (typeof(T) == typeof(string))
+            {
+                return IsStringLessThan(@this as string, lowerBound as string);
+            }
+
             return @this.CompareTo(lowerBound) < 0;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool IsStringMoreThan(this string @this,
+                                             string upperBound)
+        {
+            return string.CompareOrdinal(@this, upperBound) > 0;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsMoreThan<T>(this T @this,
-                                          T lowerBound)
+                                          T upperBound)
             where T : IComparable<T>
         {
-            return @this.CompareTo(lowerBound) > 0;
+            if (typeof(T) == typeof(string))
+            {
+                return IsStringMoreThan(@this as string, upperBound as string);
+            }
+
+            return @this.CompareTo(upperBound) > 0;
         }
     }
 }
