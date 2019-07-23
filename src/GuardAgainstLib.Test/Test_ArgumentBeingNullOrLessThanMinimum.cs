@@ -108,19 +108,16 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
-        public void WhenMinimumValueIsNull_ShouldThrowArgumentNullException()
+        public void WhenMinimumValueIsNull_ShouldNotThrow()
         {
             var myArgument = "A";
-            var ex = Should.Throw<ArgumentNullException>(() =>
+            Should.NotThrow(() =>
             {
                 GuardAgainst.ArgumentBeingNullOrLessThanMinimum(myArgument, null, nameof(myArgument), null, new Dictionary<object, object>
                 {
                     { "a", "1" }
                 });
             });
-
-            ex.ParamName.ShouldBe("minimumAllowedValue");
-            ex.Data.Count.ShouldBe(1);
         }
     }
 }

@@ -6,11 +6,9 @@ using Xunit.Abstractions;
 
 namespace GuardAgainstLib.Test
 {
-    // ReSharper disable once InconsistentNaming
+    
     public class Benchmark
     {
-        [MethodImpl(MethodImplOptions.NoOptimization)]
-        // ReSharper disable once InconsistentNaming
         public static void Do(Action work, int iterations, string name, ITestOutputHelper output = null, double targetExecutionTime = 0.01D)
         {
             var s = Stopwatch.StartNew();
@@ -30,7 +28,7 @@ namespace GuardAgainstLib.Test
             }
         }
 
-        // ReSharper disable once InconsistentNaming
+        
         public class BenchmarkFailedException : Exception
         {
             public BenchmarkFailedException()

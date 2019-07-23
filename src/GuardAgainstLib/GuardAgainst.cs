@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-// ReSharper disable InconsistentNaming
 namespace GuardAgainstLib
 {
     /// <summary>
@@ -40,13 +39,14 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ArgumentBeingNull<T>(T argumentValue,
-                                                string argumentName = default(string),
-                                                string exceptionMessage = default(string),
+                                                string argumentName = null,
+                                                string exceptionMessage = null,
                                                 IDictionary<object, object> additionalData = default(IDictionary<object, object>))
             where T : class
         {
-            if (argumentValue != null)
+            if (!ReferenceEquals(argumentValue, null))
             {
                 return;
             }
@@ -86,9 +86,10 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ArgumentBeingNullOrWhitespace(string argumentValue,
-                                                         string argumentName = default(string),
-                                                         string exceptionMessage = default(string),
+                                                         string argumentName = null,
+                                                         string exceptionMessage = null,
                                                          IDictionary<object, object> additionalData = default(IDictionary<object, object>))
         {
             if (!string.IsNullOrWhiteSpace(argumentValue))
@@ -96,20 +97,21 @@ namespace GuardAgainstLib
                 return;
             }
 
-            Exception ex;
-
-            if (argumentValue is null)
+            if (ReferenceEquals(argumentValue, null))
             {
-                ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
                                                exceptionMessage.ToNullIfWhitespace());
+
+                ex.AddData(additionalData);
+                throw ex;
             }
             else
             {
-                ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
-            }
+                var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
 
-            ex.AddData(additionalData);
-            throw ex;
+                ex.AddData(additionalData);
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -139,12 +141,13 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ArgumentBeingWhitespace(string argumentValue,
-                                                   string argumentName = default(string),
-                                                   string exceptionMessage = default(string),
+                                                   string argumentName = null,
+                                                   string exceptionMessage = null,
                                                    IDictionary<object, object> additionalData = default(IDictionary<object, object>))
         {
-            if (argumentValue is null ||
+            if (ReferenceEquals(argumentValue, null) ||
                 !string.IsNullOrWhiteSpace(argumentValue))
             {
                 return;
@@ -189,37 +192,31 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ArgumentBeingNullOrLessThanMinimum<T>(T argumentValue,
                                                                  T minimumAllowedValue,
-                                                                 string argumentName = default(string),
-                                                                 string exceptionMessage = default(string),
+                                                                 string argumentName = null,
+                                                                 string exceptionMessage = null,
                                                                  IDictionary<object, object> additionalData = default(IDictionary<object, object>))
             where T : class, IComparable<T>
         {
-            Exception ex = null;
-
-            if (argumentValue is null)
+            if (ReferenceEquals(argumentValue, null))
             {
-                ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
                                                exceptionMessage.ToNullIfWhitespace());
+
+                ex.AddData(additionalData);
+                throw ex;
             }
-            else if (minimumAllowedValue is null)
+
+            if (argumentValue.IsLessThan(minimumAllowedValue))
             {
-                ex = new ArgumentNullException(nameof(minimumAllowedValue));
-            }
-            else if (argumentValue.IsLessThan(minimumAllowedValue))
-            {
-                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
+                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
                                                      exceptionMessage.ToNullIfWhitespace());
-            }
 
-            if (ex is null)
-            {
-                return;
+                ex.AddData(additionalData);
+                throw ex;
             }
-
-            ex.AddData(additionalData);
-            throw ex;
         }
 
         /// <summary>
@@ -254,38 +251,28 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ArgumentBeingLessThanMinimum<T>(T argumentValue,
                                                            T minimumAllowedValue,
-                                                           string argumentName = default(string),
-                                                           string exceptionMessage = default(string),
+                                                           string argumentName = null,
+                                                           string exceptionMessage = null,
                                                            IDictionary<object, object> additionalData = default(IDictionary<object, object>))
             where T : IComparable<T>
         {
-            if (argumentValue == null)
+            if (ReferenceEquals(argumentValue, null))
             {
                 return;
             }
 
-            Exception ex = null;
-
-            if (minimumAllowedValue == null)
+            if (argumentValue.IsLessThan(minimumAllowedValue))
             {
-                ex = new ArgumentNullException(nameof(minimumAllowedValue));
-            }
-            else if (argumentValue.IsLessThan(minimumAllowedValue))
-            {
-                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(),
+                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(),
                                                      argumentValue,
                                                      exceptionMessage.ToNullIfWhitespace());
-            }
 
-            if (ex is null)
-            {
-                return;
+                ex.AddData(additionalData);
+                throw ex;
             }
-
-            ex.AddData(additionalData);
-            throw ex;
         }
 
         /// <summary>
@@ -322,37 +309,31 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ArgumentBeingNullOrGreaterThanMaximum<T>(T argumentValue,
                                                                     T maximumAllowedValue,
-                                                                    string argumentName = default(string),
-                                                                    string exceptionMessage = default(string),
+                                                                    string argumentName = null,
+                                                                    string exceptionMessage = null,
                                                                     IDictionary<object, object> additionalData = default(IDictionary<object, object>))
             where T : class, IComparable<T>
         {
-            Exception ex = null;
-
-            if (argumentValue is null)
+            if (ReferenceEquals(argumentValue, null))
             {
-                ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
                                                exceptionMessage.ToNullIfWhitespace());
+
+                ex.AddData(additionalData);
+                throw ex;
             }
-            else if (maximumAllowedValue is null)
+
+            if (argumentValue.IsMoreThan(maximumAllowedValue))
             {
-                ex = new ArgumentNullException(nameof(maximumAllowedValue));
-            }
-            else if (argumentValue.IsMoreThan(maximumAllowedValue))
-            {
-                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
+                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
                                                      exceptionMessage.ToNullIfWhitespace());
-            }
 
-            if (ex is null)
-            {
-                return;
+                ex.AddData(additionalData);
+                throw ex;
             }
-
-            ex.AddData(additionalData);
-            throw ex;
         }
 
         /// <summary>
@@ -387,37 +368,27 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ArgumentBeingGreaterThanMaximum<T>(T argumentValue,
                                                               T maximumAllowedValue,
-                                                              string argumentName = default(string),
-                                                              string exceptionMessage = default(string),
+                                                              string argumentName = null,
+                                                              string exceptionMessage = null,
                                                               IDictionary<object, object> additionalData = default(IDictionary<object, object>))
             where T : IComparable<T>
         {
-            if (argumentValue == null)
+            if (ReferenceEquals(argumentValue, null))
             {
                 return;
             }
 
-            Exception ex = null;
-
-            if (maximumAllowedValue == null)
+            if (argumentValue.IsMoreThan(maximumAllowedValue))
             {
-                ex = new ArgumentNullException(nameof(maximumAllowedValue));
-            }
-            else if (argumentValue.IsMoreThan(maximumAllowedValue))
-            {
-                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
+                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
                                                      exceptionMessage.ToNullIfWhitespace());
-            }
 
-            if (ex is null)
-            {
-                return;
+                ex.AddData(additionalData);
+                throw ex;
             }
-
-            ex.AddData(additionalData);
-            throw ex;
         }
 
 
@@ -458,43 +429,33 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ArgumentBeingNullOrOutOfRange<T>(T argumentValue,
                                                             T minimumAllowedValue,
                                                             T maximumAllowedValue,
-                                                            string argumentName = default(string),
-                                                            string exceptionMessage = default(string),
+                                                            string argumentName = null,
+                                                            string exceptionMessage = null,
                                                             IDictionary<object, object> additionalData = default(IDictionary<object, object>))
             where T : class, IComparable<T>
         {
-            Exception ex = null;
-
-            if (argumentValue is null)
+            if (ReferenceEquals(argumentValue, null))
             {
-                ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
                                                exceptionMessage.ToNullIfWhitespace());
+
+                ex.AddData(additionalData);
+                throw ex;
             }
-            else if (minimumAllowedValue is null)
+
+            if (!argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
             {
-                ex = new ArgumentNullException(nameof(minimumAllowedValue));
-            }
-            else if (maximumAllowedValue is null)
-            {
-                ex = new ArgumentNullException(nameof(maximumAllowedValue));
-            }
-            else if (!argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
-            {
-                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(),
+                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(),
                                                      argumentValue,
                                                      exceptionMessage.ToNullIfWhitespace());
-            }
 
-            if (ex is null)
-            {
-                return;
+                ex.AddData(additionalData);
+                throw ex;
             }
-
-            ex.AddData(additionalData);
-            throw ex;
         }
 
         /// <summary>
@@ -532,43 +493,29 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ArgumentBeingOutOfRange<T>(T argumentValue,
                                                       T minimumAllowedValue,
                                                       T maximumAllowedValue,
-                                                      string argumentName = default(string),
-                                                      string exceptionMessage = default(string),
+                                                      string argumentName = null,
+                                                      string exceptionMessage = null,
                                                       IDictionary<object, object> additionalData = default(IDictionary<object, object>))
             where T : IComparable<T>
         {
-            Exception ex = null;
-
-            if (argumentValue == null)
+            if (ReferenceEquals(argumentValue, null))
             {
                 return;
             }
 
-            if (minimumAllowedValue == null)
+            if (!argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
             {
-                ex = new ArgumentNullException(nameof(minimumAllowedValue));
-            }
-            else if (maximumAllowedValue == null)
-            {
-                ex = new ArgumentNullException(nameof(maximumAllowedValue));
-            }
-            else if (!argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
-            {
-                ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(),
+                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(),
                                                      argumentValue,
                                                      exceptionMessage.ToNullIfWhitespace());
-            }
 
-            if (ex is null)
-            {
-                return;
+                ex.AddData(additionalData);
+                throw ex;
             }
-
-            ex.AddData(additionalData);
-            throw ex;
         }
 
         /// <summary>
@@ -598,9 +545,10 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ArgumentBeingInvalid(bool argumentValueInvalid,
-                                                string argumentName = default(string),
-                                                string exceptionMessage = default(string),
+                                                string argumentName = null,
+                                                string exceptionMessage = null,
                                                 IDictionary<object, object> additionalData = default(IDictionary<object, object>))
         {
             if (!argumentValueInvalid)
@@ -637,8 +585,9 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void OperationBeingInvalid(bool operationInvalid,
-                                                 string exceptionMessage = default(string),
+                                                 string exceptionMessage = null,
                                                  IDictionary<object, object> additionalData = default(IDictionary<object, object>))
         {
             if (!operationInvalid)
@@ -678,9 +627,10 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ArgumentBeingUnspecifiedDateTime(DateTime argumentValue,
-                                                            string argumentName = default(string),
-                                                            string exceptionMessage = default(string),
+                                                            string argumentName = null,
+                                                            string exceptionMessage = null,
                                                             IDictionary<object, object> additionalData = default(IDictionary<object, object>))
         {
             if (argumentValue.Kind != DateTimeKind.Unspecified)
@@ -722,9 +672,10 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ArgumentBeingNullOrEmpty(string argumentValue,
-                                                    string argumentName = default(string),
-                                                    string exceptionMessage = default(string),
+                                                    string argumentName = null,
+                                                    string exceptionMessage = null,
                                                     IDictionary<object, object> additionalData = default(IDictionary<object, object>))
         {
             if (!string.IsNullOrEmpty(argumentValue))
@@ -732,20 +683,21 @@ namespace GuardAgainstLib
                 return;
             }
 
-            Exception ex;
-
-            if (argumentValue is null)
+            if (ReferenceEquals(argumentValue, null))
             {
-                ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
                                                exceptionMessage.ToNullIfWhitespace());
+
+                ex.AddData(additionalData);
+                throw ex;
             }
             else
             {
-                ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
-            }
+                var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
 
-            ex.AddData(additionalData);
-            throw ex;
+                ex.AddData(additionalData);
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -777,12 +729,13 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ArgumentBeingNullOrEmpty<T>(IEnumerable<T> argumentValue,
-                                                       string argumentName = default(string),
-                                                       string exceptionMessage = default(string),
+                                                       string argumentName = null,
+                                                       string exceptionMessage = null,
                                                        IDictionary<object, object> additionalData = default(IDictionary<object, object>))
         {
-            if (argumentValue is null)
+            if (ReferenceEquals(argumentValue, null))
             {
                 var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
                 ex.AddData(additionalData);
@@ -824,12 +777,13 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ArgumentBeingEmpty(string argumentValue,
-                                              string argumentName = default(string),
-                                              string exceptionMessage = default(string),
+                                              string argumentName = null,
+                                              string exceptionMessage = null,
                                               IDictionary<object, object> additionalData = default(IDictionary<object, object>))
         {
-            if (argumentValue is null ||
+            if (ReferenceEquals(argumentValue, null) ||
                 !string.IsNullOrEmpty(argumentValue))
             {
                 return;
@@ -868,11 +822,11 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static void ArgumentBeingEmpty<T>(IEnumerable<T> argumentValue,
-                                                 string argumentName = default(string),
-                                                 string exceptionMessage = default(string),
+                                                 string argumentName = null,
+                                                 string exceptionMessage = null,
                                                  IDictionary<object, object> additionalData = default(IDictionary<object, object>))
         {
-            if (argumentValue is null ||
+            if (ReferenceEquals(argumentValue, default(IEnumerable<T>)) ||
                 argumentValue.Any())
             {
                 return;
@@ -886,14 +840,14 @@ namespace GuardAgainstLib
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static string ToNullIfWhitespace(this string @this)
         {
-            return string.IsNullOrWhiteSpace(@this) ? default(string) : @this;
+            return string.IsNullOrWhiteSpace(@this) ? null : @this;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void AddData(this Exception ex,
                                     IDictionary<object, object> additionalData)
         {
-            if (ex?.Data is null || additionalData is null || !additionalData.Any())
+            if (additionalData is null || !additionalData.Any())
             {
                 return;
             }

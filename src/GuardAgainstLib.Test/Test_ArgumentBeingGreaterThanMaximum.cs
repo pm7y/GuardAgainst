@@ -104,10 +104,10 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
-        public void WhenMaximumValueIsNull_ShouldThrowArgumentNullException()
+        public void WhenMaximumValueIsNull_ShouldThrowArgumentOutOfRangeException()
         {
             var myArgument = "A";
-            var ex = Should.Throw<ArgumentNullException>(() =>
+            var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
                 GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, null, nameof(myArgument), null, new Dictionary<object, object>
                 {
@@ -115,7 +115,7 @@ namespace GuardAgainstLib.Test
                 });
             });
 
-            ex.ParamName.ShouldBe("maximumAllowedValue");
+            ex.ParamName.ShouldBe("myArgument");
             ex.Data.Count.ShouldBe(1);
         }
     }
