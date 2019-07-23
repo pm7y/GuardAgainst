@@ -31,9 +31,10 @@ namespace GuardAgainstLib
         /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is <c>null</c>.</exception>
         /// <example>
         /// <code>
-        /// public void MyAmazingMethod(string myArgument)
+        /// public void MyAmazingMethod(string myArgument, Person person)
         /// {
         ///     GuardAgainst.ArgumentBeingNull(myArgument, nameof(myArgument));
+        ///     GuardAgainst.ArgumentBeingNull(person, nameof(person));
         ///
         ///     // Remaining code omitted.
         /// }
@@ -112,22 +113,32 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Throws an ArgumentException if the argumentValue is a whitespace string only.
+        /// Guards against an argument being whitespace.
+        /// Will throw an <see cref="ArgumentException">ArgumentException</see> if the argument is whitespace.
         /// </summary>
         /// <param name="argumentValue" >
-        /// The argument value to check for whitespace.
+        /// The argument value to guard.
         /// </param>
-        /// <param name="argumentName" >
-        /// Name of the argument. Can be optionally specified to be included in the raised exception.
+        /// <param name="argumentName">
+        /// (Optional) Name of the argument. If specified it will be included in the thrown exception and therefore make it more informative.
         /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
+        /// <param name="exceptionMessage">
+        /// (Optional) Custom error message. A specific error message that can be used to describe the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
+        /// <param name="additionalData">
+        /// (Optional) Additional information to add to the Data property of the thrown exception.
         /// </param>
-        /// <exception cref="ArgumentException" ></exception>
+        /// <exception cref="ArgumentException">Will be thrown when <c>argumentValue</c> is whitespace.</exception>
+        /// <example>
+        /// <code>
+        /// public void MyAmazingMethod(string myArgument)
+        /// {
+        ///     GuardAgainst.ArgumentBeingWhitespace(myArgument, nameof(myArgument));
+        ///
+        ///     // Remaining code omitted.
+        /// }
+        /// </code>
+        /// </example>
         public static void ArgumentBeingWhitespace(string argumentValue,
                                                    string argumentName = default(string),
                                                    string exceptionMessage = default(string),
@@ -145,11 +156,13 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Throws an ArgumentNullException if the argumentValue is null.
-        /// Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
+        /// Guards against an argument being null or less than the specified minimum.
+        /// Will throw an <see cref="ArgumentNullException">ArgumentNullException</see> if the argument is null.
+        /// Will throw an <see cref="ArgumentOutOfRangeException">ArgumentOutOfRangeException</see> if the argument is less than the specified minimum.
         /// </summary>
+        /// <typeparam name="T">A reference type.</typeparam>
         /// <param name="argumentValue" >
-        /// The argument value to check for null or if less than minimum.
+        /// The argument value to guard.
         /// </param>
         /// <param name="minimumAllowedValue" >
         /// The minimum allowed value.
@@ -157,15 +170,25 @@ namespace GuardAgainstLib
         /// <param name="argumentName" >
         /// Name of the argument. Can be optionally specified to be included in the raised exception.
         /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
+        /// <param name="exceptionMessage">
+        /// (Optional) Custom error message. A specific error message that can be used to describe the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
+        /// <param name="additionalData">
+        /// (Optional) Additional information to add to the Data property of the thrown exception.
         /// </param>
-        /// <exception cref="ArgumentNullException" ></exception>
-        /// <exception cref="ArgumentOutOfRangeException" ></exception>
+        /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException" >Will be thrown when <c>argumentValue</c> is less than the specified minimum.</exception>
+        /// <example>
+        /// <code>
+        /// public void MyAmazingMethod(string myArgument, DateTime dob)
+        /// {
+        ///     GuardAgainst.ArgumentBeingNullOrLessThanMinimum(myArgument, "A", nameof(myArgument));
+        ///     GuardAgainst.ArgumentBeingNullOrLessThanMinimum(dob, yearTwoThousand, nameof(dob));
+        ///
+        ///     // Remaining code omitted.
+        /// }
+        /// </code>
+        /// </example>
         public static void ArgumentBeingNullOrLessThanMinimum<T>(T argumentValue,
                                                                  T minimumAllowedValue,
                                                                  string argumentName = default(string),
@@ -200,10 +223,12 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
+        /// Guards against an argument being less than the specified minimum.
+        /// Will throw an <see cref="ArgumentOutOfRangeException">ArgumentOutOfRangeException</see> if the argument is less than the specified minimum.
         /// </summary>
+        /// <typeparam name="T">A reference type.</typeparam>
         /// <param name="argumentValue" >
-        /// The argument value to check if less than minimum.
+        /// The argument value to guard.
         /// </param>
         /// <param name="minimumAllowedValue" >
         /// The minimum allowed value.
@@ -211,15 +236,24 @@ namespace GuardAgainstLib
         /// <param name="argumentName" >
         /// Name of the argument. Can be optionally specified to be included in the raised exception.
         /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
+        /// <param name="exceptionMessage">
+        /// (Optional) Custom error message. A specific error message that can be used to describe the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
+        /// <param name="additionalData">
+        /// (Optional) Additional information to add to the Data property of the thrown exception.
         /// </param>
-        /// <exception cref="ArgumentNullException" ></exception>
-        /// <exception cref="ArgumentOutOfRangeException" ></exception>
+        /// <exception cref="ArgumentOutOfRangeException" >Will be thrown when <c>argumentValue</c> is less than the specified minimum.</exception>
+        /// <example>
+        /// <code>
+        /// public void MyAmazingMethod(int myArgument, DateTime dob)
+        /// {
+        ///     GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument));
+        ///     GuardAgainst.ArgumentBeingLessThanMinimum(dob, yearTwoThousand, nameof(dob));
+        ///
+        ///     // Remaining code omitted.
+        /// }
+        /// </code>
+        /// </example>
         public static void ArgumentBeingLessThanMinimum<T>(T argumentValue,
                                                            T minimumAllowedValue,
                                                            string argumentName = default(string),
@@ -255,11 +289,13 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Throws an ArgumentNullException if the argumentValue is null.
-        /// Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
+        /// Guards against an argument being null or greater than the specified maximum.
+        /// Will throw an <see cref="ArgumentNullException">ArgumentNullException</see> if the argument is null.
+        /// Will throw an <see cref="ArgumentOutOfRangeException">ArgumentOutOfRangeException</see> if the argument is greater than the specified maximum.
         /// </summary>
+        /// <typeparam name="T">A reference type.</typeparam>
         /// <param name="argumentValue" >
-        /// The argument value to check for null or if greater than maximum.
+        /// The argument value to guard.
         /// </param>
         /// <param name="maximumAllowedValue" >
         /// The maximum allowed value.
@@ -267,15 +303,25 @@ namespace GuardAgainstLib
         /// <param name="argumentName" >
         /// Name of the argument. Can be optionally specified to be included in the raised exception.
         /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
+        /// <param name="exceptionMessage">
+        /// (Optional) Custom error message. A specific error message that can be used to describe the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
+        /// <param name="additionalData">
+        /// (Optional) Additional information to add to the Data property of the thrown exception.
         /// </param>
-        /// <exception cref="ArgumentNullException" ></exception>
-        /// <exception cref="ArgumentOutOfRangeException" ></exception>
+        /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException" >Will be thrown when <c>argumentValue</c> is greater than the specified maximum.</exception>
+        /// <example>
+        /// <code>
+        /// public void MyAmazingMethod(string myArgument, DateTime dob)
+        /// {
+        ///     GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "Z", nameof(myArgument));
+        ///     GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(dob, DateTime.now, nameof(dob));
+        ///
+        ///     // Remaining code omitted.
+        /// }
+        /// </code>
+        /// </example>
         public static void ArgumentBeingNullOrGreaterThanMaximum<T>(T argumentValue,
                                                                     T maximumAllowedValue,
                                                                     string argumentName = default(string),
@@ -310,10 +356,12 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
+        /// Guards against an argument being greater than the specified maximum.
+        /// Will throw an <see cref="ArgumentOutOfRangeException">ArgumentOutOfRangeException</see> if the argument is greater than the specified maximum.
         /// </summary>
+        /// <typeparam name="T">A reference type.</typeparam>
         /// <param name="argumentValue" >
-        /// The argument value to check if greater than maximum.
+        /// The argument value to guard.
         /// </param>
         /// <param name="maximumAllowedValue" >
         /// The maximum allowed value.
@@ -321,15 +369,24 @@ namespace GuardAgainstLib
         /// <param name="argumentName" >
         /// Name of the argument. Can be optionally specified to be included in the raised exception.
         /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
+        /// <param name="exceptionMessage">
+        /// (Optional) Custom error message. A specific error message that can be used to describe the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
+        /// <param name="additionalData">
+        /// (Optional) Additional information to add to the Data property of the thrown exception.
         /// </param>
-        /// <exception cref="ArgumentNullException" ></exception>
-        /// <exception cref="ArgumentOutOfRangeException" ></exception>
+        /// <exception cref="ArgumentOutOfRangeException" >Will be thrown when <c>argumentValue</c> is greater than the specified maximum.</exception>
+        /// <example>
+        /// <code>
+        /// public void MyAmazingMethod(int myArgument, DateTime dob)
+        /// {
+        ///     GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 100, nameof(myArgument));
+        ///     GuardAgainst.ArgumentBeingGreaterThanMaximum(dob, DateTime.Now, nameof(dob));
+        ///
+        ///     // Remaining code omitted.
+        /// }
+        /// </code>
+        /// </example>
         public static void ArgumentBeingGreaterThanMaximum<T>(T argumentValue,
                                                               T maximumAllowedValue,
                                                               string argumentName = default(string),
@@ -363,13 +420,15 @@ namespace GuardAgainstLib
             throw ex;
         }
 
+
         /// <summary>
-        /// Throws an ArgumentNullException if the argumentValue is null.
-        /// Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
-        /// Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
+        /// Guards against an argument being null or less than the specified minimum or greater than the specified maximum.
+        /// Will throw an <see cref="ArgumentNullException">ArgumentNullException</see> if the argument is null.
+        /// Will throw an <see cref="ArgumentOutOfRangeException">ArgumentOutOfRangeException</see> if the argument is less than the specified minimum or greater than the specified maximum.
         /// </summary>
+        /// <typeparam name="T">A reference type.</typeparam>
         /// <param name="argumentValue" >
-        /// The argument value to check for null or if out of range.
+        /// The argument value to guard.
         /// </param>
         /// <param name="minimumAllowedValue" >
         /// The minimum allowed value.
@@ -380,15 +439,25 @@ namespace GuardAgainstLib
         /// <param name="argumentName" >
         /// Name of the argument. Can be optionally specified to be included in the raised exception.
         /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
+        /// <param name="exceptionMessage">
+        /// (Optional) Custom error message. A specific error message that can be used to describe the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
+        /// <param name="additionalData">
+        /// (Optional) Additional information to add to the Data property of the thrown exception.
         /// </param>
-        /// <exception cref="ArgumentNullException" ></exception>
-        /// <exception cref="ArgumentOutOfRangeException" ></exception>
+        /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException" >Will be thrown when <c>argumentValue</c> is less than the specified minimum or greater than the specified maximum.</exception>
+        /// <example>
+        /// <code>
+        /// public void MyAmazingMethod(string myArgument, DateTime dob)
+        /// {
+        ///     GuardAgainst.ArgumentBeingNullOrOutOfRange(myArgument, "A", "Z", nameof(myArgument));
+        ///     GuardAgainst.ArgumentBeingNullOrOutOfRange(dob, yearTwoThousand, DateTime.Now, nameof(dob));
+        ///
+        ///     // Remaining code omitted.
+        /// }
+        /// </code>
+        /// </example>
         public static void ArgumentBeingNullOrOutOfRange<T>(T argumentValue,
                                                             T minimumAllowedValue,
                                                             T maximumAllowedValue,
@@ -429,11 +498,12 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Throws an ArgumentOutOfRangeException if the argumentValue is less than the allowed minimum value.
-        /// Throws an ArgumentOutOfRangeException if the argumentValue is greater than the allowed maximum value.
+        /// Guards against an argument being less than the specified minimum or greater than the specified maximum.
+        /// Will throw an <see cref="ArgumentOutOfRangeException">ArgumentOutOfRangeException</see> if the argument is less than the specified minimum or greater than the specified maximum.
         /// </summary>
+        /// <typeparam name="T">A reference type.</typeparam>
         /// <param name="argumentValue" >
-        /// The argument value to check for null or if out of range.
+        /// The argument value to guard.
         /// </param>
         /// <param name="minimumAllowedValue" >
         /// The minimum allowed value.
@@ -444,15 +514,24 @@ namespace GuardAgainstLib
         /// <param name="argumentName" >
         /// Name of the argument. Can be optionally specified to be included in the raised exception.
         /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
+        /// <param name="exceptionMessage">
+        /// (Optional) Custom error message. A specific error message that can be used to describe the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
+        /// <param name="additionalData">
+        /// (Optional) Additional information to add to the Data property of the thrown exception.
         /// </param>
-        /// <exception cref="ArgumentNullException" ></exception>
-        /// <exception cref="ArgumentOutOfRangeException" ></exception>
+        /// <exception cref="ArgumentOutOfRangeException" >Will be thrown when <c>argumentValue</c> is less than the specified minimum or greater than the specified maximum.</exception>
+        /// <example>
+        /// <code>
+        /// public void MyAmazingMethod(int myArgument, DateTime dob)
+        /// {
+        ///     GuardAgainst.ArgumentBeingOutOfRange(myArgument, 1, 100, nameof(myArgument));
+        ///     GuardAgainst.ArgumentBeingOutOfRange(dob, yearTwoThousand, DateTime.Now, nameof(dob));
+        ///
+        ///     // Remaining code omitted.
+        /// }
+        /// </code>
+        /// </example>
         public static void ArgumentBeingOutOfRange<T>(T argumentValue,
                                                       T minimumAllowedValue,
                                                       T maximumAllowedValue,
@@ -493,22 +572,32 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Throws an ArgumentException if the argument is not valid.
+        /// Guards against an argument being invalid. The argument is invalid if the condition evaluates to <c>True</c>.
+        /// Will throw an <see cref="ArgumentException">ArgumentException</see>.
         /// </summary>
-        /// <param name="argumentValueInvalid" >Passing <c>true</c>
-        /// indicates that the argument value is invalid.
+        /// <param name="argumentValueInvalid" >
+        /// A boolean condition, which if <c>true</c>, indicates if the argument is invalid.
         /// </param>
-        /// <param name="argumentName" >
-        /// Name of the argument. Can be optionally specified to be included in the raised exception.
+        /// <param name="argumentName">
+        /// (Optional) Name of the argument. If specified it will be included in the thrown exception and therefore make it more informative.
         /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
+        /// <param name="exceptionMessage">
+        /// (Optional) Custom error message. A specific error message that can be used to describe the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
+        /// <param name="additionalData">
+        /// (Optional) Additional information to add to the Data property of the thrown exception.
         /// </param>
-        /// <exception cref="ArgumentException" ></exception>
+        /// <exception cref="ArgumentException">Will be thrown when <c>argumentValueInvalid</c> is evaluates to <c>true</c>.</exception>
+        /// <example>
+        /// <code>
+        /// public void MyAmazingMethod(string myArgument)
+        /// {
+        ///     GuardAgainst.ArgumentBeingInvalid(myArgument.StartsWith("!"), nameof(myArgument));
+        ///
+        ///     // Remaining code omitted.
+        /// }
+        /// </code>
+        /// </example>
         public static void ArgumentBeingInvalid(bool argumentValueInvalid,
                                                 string argumentName = default(string),
                                                 string exceptionMessage = default(string),
@@ -525,23 +614,29 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Throws an InvalidOperationException if the condition is not satisfied.
+        /// Guards against an invalid operation. The operation is invalid if the condition evaluates to <c>True</c>.
+        /// Will throw an <see cref="InvalidOperationException">InvalidOperationException</see>.
         /// </summary>
         /// <param name="operationInvalid" >
-        /// Passing
-        /// <c>
-        /// true
-        /// </c>
-        /// indicates that the operation is invalid.
+        /// A boolean condition, which if <c>true</c>, indicates if the operation is invalid.
         /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
+        /// <param name="exceptionMessage">
+        /// (Optional) Custom error message. A specific error message that can be used to describe the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
+        /// <param name="additionalData">
+        /// (Optional) Additional information to add to the Data property of the thrown exception.
         /// </param>
-        /// <exception cref="InvalidOperationException" ></exception>
+        /// <exception cref="InvalidOperationException">Will be thrown when <c>operationInvalid</c> is evaluates to <c>true</c>.</exception>
+        /// <example>
+        /// <code>
+        /// public void Start()
+        /// {
+        ///     GuardAgainst.OperationBeingInvalid(_started), nameof(myArgument));
+        ///
+        ///     // Remaining code omitted.
+        /// }
+        /// </code>
+        /// </example>
         public static void OperationBeingInvalid(bool operationInvalid,
                                                  string exceptionMessage = default(string),
                                                  IDictionary<object, object> additionalData = default(IDictionary<object, object>))
@@ -557,28 +652,38 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Throws an ArgumentException if the DateTime argument does not have a Utc Kind.
+        /// Guards against a DateTime argument being 'Unspecified'.
+        /// Will throw an <see cref="ArgumentException">ArgumentException</see> when the 'Kind' is 'Unspecified'.
         /// </summary>
         /// <param name="argumentValue" >
-        /// The DateTime object to test for UTC.
+        /// The argument value to guard.
         /// </param>
         /// <param name="argumentName" >
         /// Name of the argument. Can be optionally specified to be included in the raised exception.
         /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
+        /// <param name="exceptionMessage">
+        /// (Optional) Custom error message. A specific error message that can be used to describe the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
+        /// <param name="additionalData">
+        /// (Optional) Additional information to add to the Data property of the thrown exception.
         /// </param>
-        /// <exception cref="ArgumentException" ></exception>
-        public static void ArgumentNotBeingUtcDateTime(DateTime argumentValue,
-                                                       string argumentName = default(string),
-                                                       string exceptionMessage = default(string),
-                                                       IDictionary<object, object> additionalData = default(IDictionary<object, object>))
+        /// <exception cref="ArgumentException">Will be thrown when <c>argumentValueInvalid</c> is evaluates to <c>true</c>.</exception>
+        /// <example>
+        /// <code>
+        /// public void MyAmazingMethod(DateTime myArgument)
+        /// {
+        ///     GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument));
+        ///
+        ///     // Remaining code omitted.
+        /// }
+        /// </code>
+        /// </example>
+        public static void ArgumentBeingUnspecifiedDateTime(DateTime argumentValue,
+                                                            string argumentName = default(string),
+                                                            string exceptionMessage = default(string),
+                                                            IDictionary<object, object> additionalData = default(IDictionary<object, object>))
         {
-            if (argumentValue.Kind == DateTimeKind.Utc)
+            if (argumentValue.Kind != DateTimeKind.Unspecified)
             {
                 return;
             }
@@ -589,24 +694,34 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Throws an ArgumentNullException if the argumentValue is null.
-        /// Throws an ArgumentException if the argumentValue is an empty string only.
+        /// Guards against an argument being null or an empty string.
+        /// Will throw an <see cref="ArgumentNullException">ArgumentNullException</see> if the argument is null.
+        /// Will throw an <see cref="ArgumentException">ArgumentException</see> if the argument is an empty string.
         /// </summary>
         /// <param name="argumentValue" >
-        /// The argument value to check for null or empty.
+        /// The argument value to guard.
         /// </param>
-        /// <param name="argumentName" >
-        /// Name of the argument. Can be optionally specified to be included in the raised exception.
+        /// <param name="argumentName">
+        /// (Optional) Name of the argument. If specified it will be included in the thrown exception and therefore make it more informative.
         /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
+        /// <param name="exceptionMessage">
+        /// (Optional) Custom error message. A specific error message that can be used to describe the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
+        /// <param name="additionalData">
+        /// (Optional) Additional information to add to the Data property of the thrown exception.
         /// </param>
-        /// <exception cref="ArgumentNullException" ></exception>
-        /// <exception cref="ArgumentException" ></exception>
+        /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Will be thrown when <c>argumentValue</c> is an empty string.</exception>
+        /// <example>
+        /// <code>
+        /// public void MyAmazingMethod(string myArgument)
+        /// {
+        ///     GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument));
+        ///
+        ///     // Remaining code omitted.
+        /// }
+        /// </code>
+        /// </example>
         public static void ArgumentBeingNullOrEmpty(string argumentValue,
                                                     string argumentName = default(string),
                                                     string exceptionMessage = default(string),
@@ -634,24 +749,34 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Throws an ArgumentException if the argumentValue contains no items.
-        /// Throws an ArgumentNullException if the argumentValue is null.
+        /// Guards against an argument being null or an empty enumerable.
+        /// Will throw an <see cref="ArgumentNullException">ArgumentNullException</see> if the argument is null.
+        /// Will throw an <see cref="ArgumentException">ArgumentException</see> if the argument is an empty enumerable.
         /// </summary>
         /// <param name="argumentValue" >
-        /// The argument value to check for null or empty.
+        /// The argument value to guard.
         /// </param>
-        /// <param name="argumentName" >
-        /// Name of the argument. Can be optionally specified to be included in the raised exception.
+        /// <param name="argumentName">
+        /// (Optional) Name of the argument. If specified it will be included in the thrown exception and therefore make it more informative.
         /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
+        /// <param name="exceptionMessage">
+        /// (Optional) Custom error message. A specific error message that can be used to describe the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
+        /// <param name="additionalData">
+        /// (Optional) Additional information to add to the Data property of the thrown exception.
         /// </param>
-        /// <exception cref="ArgumentNullException" ></exception>
-        /// <exception cref="ArgumentException" ></exception>
+        /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Will be thrown when <c>argumentValue</c> is an empty enumerable.</exception>
+        /// <example>
+        /// <code>
+        /// public void MyAmazingMethod(string[] myArgument)
+        /// {
+        ///     GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument));
+        ///
+        ///     // Remaining code omitted.
+        /// }
+        /// </code>
+        /// </example>
         public static void ArgumentBeingNullOrEmpty<T>(IEnumerable<T> argumentValue,
                                                        string argumentName = default(string),
                                                        string exceptionMessage = default(string),
@@ -673,22 +798,32 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Throws an ArgumentException if the argumentValue is an empty string only.
+        /// Guards against an argument being an empty string.
+        /// Will throw an <see cref="ArgumentException">ArgumentException</see> if the argument is an empty string.
         /// </summary>
         /// <param name="argumentValue" >
-        /// The argument value to check for null or empty.
+        /// The argument value to guard.
         /// </param>
-        /// <param name="argumentName" >
-        /// Name of the argument. Can be optionally specified to be included in the raised exception.
+        /// <param name="argumentName">
+        /// (Optional) Name of the argument. If specified it will be included in the thrown exception and therefore make it more informative.
         /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
+        /// <param name="exceptionMessage">
+        /// (Optional) Custom error message. A specific error message that can be used to describe the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
+        /// <param name="additionalData">
+        /// (Optional) Additional information to add to the Data property of the thrown exception.
         /// </param>
-        /// <exception cref="ArgumentException" ></exception>
+        /// <exception cref="ArgumentException">Will be thrown when <c>argumentValue</c> is an empty string.</exception>
+        /// <example>
+        /// <code>
+        /// public void MyAmazingMethod(string myArgument)
+        /// {
+        ///     GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument));
+        ///
+        ///     // Remaining code omitted.
+        /// }
+        /// </code>
+        /// </example>
         public static void ArgumentBeingEmpty(string argumentValue,
                                               string argumentName = default(string),
                                               string exceptionMessage = default(string),
@@ -706,22 +841,32 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Throws an ArgumentException if the argumentValue is empty only.
+        /// Guards against an argument being an empty enumerable.
+        /// Will throw an <see cref="ArgumentException">ArgumentException</see> if the argument is an empty enumerable.
         /// </summary>
         /// <param name="argumentValue" >
-        /// The argument value to check for empty.
+        /// The argument value to guard.
         /// </param>
-        /// <param name="argumentName" >
-        /// Name of the argument. Can be optionally specified to be included in the raised exception.
+        /// <param name="argumentName">
+        /// (Optional) Name of the argument. If specified it will be included in the thrown exception and therefore make it more informative.
         /// </param>
-        /// <param name="exceptionMessage" >
-        /// The exception message. An optional error message that describes the exception in more
-        /// detail. If left null, the default .net message will be generated.
+        /// <param name="exceptionMessage">
+        /// (Optional) Custom error message. A specific error message that can be used to describe the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData" >
-        /// Additional key/value data to add to the Data property of the exception.
+        /// <param name="additionalData">
+        /// (Optional) Additional information to add to the Data property of the thrown exception.
         /// </param>
-        /// <exception cref="ArgumentException" ></exception>
+        /// <exception cref="ArgumentException">Will be thrown when <c>argumentValue</c> is an empty enumerable.</exception>
+        /// <example>
+        /// <code>
+        /// public void MyAmazingMethod(string[] myArgument)
+        /// {
+        ///     GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument));
+        ///
+        ///     // Remaining code omitted.
+        /// }
+        /// </code>
+        /// </example>
         public static void ArgumentBeingEmpty<T>(IEnumerable<T> argumentValue,
                                                  string argumentName = default(string),
                                                  string exceptionMessage = default(string),
