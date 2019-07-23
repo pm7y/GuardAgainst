@@ -101,7 +101,8 @@ Task("TestAndCoverage")
                     .Append($"-searchdirs:\"{xunitTestLoggerFolder}\"")
                     .Append("-register:user")
                     .Append("-oldStyle")
-                    .Append("-hideskipped:All");
+                    .Append("-hideskipped:All")
+                    .Append("-returntargetcode:0");
                     
             if (mergeCoverageOutput)
             {
@@ -110,7 +111,12 @@ Task("TestAndCoverage")
             
             mergeCoverageOutput = true;
                 
-            StartProcess("./tools/OpenCover.4.6.519/tools/OpenCover.Console.exe", new ProcessSettings { Arguments = openCoverArguments });
+            int openCoverResult = StartProcess("./tools/OpenCover.4.6.519/tools/OpenCover.Console.exe", new ProcessSettings { Arguments = openCoverArguments });
+            Warning($"OpenCover result: {openCoverResult}");
+            if (openCoverResult != 0)
+            {
+                throw new Exception("OpenCover failed.");
+            }
         }
         
         var openCoverToCoberturaConverterArguments = new ProcessArgumentBuilder()
@@ -119,13 +125,23 @@ Task("TestAndCoverage")
           .Append($"-sources:\"{xunitTestLoggerFolder}\"")
           .Append($"-includeGettersSetters:true");
 
-        StartProcess("./tools/OpenCoverToCoberturaConverter.0.3.4/tools/OpenCoverToCoberturaConverter.exe", new ProcessSettings { Arguments = openCoverToCoberturaConverterArguments });
+        int openCoverToCoberturaConverterResult = StartProcess("./tools/OpenCoverToCoberturaConverter.0.3.4/tools/OpenCoverToCoberturaConverter.exe", new ProcessSettings { Arguments = openCoverToCoberturaConverterArguments });
+        Warning($"OpenCoverToCoberturaConverter result: {openCoverToCoberturaConverterResult}");
+        if (openCoverToCoberturaConverterResult != 0)
+        {
+            throw new Exception("OpenCoverToCoberturaConverter failed.");
+        }
 
         var reportGeneratorArguments = new ProcessArgumentBuilder()
           .Append($"-reports:\"{relativeCoverageResultPath}\"")
           .Append($"-targetdir:\"{testArtifactsFolder}/Coverage-Report/\"");
                     
-        StartProcess("./tools/ReportGenerator.4.0.4/tools/net47/ReportGenerator.exe", new ProcessSettings { Arguments = reportGeneratorArguments });
+        int reportGeneratorResult = StartProcess("./tools/ReportGenerator.4.0.4/tools/net47/ReportGenerator.exe", new ProcessSettings { Arguments = reportGeneratorArguments });
+        Warning($"ReportGenerator result: {reportGeneratorResult}");
+        if (reportGeneratorResult != 0)
+        {
+            throw new Exception("ReportGenerator failed.");
+        }
 });
 
 Task("Publish")
