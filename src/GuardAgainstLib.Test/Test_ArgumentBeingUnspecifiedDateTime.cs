@@ -33,16 +33,8 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentValueIsUtc_ShouldNotBeSlow()
         {
-            var myArgument = DateTime.UtcNow;
-
-            Benchmark.Do(() =>
-                         {
-                             GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                             {
-                                 { "a", "1" }
-                             });
-                         },
-                         1000,
+            Benchmark.Do(WhenArgumentValueIsUtc_ShouldNotThrow,
+                         1000000,
                          MethodBase.GetCurrentMethod().Name,
                          Output);
         }

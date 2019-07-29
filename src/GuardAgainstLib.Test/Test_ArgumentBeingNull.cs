@@ -28,15 +28,8 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentIsNotNull_ShouldNotBeSlow()
         {
-            var myArgument = "Hello, World!";
-            Benchmark.Do(() =>
-                         {
-                             GuardAgainst.ArgumentBeingNull(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                             {
-                                 { "a", "1" }
-                             });
-                         },
-                         1000,
+            Benchmark.Do(WhenArgumentIsNotNull_ShouldNotThrow,
+                         1000000,
                          MethodBase.GetCurrentMethod().Name,
                          Output);
         }

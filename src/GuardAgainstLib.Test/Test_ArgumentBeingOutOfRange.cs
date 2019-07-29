@@ -18,15 +18,8 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentIsEqualToMaximum_ShouldNotBeSlow()
         {
-            var myArgument = "D";
-            Benchmark.Do(() =>
-                         {
-                             GuardAgainst.ArgumentBeingOutOfRange(myArgument, "B", "D", nameof(myArgument), null, new Dictionary<object, object>
-                             {
-                                 { "a", "1" }
-                             });
-                         },
-                         1000,
+            Benchmark.Do(WhenArgumentIsEqualToMaximum_ShouldNotThrow,
+                         1000000,
                          MethodBase.GetCurrentMethod().Name,
                          Output);
         }
@@ -47,15 +40,8 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentIsEqualToMinimum_ShouldNotBeSlow()
         {
-            var myArgument = "B";
-            Benchmark.Do(() =>
-                         {
-                             GuardAgainst.ArgumentBeingOutOfRange(myArgument, "B", "D", nameof(myArgument), null, new Dictionary<object, object>
-                             {
-                                 { "a", "1" }
-                             });
-                         },
-                         1000,
+            Benchmark.Do(WhenArgumentIsEqualToMinimum_ShouldNotThrow,
+                         1000000,
                          MethodBase.GetCurrentMethod().Name,
                          Output);
         }
@@ -93,15 +79,8 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentIsInRange_ShouldNotBeSlow()
         {
-            var myArgument = "C";
-            Benchmark.Do(() =>
-                         {
-                             GuardAgainst.ArgumentBeingOutOfRange(myArgument, "B", "D", nameof(myArgument), null, new Dictionary<object, object>
-                             {
-                                 { "a", "1" }
-                             });
-                         },
-                         1000,
+            Benchmark.Do(WhenArgumentIsInRange_ShouldNotThrow,
+                         1000000,
                          MethodBase.GetCurrentMethod().Name,
                          Output);
         }
@@ -139,15 +118,8 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentValueIsNull_ShouldNotBeSlow()
         {
-            var myArgument = default(string);
-            Benchmark.Do(() =>
-                         {
-                             GuardAgainst.ArgumentBeingOutOfRange(myArgument, "B", "D", nameof(myArgument), null, new Dictionary<object, object>
-                             {
-                                 { "a", "1" }
-                             });
-                         },
-                         1000,
+            Benchmark.Do(WhenArgumentValueIsNull_ShouldNotThrow,
+                         1000000,
                          MethodBase.GetCurrentMethod().Name,
                          Output);
         }

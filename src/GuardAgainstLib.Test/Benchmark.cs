@@ -9,7 +9,7 @@ namespace GuardAgainstLib.Test
     
     public class Benchmark
     {
-        public static void Do(Action work, int iterations, string name, ITestOutputHelper output = null, double targetExecutionTime = 0.05D)
+        public static void Do(Action work, int iterations, string name, ITestOutputHelper output = null, double targetExecutionTime = 0.002D)
         {
             var s = Stopwatch.StartNew();
 
