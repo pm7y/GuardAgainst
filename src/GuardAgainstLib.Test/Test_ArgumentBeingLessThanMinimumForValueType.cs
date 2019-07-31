@@ -18,15 +18,10 @@ namespace GuardAgainstLib.Test
         {
             var myArgument = 1;
             Benchmark.Do(() =>
-                         {
-                             GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument), null, new Dictionary<object, object>
-                             {
-                                 { "a", "1" }
-                             });
-                         },
-                         1000,
-                         MethodBase.GetCurrentMethod().Name,
-                         Output);
+            {
+                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
+            }, 1000, MethodBase.GetCurrentMethod().Name, Output);
         }
 
         [Fact]
@@ -35,10 +30,8 @@ namespace GuardAgainstLib.Test
             var myArgument = 1;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
+                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
             });
         }
 
@@ -47,15 +40,10 @@ namespace GuardAgainstLib.Test
         {
             var myArgument = 2;
             Benchmark.Do(() =>
-                         {
-                             GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument), null, new Dictionary<object, object>
-                             {
-                                 { "a", "1" }
-                             });
-                         },
-                         1000,
-                         MethodBase.GetCurrentMethod().Name,
-                         Output);
+            {
+                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
+            }, 1000, MethodBase.GetCurrentMethod().Name, Output);
         }
 
         [Fact]
@@ -64,10 +52,8 @@ namespace GuardAgainstLib.Test
             var myArgument = 2;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
+                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
             });
         }
 
@@ -77,10 +63,8 @@ namespace GuardAgainstLib.Test
             var myArgument = 1;
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 2, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
+                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 2, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));

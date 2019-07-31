@@ -21,15 +21,10 @@ namespace GuardAgainstLib.Test
         {
             var myArgument = false;
             Benchmark.Do(() =>
-                         {
-                             GuardAgainst.ArgumentBeingInvalid(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                             {
-                                 { "a", "1" }
-                             });
-                         },
-                         1000,
-                         MethodBase.GetCurrentMethod().Name,
-                         Output);
+            {
+                GuardAgainst.ArgumentBeingInvalid(myArgument, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
+            }, 1000, MethodBase.GetCurrentMethod().Name, Output);
         }
 
         [Fact]
@@ -38,10 +33,8 @@ namespace GuardAgainstLib.Test
             var myArgument = false;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingInvalid(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
+                GuardAgainst.ArgumentBeingInvalid(myArgument, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
             });
         }
 
@@ -51,10 +44,8 @@ namespace GuardAgainstLib.Test
             var myArgument = true;
             var ex = Should.Throw<ArgumentException>(() =>
             {
-                GuardAgainst.ArgumentBeingInvalid(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
+                GuardAgainst.ArgumentBeingInvalid(myArgument, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));

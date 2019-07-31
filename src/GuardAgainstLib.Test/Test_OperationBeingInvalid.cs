@@ -20,15 +20,9 @@ namespace GuardAgainstLib.Test
         {
             var myArgument = false;
             Benchmark.Do(() =>
-                         {
-                             GuardAgainst.OperationBeingInvalid(myArgument, null, new Dictionary<object, object>
-                             {
-                                 { "a", "1" }
-                             });
-                         },
-                         1000,
-                         MethodBase.GetCurrentMethod().Name,
-                         Output);
+            {
+                GuardAgainst.OperationBeingInvalid(myArgument, null, new Dictionary<object, object> {{"a", "1"}});
+            }, 1000, MethodBase.GetCurrentMethod().Name, Output);
         }
 
         [Fact]
@@ -37,10 +31,7 @@ namespace GuardAgainstLib.Test
             var myArgument = false;
             Should.NotThrow(() =>
             {
-                GuardAgainst.OperationBeingInvalid(myArgument, null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
+                GuardAgainst.OperationBeingInvalid(myArgument, null, new Dictionary<object, object> {{"a", "1"}});
             });
         }
 
@@ -50,10 +41,7 @@ namespace GuardAgainstLib.Test
             var myArgument = true;
             var ex = Should.Throw<InvalidOperationException>(() =>
             {
-                GuardAgainst.OperationBeingInvalid(myArgument, null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
+                GuardAgainst.OperationBeingInvalid(myArgument, null, new Dictionary<object, object> {{"a", "1"}});
             });
 
             ex.Data.Count.ShouldBe(1);

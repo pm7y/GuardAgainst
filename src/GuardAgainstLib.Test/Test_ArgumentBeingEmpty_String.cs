@@ -22,10 +22,8 @@ namespace GuardAgainstLib.Test
             var myArgument = "";
             var ex = Should.Throw<ArgumentException>(() =>
             {
-                GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
+                GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
@@ -38,15 +36,10 @@ namespace GuardAgainstLib.Test
         {
             var myArgument = " blah ";
             Benchmark.Do(() =>
-                         {
-                             GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                             {
-                                 { "a", "1" }
-                             });
-                         },
-                         1000,
-                         MethodBase.GetCurrentMethod().Name,
-                         Output);
+            {
+                GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
+            }, 1000, MethodBase.GetCurrentMethod().Name, Output);
         }
 
         [Fact]
@@ -55,10 +48,8 @@ namespace GuardAgainstLib.Test
             var myArgument = " blah ";
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
+                GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
             });
         }
 
@@ -67,15 +58,10 @@ namespace GuardAgainstLib.Test
         {
             var myArgument = default(string);
             Benchmark.Do(() =>
-                         {
-                             GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                             {
-                                 { "a", "1" }
-                             });
-                         },
-                         1000,
-                         MethodBase.GetCurrentMethod().Name,
-                         Output);
+            {
+                GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
+            }, 1000, MethodBase.GetCurrentMethod().Name, Output);
         }
 
         [Fact]
@@ -84,10 +70,8 @@ namespace GuardAgainstLib.Test
             var myArgument = default(string);
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
+                GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
             });
         }
     }

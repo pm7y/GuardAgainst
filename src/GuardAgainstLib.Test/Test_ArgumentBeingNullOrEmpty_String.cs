@@ -22,10 +22,8 @@ namespace GuardAgainstLib.Test
             var myArgument = "";
             var ex = Should.Throw<ArgumentException>(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
+                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
@@ -38,15 +36,10 @@ namespace GuardAgainstLib.Test
         {
             var myArgument = " blah ";
             Benchmark.Do(() =>
-                         {
-                             GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                             {
-                                 { "a", "1" }
-                             });
-                         },
-                         1000,
-                         MethodBase.GetCurrentMethod().Name,
-                         Output);
+            {
+                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
+            }, 1000, MethodBase.GetCurrentMethod().Name, Output);
         }
 
         [Fact]
@@ -55,10 +48,8 @@ namespace GuardAgainstLib.Test
             var myArgument = " blah ";
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
+                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
             });
         }
 
@@ -68,10 +59,8 @@ namespace GuardAgainstLib.Test
             var myArgument = default(string);
             var ex = Should.Throw<ArgumentNullException>(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
+                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));

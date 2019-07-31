@@ -48,7 +48,8 @@ namespace GuardAgainstLib
                 return;
             }
 
-            var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
+            var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+                exceptionMessage.ToNullIfWhitespace());
             ex.AddData(additionalData);
             throw ex;
         }
@@ -92,14 +93,16 @@ namespace GuardAgainstLib
 
             if (ReferenceEquals(argumentValue, null))
             {
-                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
+                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+                    exceptionMessage.ToNullIfWhitespace());
 
                 ex.AddData(additionalData);
                 throw ex;
             }
             else
             {
-                var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
+                var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(),
+                    argumentName.ToNullIfWhitespace());
 
                 ex.AddData(additionalData);
                 throw ex;
@@ -186,7 +189,8 @@ namespace GuardAgainstLib
         {
             if (ReferenceEquals(argumentValue, null))
             {
-                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
+                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+                    exceptionMessage.ToNullIfWhitespace());
 
                 ex.AddData(additionalData);
                 throw ex;
@@ -194,7 +198,8 @@ namespace GuardAgainstLib
 
             if (argumentValue.IsLessThan(minimumAllowedValue))
             {
-                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
+                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
+                    exceptionMessage.ToNullIfWhitespace());
 
                 ex.AddData(additionalData);
                 throw ex;
@@ -244,7 +249,8 @@ namespace GuardAgainstLib
 
             if (argumentValue.IsLessThan(minimumAllowedValue))
             {
-                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
+                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
+                    exceptionMessage.ToNullIfWhitespace());
 
                 ex.AddData(additionalData);
                 throw ex;
@@ -286,12 +292,14 @@ namespace GuardAgainstLib
                                                                     T maximumAllowedValue,
                                                                     string argumentName = null,
                                                                     string exceptionMessage = null,
-                                                                    IDictionary<object, object> additionalData = default)
+                                                                    IDictionary<object, object> additionalData =
+                                                                        default)
             where T : class, IComparable<T>
         {
             if (ReferenceEquals(argumentValue, null))
             {
-                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
+                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+                    exceptionMessage.ToNullIfWhitespace());
 
                 ex.AddData(additionalData);
                 throw ex;
@@ -299,7 +307,8 @@ namespace GuardAgainstLib
 
             if (argumentValue.IsMoreThan(maximumAllowedValue))
             {
-                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
+                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
+                    exceptionMessage.ToNullIfWhitespace());
 
                 ex.AddData(additionalData);
                 throw ex;
@@ -349,7 +358,8 @@ namespace GuardAgainstLib
 
             if (argumentValue.IsMoreThan(maximumAllowedValue))
             {
-                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
+                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
+                    exceptionMessage.ToNullIfWhitespace());
 
                 ex.AddData(additionalData);
                 throw ex;
@@ -399,7 +409,8 @@ namespace GuardAgainstLib
         {
             if (ReferenceEquals(argumentValue, null))
             {
-                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
+                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+                    exceptionMessage.ToNullIfWhitespace());
 
                 ex.AddData(additionalData);
                 throw ex;
@@ -407,7 +418,8 @@ namespace GuardAgainstLib
 
             if (!argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
             {
-                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
+                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
+                    exceptionMessage.ToNullIfWhitespace());
 
                 ex.AddData(additionalData);
                 throw ex;
@@ -459,7 +471,8 @@ namespace GuardAgainstLib
 
             if (!argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
             {
-                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue, exceptionMessage.ToNullIfWhitespace());
+                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
+                    exceptionMessage.ToNullIfWhitespace());
 
                 ex.AddData(additionalData);
                 throw ex;
@@ -617,14 +630,16 @@ namespace GuardAgainstLib
 
             if (ReferenceEquals(argumentValue, null))
             {
-                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
+                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+                    exceptionMessage.ToNullIfWhitespace());
 
                 ex.AddData(additionalData);
                 throw ex;
             }
             else
             {
-                var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
+                var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(),
+                    argumentName.ToNullIfWhitespace());
 
                 ex.AddData(additionalData);
                 throw ex;
@@ -665,14 +680,16 @@ namespace GuardAgainstLib
         {
             if (ReferenceEquals(argumentValue, null))
             {
-                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(), exceptionMessage.ToNullIfWhitespace());
+                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+                    exceptionMessage.ToNullIfWhitespace());
                 ex.AddData(additionalData);
                 throw ex;
             }
 
             if (!argumentValue.Any())
             {
-                var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
+                var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(),
+                    argumentName.ToNullIfWhitespace());
                 ex.AddData(additionalData);
                 throw ex;
             }

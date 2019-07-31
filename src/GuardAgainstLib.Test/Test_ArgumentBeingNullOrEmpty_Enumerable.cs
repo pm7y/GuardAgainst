@@ -23,10 +23,8 @@ namespace GuardAgainstLib.Test
             var myArgument = Enumerable.Empty<string>();
             var ex = Should.Throw<ArgumentException>(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
+                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
@@ -37,29 +35,22 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentIsNotNullOrEmpty_ShouldNotBeSlow()
         {
-            var myArgument = new[] { "blah" };
+            var myArgument = new[] {"blah"};
             Benchmark.Do(() =>
-                         {
-                             GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                             {
-                                 { "a", "1" }
-                             });
-                         },
-                         1000,
-                         MethodBase.GetCurrentMethod().Name,
-                         Output);
+            {
+                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
+            }, 1000, MethodBase.GetCurrentMethod().Name, Output);
         }
 
         [Fact]
         public void WhenArgumentIsNotNullOrEmpty_ShouldNotThrow()
         {
-            var myArgument = new[] { "blah" };
+            var myArgument = new[] {"blah"};
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
+                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
             });
         }
 
@@ -69,10 +60,8 @@ namespace GuardAgainstLib.Test
             var myArgument = default(IEnumerable<string>);
             var ex = Should.Throw<ArgumentNullException>(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
+                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));

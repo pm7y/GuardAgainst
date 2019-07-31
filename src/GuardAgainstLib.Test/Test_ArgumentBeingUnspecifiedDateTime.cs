@@ -14,15 +14,25 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
+        public void WhenArgumentValueIsLocal_ShouldNotThrow()
+        {
+            var myArgument = DateTime.UtcNow;
+
+            Should.NotThrow(() =>
+            {
+                GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
+            });
+        }
+
+        [Fact]
         public void WhenArgumentValueIsUnspecified_ShouldThrowArgumentException()
         {
             var myArgument = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified);
             var ex = Should.Throw<ArgumentException>(() =>
             {
-                GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
+                GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
@@ -36,15 +46,10 @@ namespace GuardAgainstLib.Test
             var myArgument = DateTime.UtcNow;
 
             Benchmark.Do(() =>
-                         {
-                             GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                             {
-                                 { "a", "1" }
-                             });
-                         },
-                         1000,
-                         MethodBase.GetCurrentMethod().Name,
-                         Output);
+            {
+                GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
+            }, 1000, MethodBase.GetCurrentMethod().Name, Output);
         }
 
         [Fact]
@@ -54,24 +59,8 @@ namespace GuardAgainstLib.Test
 
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
-            });
-        }
-
-        [Fact]
-        public void WhenArgumentValueIsLocal_ShouldNotThrow()
-        {
-            var myArgument = DateTime.UtcNow;
-
-            Should.NotThrow(() =>
-            {
-                GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null, new Dictionary<object, object>
-                {
-                    { "a", "1" }
-                });
+                GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null,
+                    new Dictionary<object, object> {{"a", "1"}});
             });
         }
     }
