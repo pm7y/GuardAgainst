@@ -35,12 +35,8 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentIsNotEmptyEnumerable_ShouldNotBeSlow()
         {
-            var myArgument = new[] {1};
-            Benchmark.Do(() =>
-            {
-                GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
-            }, 1000, MethodBase.GetCurrentMethod().Name, Output);
+            Benchmark.Do(WhenArgumentIsNotNullOrEmptyString_ShouldNotThrow, 1000000, MethodBase.GetCurrentMethod().Name,
+                Output);
         }
 
         [Fact]
@@ -57,13 +53,8 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentIsNullEnumerable_ShouldNotBeSlow()
         {
-            var myArgument = default(int[]);
-
-            Benchmark.Do(() =>
-            {
-                GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
-            }, 1000, MethodBase.GetCurrentMethod().Name, Output);
+            Benchmark.Do(WhenArgumentIsNullEnumerable_ShouldNotThrow, 1000000, MethodBase.GetCurrentMethod().Name,
+                Output);
         }
 
         [Fact]

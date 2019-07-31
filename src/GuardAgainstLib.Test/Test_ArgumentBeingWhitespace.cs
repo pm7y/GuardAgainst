@@ -18,12 +18,8 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentIsNotWhitespace_ShouldNotBeSlow()
         {
-            var myArgument = " blah ";
-            Benchmark.Do(() =>
-            {
-                GuardAgainst.ArgumentBeingWhitespace(myArgument, nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
-            }, 1000, MethodBase.GetCurrentMethod().Name, Output);
+            Benchmark.Do(WhenArgumentIsNotWhitespace_ShouldNotThrow, 1000000, MethodBase.GetCurrentMethod().Name,
+                Output);
         }
 
         [Fact]

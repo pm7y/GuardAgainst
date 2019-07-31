@@ -11,7 +11,7 @@ namespace GuardAgainstLib.Test
                               int iterations,
                               string name,
                               ITestOutputHelper output = null,
-                              double targetExecutionTime = 0.05D)
+                              double targetExecutionTime = 0.002D)
         {
             var s = Stopwatch.StartNew();
 

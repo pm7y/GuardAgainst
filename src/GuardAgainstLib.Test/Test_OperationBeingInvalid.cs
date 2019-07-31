@@ -18,11 +18,7 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentIsFalse_ShouldNotBeSlow()
         {
-            var myArgument = false;
-            Benchmark.Do(() =>
-            {
-                GuardAgainst.OperationBeingInvalid(myArgument, null, new Dictionary<object, object> {{"a", "1"}});
-            }, 1000, MethodBase.GetCurrentMethod().Name, Output);
+            Benchmark.Do(WhenArgumentIsFalse_ShouldNotThrow, 1000000, MethodBase.GetCurrentMethod().Name, Output);
         }
 
         [Fact]

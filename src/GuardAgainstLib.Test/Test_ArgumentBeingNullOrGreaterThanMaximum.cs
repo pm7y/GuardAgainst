@@ -18,12 +18,8 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentIsEqualToMaximum_ShouldNotBeSlow()
         {
-            var myArgument = "A";
-            Benchmark.Do(() =>
-            {
-                GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "A", nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
-            }, 1000, MethodBase.GetCurrentMethod().Name, Output);
+            Benchmark.Do(WhenArgumentIsEqualToMaximum_ShouldNotThrow, 1000000, MethodBase.GetCurrentMethod().Name,
+                Output);
         }
 
         [Fact]
@@ -55,12 +51,8 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentIsLessThanMaximum_ShouldNotBeSlow()
         {
-            var myArgument = "A";
-            Benchmark.Do(() =>
-            {
-                GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "B", nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
-            }, 1000, MethodBase.GetCurrentMethod().Name, Output);
+            Benchmark.Do(WhenArgumentIsLessThanMaximum_ShouldNotThrow, 1000000, MethodBase.GetCurrentMethod().Name,
+                Output);
         }
 
         [Fact]

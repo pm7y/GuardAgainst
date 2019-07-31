@@ -1,8 +1,3 @@
-#tool "nuget:?package=OpenCover&version=4.6.519"
-#tool "nuget:?package=XunitXml.TestLogger&version=2.1.26"
-#tool "nuget:?package=OpenCoverToCoberturaConverter&version=0.3.4"
-#tool "nuget:?package=ReportGenerator&version=4.0.4"
-
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
@@ -27,7 +22,6 @@ var solutionPath = MakeAbsolute(File("./src/GuardAgainstLib.sln")).FullPath;
 var nuspecPath = MakeAbsolute(File("./src/GuardAgainst.nuspec")).FullPath;
 var binariesArtifactsFolder = MakeAbsolute(Directory("./Artifacts/Binaries/"));
 var nugetArtifactsFolder = MakeAbsolute(Directory("./Artifacts/NuGet/"));
-var testArtifactsFolder = MakeAbsolute(Directory("./Artifacts/TestOutput/"));
 var xunitTestLoggerFolder = MakeAbsolute(Directory("./tools/XunitXml.TestLogger.2.1.26/build/_common"));
 
 //////////////////////////////////////////////////////////////////////
@@ -77,70 +71,20 @@ Task("Build")
     DotNetCoreBuild(solutionPath, settings);
 });
 
-Task("TestAndCoverage")
+Task("Test")
     .Does(() =>
 {       
-        CreateDirectory(testArtifactsFolder);
-
-        var relativeCoverageResultPath = $"{testArtifactsFolder}/OpenCover-Coverage.xml";
-        var mergeCoverageOutput = false;
         var projects = GetFiles("./src/**/*Test.csproj");
 
         foreach(var project in projects)
         {
-            var projectName = project.GetFilenameWithoutExtension().FullPath;
-            var projectPath = project.GetDirectory();
-            var relativePath = projectPath.GetRelativePath(testArtifactsFolder);
-            var relativeTestResultPath = $"{relativePath}/{projectName}.xml";
-
-            var openCoverArguments = new ProcessArgumentBuilder()
-                    .Append("-target:\"c:\\Program Files\\dotnet\\dotnet.exe\"")
-                    .Append($"-targetargs:\"test -c {configuration} \"{project.FullPath}\" --no-build --no-restore --logger \"xunit;LogFilePath={relativeTestResultPath}\" --test-adapter-path \"{xunitTestLoggerFolder}\"\"")
-                    .Append($"-output:\"{relativeCoverageResultPath}\"")
-                    .Append("-filter:\"+[GuardAgainst*]* -[*Test]*\"")
-                    .Append($"-searchdirs:\"{xunitTestLoggerFolder}\"")
-                    .Append("-register:user")
-                    .Append("-oldStyle")
-                    .Append("-hideskipped:All")
-                    .Append("-returntargetcode:0");
-                    
-            if (mergeCoverageOutput)
-            {
-              openCoverArguments = openCoverArguments.Append("-mergeoutput");
-            }
-            
-            mergeCoverageOutput = true;
-                
-            int openCoverResult = StartProcess("./tools/OpenCover.4.6.519/tools/OpenCover.Console.exe", new ProcessSettings { Arguments = openCoverArguments });
-            Warning($"OpenCover result: {openCoverResult}");
-            if (openCoverResult != 0)
-            {
-                throw new Exception("OpenCover failed.");
-            }
-        }
-        
-        var openCoverToCoberturaConverterArguments = new ProcessArgumentBuilder()
-          .Append($"-input:\"{relativeCoverageResultPath}\"")
-          .Append($"-output:\"{testArtifactsFolder}/Cobertura-Coverage.xml\"")
-          .Append($"-sources:\"{xunitTestLoggerFolder}\"")
-          .Append($"-includeGettersSetters:true");
-
-        int openCoverToCoberturaConverterResult = StartProcess("./tools/OpenCoverToCoberturaConverter.0.3.4/tools/OpenCoverToCoberturaConverter.exe", new ProcessSettings { Arguments = openCoverToCoberturaConverterArguments });
-        Warning($"OpenCoverToCoberturaConverter result: {openCoverToCoberturaConverterResult}");
-        if (openCoverToCoberturaConverterResult != 0)
-        {
-            throw new Exception("OpenCoverToCoberturaConverter failed.");
-        }
-
-        var reportGeneratorArguments = new ProcessArgumentBuilder()
-          .Append($"-reports:\"{relativeCoverageResultPath}\"")
-          .Append($"-targetdir:\"{testArtifactsFolder}/Coverage-Report/\"");
-                    
-        int reportGeneratorResult = StartProcess("./tools/ReportGenerator.4.0.4/tools/net47/ReportGenerator.exe", new ProcessSettings { Arguments = reportGeneratorArguments });
-        Warning($"ReportGenerator result: {reportGeneratorResult}");
-        if (reportGeneratorResult != 0)
-        {
-            throw new Exception("ReportGenerator failed.");
+            DotNetCoreTest(
+                project.FullPath,
+                new DotNetCoreTestSettings()
+                {
+                    Configuration = configuration,
+                    NoBuild = true
+                });
         }
 });
 
@@ -215,6 +159,6 @@ Task("Pack")
 RunTarget("Clean");
 RunTarget("Restore");
 RunTarget("Build");
-RunTarget("TestAndCoverage");
+RunTarget("Test");
 RunTarget("Publish");
 RunTarget("Pack");

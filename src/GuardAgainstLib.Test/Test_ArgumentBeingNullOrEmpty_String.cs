@@ -34,12 +34,8 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentIsNotNullOrEmpty_ShouldNotBeSlow()
         {
-            var myArgument = " blah ";
-            Benchmark.Do(() =>
-            {
-                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
-            }, 1000, MethodBase.GetCurrentMethod().Name, Output);
+            Benchmark.Do(WhenArgumentIsNotNullOrEmpty_ShouldNotThrow, 1000000, MethodBase.GetCurrentMethod().Name,
+                Output);
         }
 
         [Fact]
