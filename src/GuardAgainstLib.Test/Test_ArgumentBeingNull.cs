@@ -38,11 +38,14 @@ namespace GuardAgainstLib.Test
         public void WhenArgumentIsNotNull_ShouldNotThrow()
         {
             var myArgument = "Hello, World!";
+            object result = null;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingNull(myArgument, nameof(myArgument), null,
+                result = GuardAgainst.ArgumentBeingNull(myArgument, nameof(myArgument), null,
                     new Dictionary<object, object> {{"a", "1"}});
             });
+            Assert.NotNull(result);
+            Assert.Equal(myArgument, result);
         }
 
         [Fact]

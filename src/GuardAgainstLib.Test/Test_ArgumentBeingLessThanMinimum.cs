@@ -26,11 +26,14 @@ namespace GuardAgainstLib.Test
         public void WhenArgumentIsEqualToMinimum_ShouldNotThrow()
         {
             var myArgument = "A";
+            object result = null;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, "A", nameof(myArgument), null,
+                result = GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, "A", nameof(myArgument), null,
                     new Dictionary<object, object> {{"a", "1"}});
             });
+            Assert.NotNull(result);
+            Assert.Equal(myArgument, result);
         }
 
         [Fact]
@@ -44,11 +47,14 @@ namespace GuardAgainstLib.Test
         public void WhenArgumentIsGreaterThanMinimum_ShouldNotThrow()
         {
             var myArgument = "B";
+            object result = null;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, "A", nameof(myArgument), null,
+                result = GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, "A", nameof(myArgument), null,
                     new Dictionary<object, object> {{"a", "1"}});
             });
+            Assert.NotNull(result);
+            Assert.Equal(myArgument, result);
         }
 
         [Fact]
@@ -70,22 +76,27 @@ namespace GuardAgainstLib.Test
         public void WhenArgumentIsNull_ShouldNotThrowException()
         {
             var myArgument = default(string);
+            object result = null;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, "B", nameof(myArgument), null,
+                result = GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, "B", nameof(myArgument), null,
                     new Dictionary<object, object> {{"a", "1"}});
             });
+            Assert.Equal(myArgument, result);
         }
 
         [Fact]
         public void WhenMinimumValueIsNull_ShouldNotThrow()
         {
             var myArgument = "A";
+            object result = null;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, null, nameof(myArgument), null,
+                result = GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, null, nameof(myArgument), null,
                     new Dictionary<object, object> {{"a", "1"}});
             });
+            Assert.NotNull(result);
+            Assert.Equal(myArgument, result);
         }
     }
 }

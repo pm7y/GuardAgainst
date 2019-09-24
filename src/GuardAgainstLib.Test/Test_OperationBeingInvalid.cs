@@ -25,10 +25,13 @@ namespace GuardAgainstLib.Test
         public void WhenArgumentIsFalse_ShouldNotThrow()
         {
             var myArgument = false;
+            object result = null;
             Should.NotThrow(() =>
             {
-                GuardAgainst.OperationBeingInvalid(myArgument, null, new Dictionary<object, object> {{"a", "1"}});
+                result = GuardAgainst.OperationBeingInvalid(myArgument, null, new Dictionary<object, object> {{"a", "1"}});
             });
+            Assert.NotNull(result);
+            Assert.Equal(myArgument, result);
         }
 
         [Fact]
