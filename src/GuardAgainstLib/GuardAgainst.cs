@@ -37,7 +37,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
-        public static void ArgumentBeingNull<T>(T argumentValue,
+        public static T ArgumentBeingNull<T>(T argumentValue,
                                                 string argumentName = null,
                                                 string exceptionMessage = null,
                                                 IDictionary<object, object> additionalData = default)
@@ -45,7 +45,7 @@ namespace GuardAgainstLib
         {
             if (!ReferenceEquals(argumentValue, null))
             {
-                return;
+                return argumentValue;
             }
 
             var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
@@ -81,14 +81,14 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
-        public static void ArgumentBeingNullOrWhitespace(string argumentValue,
+        public static string ArgumentBeingNullOrWhitespace(string argumentValue,
                                                          string argumentName = null,
                                                          string exceptionMessage = null,
                                                          IDictionary<object, object> additionalData = default)
         {
             if (!string.IsNullOrWhiteSpace(argumentValue))
             {
-                return;
+                return argumentValue;
             }
 
             if (ReferenceEquals(argumentValue, null))
@@ -134,14 +134,14 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
-        public static void ArgumentBeingWhitespace(string argumentValue,
+        public static string ArgumentBeingWhitespace(string argumentValue,
                                                    string argumentName = null,
                                                    string exceptionMessage = null,
                                                    IDictionary<object, object> additionalData = default)
         {
             if (ReferenceEquals(argumentValue, null) || !string.IsNullOrWhiteSpace(argumentValue))
             {
-                return;
+                return argumentValue;
             }
 
             var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
@@ -180,7 +180,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
-        public static void ArgumentBeingNullOrLessThanMinimum<T>(T argumentValue,
+        public static T ArgumentBeingNullOrLessThanMinimum<T>(T argumentValue,
                                                                  T minimumAllowedValue,
                                                                  string argumentName = null,
                                                                  string exceptionMessage = null,
@@ -204,6 +204,8 @@ namespace GuardAgainstLib
                 ex.AddData(additionalData);
                 throw ex;
             }
+
+            return argumentValue;
         }
 
         /// <summary>
@@ -235,7 +237,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
-        public static void ArgumentBeingLessThanMinimum<T>(T argumentValue,
+        public static T ArgumentBeingLessThanMinimum<T>(T argumentValue,
                                                            T minimumAllowedValue,
                                                            string argumentName = null,
                                                            string exceptionMessage = null,
@@ -244,7 +246,7 @@ namespace GuardAgainstLib
         {
             if (ReferenceEquals(argumentValue, null))
             {
-                return;
+                return argumentValue;
             }
 
             if (argumentValue.IsLessThan(minimumAllowedValue))
@@ -255,6 +257,8 @@ namespace GuardAgainstLib
                 ex.AddData(additionalData);
                 throw ex;
             }
+
+            return argumentValue;
         }
 
         /// <summary>
@@ -288,7 +292,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
-        public static void ArgumentBeingNullOrGreaterThanMaximum<T>(T argumentValue,
+        public static T ArgumentBeingNullOrGreaterThanMaximum<T>(T argumentValue,
                                                                     T maximumAllowedValue,
                                                                     string argumentName = null,
                                                                     string exceptionMessage = null,
@@ -313,6 +317,8 @@ namespace GuardAgainstLib
                 ex.AddData(additionalData);
                 throw ex;
             }
+
+            return argumentValue;
         }
 
         /// <summary>
@@ -344,7 +350,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
-        public static void ArgumentBeingGreaterThanMaximum<T>(T argumentValue,
+        public static T ArgumentBeingGreaterThanMaximum<T>(T argumentValue,
                                                               T maximumAllowedValue,
                                                               string argumentName = null,
                                                               string exceptionMessage = null,
@@ -353,7 +359,7 @@ namespace GuardAgainstLib
         {
             if (ReferenceEquals(argumentValue, null))
             {
-                return;
+                return argumentValue;
             }
 
             if (argumentValue.IsMoreThan(maximumAllowedValue))
@@ -364,6 +370,8 @@ namespace GuardAgainstLib
                 ex.AddData(additionalData);
                 throw ex;
             }
+
+            return argumentValue;
         }
 
 
@@ -399,7 +407,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
-        public static void ArgumentBeingNullOrOutOfRange<T>(T argumentValue,
+        public static T ArgumentBeingNullOrOutOfRange<T>(T argumentValue,
                                                             T minimumAllowedValue,
                                                             T maximumAllowedValue,
                                                             string argumentName = null,
@@ -424,6 +432,8 @@ namespace GuardAgainstLib
                 ex.AddData(additionalData);
                 throw ex;
             }
+
+            return argumentValue;
         }
 
         /// <summary>
@@ -456,7 +466,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
-        public static void ArgumentBeingOutOfRange<T>(T argumentValue,
+        public static T ArgumentBeingOutOfRange<T>(T argumentValue,
                                                       T minimumAllowedValue,
                                                       T maximumAllowedValue,
                                                       string argumentName = null,
@@ -466,7 +476,7 @@ namespace GuardAgainstLib
         {
             if (ReferenceEquals(argumentValue, null))
             {
-                return;
+                return argumentValue;
             }
 
             if (!argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
@@ -477,6 +487,8 @@ namespace GuardAgainstLib
                 ex.AddData(additionalData);
                 throw ex;
             }
+
+            return argumentValue;
         }
 
         /// <summary>
@@ -504,14 +516,14 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
-        public static void ArgumentBeingInvalid(bool argumentValueInvalid,
+        public static bool ArgumentBeingInvalid(bool argumentValueInvalid,
                                                 string argumentName = null,
                                                 string exceptionMessage = null,
                                                 IDictionary<object, object> additionalData = default)
         {
             if (!argumentValueInvalid)
             {
-                return;
+                return argumentValueInvalid;
             }
 
             var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
@@ -540,13 +552,13 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
-        public static void OperationBeingInvalid(bool operationInvalid,
+        public static bool OperationBeingInvalid(bool operationInvalid,
                                                  string exceptionMessage = null,
                                                  IDictionary<object, object> additionalData = default)
         {
             if (!operationInvalid)
             {
-                return;
+                return operationInvalid;
             }
 
             var ex = new InvalidOperationException(exceptionMessage.ToNullIfWhitespace());
@@ -576,14 +588,14 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
-        public static void ArgumentBeingUnspecifiedDateTime(DateTime argumentValue,
+        public static DateTime ArgumentBeingUnspecifiedDateTime(DateTime argumentValue,
                                                             string argumentName = null,
                                                             string exceptionMessage = null,
                                                             IDictionary<object, object> additionalData = default)
         {
             if (argumentValue.Kind != DateTimeKind.Unspecified)
             {
-                return;
+                return argumentValue;
             }
 
             var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
@@ -618,14 +630,14 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
-        public static void ArgumentBeingNullOrEmpty(string argumentValue,
+        public static string ArgumentBeingNullOrEmpty(string argumentValue,
                                                     string argumentName = null,
                                                     string exceptionMessage = null,
                                                     IDictionary<object, object> additionalData = default)
         {
             if (!string.IsNullOrEmpty(argumentValue))
             {
-                return;
+                return argumentValue;
             }
 
             if (ReferenceEquals(argumentValue, null))
@@ -673,7 +685,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
-        public static void ArgumentBeingNullOrEmpty<T>(IEnumerable<T> argumentValue,
+        public static IEnumerable<T> ArgumentBeingNullOrEmpty<T>(IEnumerable<T> argumentValue,
                                                        string argumentName = null,
                                                        string exceptionMessage = null,
                                                        IDictionary<object, object> additionalData = default)
@@ -693,6 +705,8 @@ namespace GuardAgainstLib
                 ex.AddData(additionalData);
                 throw ex;
             }
+
+            return argumentValue;
         }
 
         /// <summary>
@@ -720,14 +734,14 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
-        public static void ArgumentBeingEmpty(string argumentValue,
+        public static string ArgumentBeingEmpty(string argumentValue,
                                               string argumentName = null,
                                               string exceptionMessage = null,
                                               IDictionary<object, object> additionalData = default)
         {
             if (ReferenceEquals(argumentValue, null) || !string.IsNullOrEmpty(argumentValue))
             {
-                return;
+                return argumentValue;
             }
 
             var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
@@ -760,14 +774,14 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
-        public static void ArgumentBeingEmpty<T>(IEnumerable<T> argumentValue,
+        public static IEnumerable<T> ArgumentBeingEmpty<T>(IEnumerable<T> argumentValue,
                                                  string argumentName = null,
                                                  string exceptionMessage = null,
                                                  IDictionary<object, object> additionalData = default)
         {
             if (ReferenceEquals(argumentValue, default(IEnumerable<T>)) || argumentValue.Any())
             {
-                return;
+                return argumentValue;
             }
 
             var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());

@@ -26,11 +26,14 @@ namespace GuardAgainstLib.Test
         public void WhenArgumentIsEqualToMaximum_ShouldNotThrow()
         {
             var myArgument = "A";
+            object result = null;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "A", nameof(myArgument), null,
+                result = GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "A", nameof(myArgument), null,
                     new Dictionary<object, object> {{"a", "1"}});
             });
+            Assert.NotNull(result);
+            Assert.Equal(myArgument, result);
         }
 
         [Fact]
@@ -59,11 +62,14 @@ namespace GuardAgainstLib.Test
         public void WhenArgumentIsLessThanMaximum_ShouldNotThrow()
         {
             var myArgument = "A";
+            object result = null;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "B", nameof(myArgument), null,
+                result = GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "B", nameof(myArgument), null,
                     new Dictionary<object, object> {{"a", "1"}});
             });
+            Assert.NotNull(result);
+            Assert.Equal(myArgument, result);
         }
 
         [Fact]

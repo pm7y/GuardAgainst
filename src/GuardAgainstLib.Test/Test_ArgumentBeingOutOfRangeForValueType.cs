@@ -24,11 +24,14 @@ namespace GuardAgainstLib.Test
         public void WhenArgumentIsEqualToMaximum_ShouldNotThrow()
         {
             var myArgument = 4;
+            object result = null;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null,
+                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null,
                     new Dictionary<object, object> {{"a", "1"}});
             });
+            Assert.NotNull(result);
+            Assert.Equal(myArgument, result);
         }
 
         [Fact]
@@ -42,11 +45,14 @@ namespace GuardAgainstLib.Test
         public void WhenArgumentIsEqualToMinimum_ShouldNotThrow()
         {
             var myArgument = 2;
+            object result = null;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null,
+                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null,
                     new Dictionary<object, object> {{"a", "1"}});
             });
+            Assert.NotNull(result);
+            Assert.Equal(myArgument, result);
         }
 
         [Fact]
@@ -74,11 +80,14 @@ namespace GuardAgainstLib.Test
         public void WhenArgumentIsInRange_ShouldNotThrow()
         {
             var myArgument = 3;
+            object result = null;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null,
+                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null,
                     new Dictionary<object, object> {{"a", "1"}});
             });
+            Assert.NotNull(result);
+            Assert.Equal(myArgument, result);
         }
 
         [Fact]

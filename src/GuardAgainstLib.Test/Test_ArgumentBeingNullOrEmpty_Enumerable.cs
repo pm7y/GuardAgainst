@@ -43,11 +43,14 @@ namespace GuardAgainstLib.Test
         public void WhenArgumentIsNotNullOrEmpty_ShouldNotThrow()
         {
             var myArgument = new[] {"blah"};
+            object result = null;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null,
+                result = GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null,
                     new Dictionary<object, object> {{"a", "1"}});
             });
+            Assert.NotNull(result);
+            Assert.Equal(myArgument, result);
         }
 
         [Fact]

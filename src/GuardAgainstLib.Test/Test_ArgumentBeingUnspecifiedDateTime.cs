@@ -17,12 +17,14 @@ namespace GuardAgainstLib.Test
         public void WhenArgumentValueIsLocal_ShouldNotThrow()
         {
             var myArgument = DateTime.UtcNow;
-
+            object result = null;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null,
+                result = GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null,
                     new Dictionary<object, object> {{"a", "1"}});
             });
+            Assert.NotNull(result);
+            Assert.Equal(myArgument, result);
         }
 
         [Fact]
@@ -50,12 +52,14 @@ namespace GuardAgainstLib.Test
         public void WhenArgumentValueIsUtc_ShouldNotThrow()
         {
             var myArgument = DateTime.UtcNow;
-
+            object result = null;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null,
+                result = GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null,
                     new Dictionary<object, object> {{"a", "1"}});
             });
+            Assert.NotNull(result);
+            Assert.Equal(myArgument, result);
         }
     }
 }

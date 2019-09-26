@@ -26,22 +26,27 @@ namespace GuardAgainstLib.Test
         public void WhenArgumentIsNotWhitespace_ShouldNotThrow()
         {
             var myArgument = " blah ";
+            object result = null;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingWhitespace(myArgument, nameof(myArgument), null,
+                result = GuardAgainst.ArgumentBeingWhitespace(myArgument, nameof(myArgument), null,
                     new Dictionary<object, object> {{"a", "1"}});
             });
+            Assert.NotNull(result);
+            Assert.Equal(myArgument, result);
         }
 
         [Fact]
         public void WhenArgumentIsNull_ShouldNotThrowArgumentNullException()
         {
             var myArgument = default(string);
+            object result = null;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingWhitespace(myArgument, nameof(myArgument), null,
+                result = GuardAgainst.ArgumentBeingWhitespace(myArgument, nameof(myArgument), null,
                     new Dictionary<object, object> {{"a", "1"}});
             });
+            Assert.Equal(myArgument, result);
         }
 
         [Fact]

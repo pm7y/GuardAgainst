@@ -19,11 +19,14 @@ namespace GuardAgainstLib.Test
         public void WhenArgumentIsEqualToMaximum_ShouldNotThrow()
         {
             var myArgument = "A";
+            object result = null;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, "A", nameof(myArgument), null,
+                result = GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, "A", nameof(myArgument), null,
                     new Dictionary<object, object> {{"a", "1"}});
             });
+            Assert.NotNull(result);
+            Assert.Equal(myArgument, result);
         }
 
         [Fact]
@@ -52,11 +55,14 @@ namespace GuardAgainstLib.Test
         public void WhenArgumentIsLessThanMaximum_ShouldNotThrow()
         {
             var myArgument = "A";
+            object result = null;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, "B", nameof(myArgument), null,
+                result = GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, "B", nameof(myArgument), null,
                     new Dictionary<object, object> {{"a", "1"}});
             });
+            Assert.NotNull(result);
+            Assert.Equal(myArgument, result);
         }
 
         [Fact]
@@ -69,11 +75,13 @@ namespace GuardAgainstLib.Test
         public void WhenArgumentIsNull_ShouldNotThrow()
         {
             var myArgument = default(string);
+            object result = null;
             Should.NotThrow(() =>
             {
                 GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, "B", nameof(myArgument), null,
                     new Dictionary<object, object> {{"a", "1"}});
             });
+            Assert.Equal(myArgument, result);
         }
 
         [Fact]

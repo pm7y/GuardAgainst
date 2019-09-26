@@ -24,11 +24,14 @@ namespace GuardAgainstLib.Test
         public void WhenArgumentIsEqualToMinimum_ShouldNotThrow()
         {
             var myArgument = 1;
+            object result = null;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument), null,
+                result = GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument), null,
                     new Dictionary<object, object> {{"a", "1"}});
             });
+            Assert.NotNull(result);
+            Assert.Equal(myArgument, result);
         }
 
         [Fact]
@@ -42,11 +45,14 @@ namespace GuardAgainstLib.Test
         public void WhenArgumentIsGreaterThanMinimum_ShouldNotThrow()
         {
             var myArgument = 2;
+            object result = null;
             Should.NotThrow(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument), null,
+                result = GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument), null,
                     new Dictionary<object, object> {{"a", "1"}});
             });
+            Assert.NotNull(result);
+            Assert.Equal(myArgument, result);
         }
 
         [Fact]
