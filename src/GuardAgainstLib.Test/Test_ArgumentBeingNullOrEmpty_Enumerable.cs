@@ -36,7 +36,7 @@ namespace GuardAgainstLib.Test
         public void WhenArgumentIsNotNullOrEmpty_ShouldNotBeSlow()
         {
             Benchmark.Do(WhenArgumentIsNotNullOrEmpty_ShouldNotThrow, 1000000, MethodBase.GetCurrentMethod().Name,
-                Output, 0.004D);
+                Output);
         }
 
         [Fact]
