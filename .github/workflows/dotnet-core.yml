@@ -7,10 +7,10 @@ on:
     branches: [ master ]
 
 env:
-  BUILD_NUMBER: 3.0.31.$GITHUB_RUN_NUMBER
-  DOTNET_VERSION: '3.1.101'
-  SOLUTION_PATH: './src/GuardAgainstLib.sln'
-  ARITFACT_PATH: './src/GuardAgainstLib/bin/Debug/netstandard2.0/GuardAgainstLib.dll'
+  BUILD_NUMBER: "3.0.31.$GITHUB_RUN_NUMBER"
+  DOTNET_VERSION: "3.1.101"
+  SOLUTION_PATH: "./src/GuardAgainstLib.sln"
+  ARITFACT_PATH: "./src/GuardAgainstLib/bin/Debug/netstandard2.0/GuardAgainstLib.dll"
 
 jobs:
   build:
