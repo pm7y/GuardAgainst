@@ -12,7 +12,7 @@ env:
   SOLUTION_PATH: ./src/GuardAgainstLib.sln
   CONFIGURATION: Release
   ARITFACT_PATH: ./dist
-  NUSPEC_PATH: XXX.nuspec
+  NUSPEC_PATH: GuardAgainstLib.nuspec
 
 jobs:
   build:
