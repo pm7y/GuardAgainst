@@ -28,4 +28,4 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore --nologo /p:BuildNumber=$BUILD_NUMBER -p:Version=$BUILD_NUMBER ./src/GuardAgainstLib.sln
     - name: Test
-      run: dotnet test --no-restore --no-build --verbosity normal --nologo ./src/GuardAgainstLib.sln
+      run: dotnet test --configuration Release --no-restore --no-build --verbosity normal --nologo ./src/GuardAgainstLib.sln
