@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 env:
-  BUILD_NUMBER: "3.0.31.${{ GITHUB_RUN_NUMBER }}"
+  BUILD_NUMBER: "3.0.31.${GITHUB_RUN_NUMBER}"
   DOTNET_VERSION: "3.1.101"
   SOLUTION_PATH: "./src/GuardAgainstLib.sln"
   CONFIGURATION: "Release"
