@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
-
-// ReSharper disable ExpressionIsAlwaysNull
 
 namespace GuardAgainstLib.Test
 {
@@ -14,14 +11,7 @@ namespace GuardAgainstLib.Test
         public Test_ArgumentBeingNullOrWhitespace(ITestOutputHelper output) : base(output)
         {
         }
-
-        [Fact]
-        public void WhenArgumentIsNotNullOrWhitespace_ShouldNotBeSlow()
-        {
-            Benchmark.Do(WhenArgumentIsNotNullOrWhitespace_ShouldNotThrow, 1000000, MethodBase.GetCurrentMethod().Name,
-                Output);
-        }
-
+        
         [Fact]
         public void WhenArgumentIsNotNullOrWhitespace_ShouldNotThrow()
         {

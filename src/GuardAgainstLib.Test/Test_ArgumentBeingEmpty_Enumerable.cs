@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
-
-// ReSharper disable InconsistentNaming
-// ReSharper disable ExpressionIsAlwaysNull
 
 namespace GuardAgainstLib.Test
 {
@@ -33,13 +29,6 @@ namespace GuardAgainstLib.Test
         }
 
         [Fact]
-        public void WhenArgumentIsNotEmptyEnumerable_ShouldNotBeSlow()
-        {
-            Benchmark.Do(WhenArgumentIsNotNullOrEmptyString_ShouldNotThrow, 1000000, MethodBase.GetCurrentMethod().Name,
-                Output);
-        }
-
-        [Fact]
         public void WhenArgumentIsNotNullOrEmptyString_ShouldNotThrow()
         {
             var myArgument = new[] {1};
@@ -51,13 +40,6 @@ namespace GuardAgainstLib.Test
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
-        }
-
-        [Fact]
-        public void WhenArgumentIsNullEnumerable_ShouldNotBeSlow()
-        {
-            Benchmark.Do(WhenArgumentIsNullEnumerable_ShouldNotThrow, 1000000, MethodBase.GetCurrentMethod().Name,
-                Output);
         }
 
         [Fact]

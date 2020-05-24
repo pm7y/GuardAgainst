@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
@@ -11,13 +10,6 @@ namespace GuardAgainstLib.Test
     {
         public Test_ArgumentBeingLessThanMinimumForValueType(ITestOutputHelper output) : base(output)
         {
-        }
-
-        [Fact]
-        public void WhenArgumentIsEqualToMinimum_ShouldNotBeSlow()
-        {
-            Benchmark.Do(WhenArgumentIsEqualToMinimum_ShouldNotThrow, 1000000, MethodBase.GetCurrentMethod().Name,
-                Output);
         }
 
         [Fact]
@@ -32,13 +24,6 @@ namespace GuardAgainstLib.Test
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
-        }
-
-        [Fact]
-        public void WhenArgumentIsGreaterThanMinimum_ShouldNotBeSlow()
-        {
-            Benchmark.Do(WhenArgumentIsGreaterThanMinimum_ShouldNotThrow, 1000000, MethodBase.GetCurrentMethod().Name,
-                Output);
         }
 
         [Fact]

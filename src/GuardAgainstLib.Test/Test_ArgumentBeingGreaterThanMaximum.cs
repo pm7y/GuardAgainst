@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
-
-// ReSharper disable ExpressionIsAlwaysNull
 
 namespace GuardAgainstLib.Test
 {
@@ -43,14 +40,7 @@ namespace GuardAgainstLib.Test
             ex.Data.Count.ShouldBe(1);
             ex.Data["a"].ShouldBe("1");
         }
-
-        [Fact]
-        public void WhenArgumentIsLessThanMaximum_ShouldNotBeSlow()
-        {
-            Benchmark.Do(WhenArgumentIsLessThanMaximum_ShouldNotThrow, 1000000, MethodBase.GetCurrentMethod().Name,
-                Output);
-        }
-
+        
         [Fact]
         public void WhenArgumentIsLessThanMaximum_ShouldNotThrow()
         {
@@ -63,12 +53,6 @@ namespace GuardAgainstLib.Test
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
-        }
-
-        [Fact]
-        public void WhenArgumentIsNull_ShouldNotBeSlow()
-        {
-            Benchmark.Do(WhenArgumentIsNull_ShouldNotThrow, 1000000, MethodBase.GetCurrentMethod().Name, Output);
         }
 
         [Fact]

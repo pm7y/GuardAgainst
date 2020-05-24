@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
-
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
 
 namespace GuardAgainstLib.Test
 {
@@ -13,12 +10,6 @@ namespace GuardAgainstLib.Test
     {
         public Test_OperationBeingInvalid(ITestOutputHelper output) : base(output)
         {
-        }
-
-        [Fact]
-        public void WhenArgumentIsFalse_ShouldNotBeSlow()
-        {
-            Benchmark.Do(WhenArgumentIsFalse_ShouldNotThrow, 1000000, MethodBase.GetCurrentMethod().Name, Output);
         }
 
         [Fact]

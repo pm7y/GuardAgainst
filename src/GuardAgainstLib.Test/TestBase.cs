@@ -1,7 +1,5 @@
 ﻿using Xunit.Abstractions;
 
-// ReSharper disable InconsistentNaming
-
 namespace GuardAgainstLib.Test
 {
     public class TestBase

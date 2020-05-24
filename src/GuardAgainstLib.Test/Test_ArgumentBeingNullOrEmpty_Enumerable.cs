@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
-
-// ReSharper disable InconsistentNaming
-// ReSharper disable ExpressionIsAlwaysNull
 
 namespace GuardAgainstLib.Test
 {
@@ -31,14 +27,7 @@ namespace GuardAgainstLib.Test
             ex.Data.Count.ShouldBe(1);
             ex.Data["a"].ShouldBe("1");
         }
-
-        [Fact]
-        public void WhenArgumentIsNotNullOrEmpty_ShouldNotBeSlow()
-        {
-            Benchmark.Do(WhenArgumentIsNotNullOrEmpty_ShouldNotThrow, 1000000, MethodBase.GetCurrentMethod().Name,
-                Output);
-        }
-
+        
         [Fact]
         public void WhenArgumentIsNotNullOrEmpty_ShouldNotThrow()
         {

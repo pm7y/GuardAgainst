@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
@@ -40,12 +39,6 @@ namespace GuardAgainstLib.Test
             ex.ParamName.ShouldBe(nameof(myArgument));
             ex.Data.Count.ShouldBe(1);
             ex.Data["a"].ShouldBe("1");
-        }
-
-        [Fact]
-        public void WhenArgumentValueIsUtc_ShouldNotBeSlow()
-        {
-            Benchmark.Do(WhenArgumentValueIsUtc_ShouldNotThrow, 1000000, MethodBase.GetCurrentMethod().Name, Output);
         }
 
         [Fact]
