@@ -9,7 +9,7 @@ on:
 env:
   BUILD_NUMBER: "3.0.31.$GITHUB_RUN_NUMBER"
   DOTNET_VERSION: "3.1.101"
-  # SOLUTION_PATH: "./src/GuardAgainstLib.sln"
+  SOLUTION_PATH: "./src/GuardAgainstLib.sln"
   ARITFACT_PATH: "./src/GuardAgainstLib/bin/Debug/netstandard2.0/GuardAgainstLib.dll"
 
 jobs:
@@ -25,19 +25,19 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }} 
 
     - name: Clean
-      run: dotnet clean --configuration Release --nologo ${{ SOLUTION_PATH }}
+      run: dotnet clean --configuration Release --nologo ${{ env.SOLUTION_PATH }}
 
     - name: Restore
-      run: dotnet restore ${{ SOLUTION_PATH }}
+      run: dotnet restore ${{ env.SOLUTION_PATH }}
 
     - name: Build
-      run: dotnet build --configuration Release --no-restore --nologo /p:BuildNumber=${{ env.BUILD_NUMBER }} -p:Version=${{ env.BUILD_NUMBER }} ${{ SOLUTION_PATH }}
+      run: dotnet build --configuration Release --no-restore --nologo /p:BuildNumber=${{ env.BUILD_NUMBER }} -p:Version=${{ env.BUILD_NUMBER }} ${{ env.SOLUTION_PATH }}
 
     - name: Test
-      run: dotnet test --configuration Release --no-restore --no-build --verbosity normal --nologo ${{ SOLUTION_PATH }}
+      run: dotnet test --configuration Release --no-restore --no-build --verbosity normal --nologo ${{ env.SOLUTION_PATH }}
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
           name: GuardAgainstLib.dll
-          path: ${{ ARITFACT_PATH }}
+          path: ${{ env.ARITFACT_PATH }}
