@@ -40,8 +40,17 @@ jobs:
       run: dotnet test --configuration ${{ env.CONFIGURATION }} --no-restore --no-build --verbosity normal --nologo ${{ env.SOLUTION_PATH }}
 
     - name: Pack
-      run: dotnet pack --configuration ${{ env.CONFIGURATION }} --no-restore --no-build --nologo -p:NuspecFile=${{ env.NUSPEC_PATH }} -p:NuspecBasePath=./src/GuardAgainstLib/bin/Release/netstandard2.0 -p:Version=${{ env.BUILD_NUMBER }} --output ${{ env.ARITFACT_PATH }} ${{ env.PROJECT_PATH }}
-
+      run: dotnet pack 
+            ${{ env.PROJECT_PATH }}
+            --configuration ${{ env.CONFIGURATION }} 
+            --no-restore 
+            --no-build 
+            --nologo 
+            -p:NuspecFile=${{ env.NUSPEC_PATH }} 
+            -p:Version=${{ env.BUILD_NUMBER }} 
+            --output ${{ env.ARITFACT_PATH }} 
+      # -p:NuspecBasePath=./src/GuardAgainstLib/bin/Release/netstandard2.0
+        
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
