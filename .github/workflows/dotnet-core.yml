@@ -11,7 +11,9 @@ env:
   DOTNET_VERSION: "3.1.101"
   SOLUTION_PATH: "./src/GuardAgainstLib.sln"
   CONFIGURATION: "Release"
-  ARITFACT_PATH: "./src/GuardAgainstLib/bin/Release/netstandard2.0/GuardAgainstLib.dll"
+  ARITFACT_PATH: "./dist"
+  # ARITFACT_PATH: "./src/GuardAgainstLib/bin/Release/netstandard2.0/GuardAgainstLib.dll"
+  NUSPEC_PATH: "./src/GuardAgainst.nuspec"
 
 jobs:
   build:
@@ -36,6 +38,9 @@ jobs:
 
     - name: Test
       run: dotnet test --configuration ${{ env.CONFIGURATION }} --no-restore --no-build --verbosity normal --nologo ${{ env.SOLUTION_PATH }}
+
+    - name: Pack
+      run: dotnet pack --configuration ${{ env.CONFIGURATION }} --no-restore --no-build --nologo ${{ env.SOLUTION_PATH }} -p:NuspecFile=${{ NUSPEC_PATH }} -p:Version=${{ env.BUILD_NUMBER }} --output ${{ env.ARITFACT_PATH }}
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
