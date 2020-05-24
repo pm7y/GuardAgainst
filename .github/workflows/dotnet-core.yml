@@ -1,4 +1,4 @@
-name: .NET Core
+name: Build and Test
 
 on:
   push:
@@ -12,14 +12,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: set build numer
+    - run: echo "::set-env name=BUILD_NUMBER::3.1.$GITHUB_RUN_NUMBER"
+    - name: disable telemetry
+    - run: echo "::set-env name=DOTNET_CLI_TELEMETRY_OPTOUT::1"
     - uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
-    - name: Install dependencies
+    - name: Clean
+      run: dotnet clean --configuration Release --nologo ./src/GuardAgainstLib.sln
+    - name: Restore
       run: dotnet restore ./src/GuardAgainstLib.sln
     - name: Build
-      run: dotnet build --configuration Release --no-restore ./src/GuardAgainstLib.sln
+      run: dotnet build --configuration Release --no-restore --nologo /p:BuildNumber=$BUILD_NUMBER -p:Version=$BUILD_NUMBER ./src/GuardAgainstLib.sln
     - name: Test
-      run: dotnet test --no-restore --verbosity normal ./src/GuardAgainstLib.sln
+      run: dotnet test --no-restore --no-build --verbosity normal --nologo ./src/GuardAgainstLib.sln
