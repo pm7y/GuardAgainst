@@ -6,29 +6,34 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  BUILD_NUMBER: 3.0.31.$GITHUB_RUN_NUMBER
+  DOTNET_VERSION: '3.1.101'           # set this to the dot net version to use
+
 jobs:
   build:
 
     runs-on: ubuntu-latest
 
-    steps:
-    - name: set build numer
-      run: echo "::set-env name=BUILD_NUMBER::3.1.$GITHUB_RUN_NUMBER"
-    - name: disable telemetry
-      run: echo "::set-env name=DOTNET_CLI_TELEMETRY_OPTOUT::1"
+    steps:     
     - uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.101
+        dotnet-version: ${{ env.DOTNET_VERSION }} 
+
     - name: Clean
       run: dotnet clean --configuration Release --nologo ./src/GuardAgainstLib.sln
+
     - name: Restore
-      run: dotnet restore ./src/GuardAgainstLib.sln
+      run: dotnet restore --nologo ./src/GuardAgainstLib.sln
+
     - name: Build
-      run: dotnet build --configuration Release --no-restore --nologo /p:BuildNumber=$BUILD_NUMBER -p:Version=$BUILD_NUMBER ./src/GuardAgainstLib.sln
+      run: dotnet build --configuration Release --no-restore --nologo /p:BuildNumber=${{ env.BUILD_NUMBER }}  -p:Version=${{ env.BUILD_NUMBER }}  ./src/GuardAgainstLib.sln
+
     - name: Test
       run: dotnet test --configuration Release --no-restore --no-build --verbosity normal --nologo ./src/GuardAgainstLib.sln
+
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
