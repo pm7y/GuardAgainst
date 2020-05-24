@@ -29,7 +29,8 @@ jobs:
       run: dotnet build --configuration Release --no-restore --nologo /p:BuildNumber=$BUILD_NUMBER -p:Version=$BUILD_NUMBER ./src/GuardAgainstLib.sln
     - name: Test
       run: dotnet test --configuration Release --no-restore --no-build --verbosity normal --nologo ./src/GuardAgainstLib.sln
-    - name: Archive production artifacts
+    - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-          path: ./src/GuardAgainstLib/**/*/GuardAgainstLib.dll
+          name: GuardAgainstLib.dll
+          path: ./src/GuardAgainstLib/bin/Debug/netstandard2.0/GuardAgainstLib.dll
