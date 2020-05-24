@@ -1,12 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id></id>
+    <id>GuardAgainsty</id>
     <version></version>
-    <title></title>
-    <authors></authors>
-    <owners></owners>
+    <title>GuardAgainstx</title>
+    <authors>Paul Mcilreavy</authors>
+    <owners>Paul Mcilreavy</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description></description>
+    <description>Useful guard clauses that simplify argument validity checking and make your code more readable.</description>
+    <projectUrl>https://github.com/pmcilreavy/GuardAgainst</projectUrl>
+    <iconUrl>http://cdn.rawgit.com/pmcilreavy/GuardAgainst/master/GuardAgainst.png</iconUrl>
+    <licenseUrl>https://github.com/pmcilreavy/GuardAgainst/blob/master/LICENSE</licenseUrl>
+    <tags>GuardAgainst, guard, dotnet, contracts, arguments, validity</tags>
+    <symbols>false</symbols>
   </metadata>
 </package>
