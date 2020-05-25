@@ -47,9 +47,9 @@ jobs:
             ${{ env.PROJECT_PATH }}
             --configuration ${{ env.CONFIGURATION }} 
             --nologo 
-            -p:NuspecFile=${{ env.NUSPEC_PATH }} 
             -p:Version=${{ env.BUILD_NUMBER }} 
             --output ${{ env.ARITFACT_PATH }} 
+      # -p:NuspecFile=${{ env.NUSPEC_PATH }} 
       # -p:NuspecBasePath=./src/GuardAgainstLib/bin/Release/netstandard2.0
         
     - name: Upload artifacts
