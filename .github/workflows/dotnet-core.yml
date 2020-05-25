@@ -36,25 +36,24 @@ jobs:
     - name: Build
       run: dotnet build --configuration ${{ env.CONFIGURATION }} --no-restore --nologo /p:BuildNumber=${{ env.BUILD_NUMBER }} -p:Version=${{ env.BUILD_NUMBER }} ${{ env.SOLUTION_PATH }}
 
-    #- name: Test
-    #  run: dotnet test --configuration ${{ env.CONFIGURATION }} --no-restore --no-build --verbosity normal --nologo ${{ env.SOLUTION_PATH }}
+    - name: Test
+      run: dotnet test --configuration ${{ env.CONFIGURATION }} --no-restore --no-build --verbosity normal --nologo ${{ env.SOLUTION_PATH }}
 
-    - name: Publish
-      run: dotnet publish ${{ env.PROJECT_PATH }} --configuration ${{ env.CONFIGURATION }} --no-build --no-restore --nologo --output ${{ env.ARITFACT_PATH }}
+    #- name: Publish
+    #  run: dotnet publish ${{ env.PROJECT_PATH }} --configuration ${{ env.CONFIGURATION }} --no-build --no-restore --nologo --output ${{ env.ARITFACT_PATH }}
 
     - name: Pack
       run: dotnet pack 
             ${{ env.PROJECT_PATH }}
             --configuration ${{ env.CONFIGURATION }} 
+            --no-build
+            --no-restore
             --nologo 
             -p:Version=${{ env.BUILD_NUMBER }} 
             --output ${{ env.ARITFACT_PATH }} 
-      # -p:NuspecFile=${{ env.NUSPEC_PATH }} 
-      # -p:NuspecBasePath=./src/GuardAgainstLib/bin/Release/netstandard2.0
         
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
           name: artifacts
-          path: ${{ env.ARITFACT_PATH }}/**/*.*
-          #path: ${{ env.ARITFACT_PATH }}/GuardAgainst.*.nupkg:  
+          path: ${{ env.ARITFACT_PATH }}/GuardAgainst.*.nupkg
