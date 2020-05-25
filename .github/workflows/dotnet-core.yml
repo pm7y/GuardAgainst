@@ -36,8 +36,11 @@ jobs:
     - name: Build
       run: dotnet build --configuration ${{ env.CONFIGURATION }} --no-restore --nologo /p:BuildNumber=${{ env.BUILD_NUMBER }} -p:Version=${{ env.BUILD_NUMBER }} ${{ env.SOLUTION_PATH }}
 
-    - name: Test
-      run: dotnet test --configuration ${{ env.CONFIGURATION }} --no-restore --no-build --verbosity normal --nologo ${{ env.SOLUTION_PATH }}
+    #- name: Test
+    #  run: dotnet test --configuration ${{ env.CONFIGURATION }} --no-restore --no-build --verbosity normal --nologo ${{ env.SOLUTION_PATH }}
+
+    - name: Publish
+      run: dotnet publish ${{ env.PROJECT_PATH }} --configuration ${{ env.CONFIGURATION }} --no-build --no-restore --nologo --output ${{ env.ARITFACT_PATH }}
 
     - name: Pack
       run: dotnet pack 
