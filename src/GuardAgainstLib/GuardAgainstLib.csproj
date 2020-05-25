@@ -3,16 +3,26 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>GuardAgainstLib</RootNamespace>
-    <PackageId>GuardAgainst</PackageId>
-    <Authors>Paul Mcilreavy</Authors>
-    <Product>GuardAgainst</Product>
-    <Description>A single class, containing static methods, to make your code more readable and simplify argument validity checking.</Description>
-    <PackageLicenseUrl>https://github.com/pmcilreavy/GuardAgainst/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/pmcilreavy/GuardAgainst</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/pmcilreavy/GuardAgainst</RepositoryUrl>
-    <PackageTags>GuardAgainst dotnet contracts arguments validity</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Product>GuardAgainst</Product>
     <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+
+  <!-- FOR NUGET -->
+  <PropertyGroup>
+    <PackageId>GuardAgainst</PackageId>
+    <PackageVersion>1.0.0.0</PackageVersion>
+    <Authors>Paul Mcilreavy</Authors>
+    <Title>GuardAgainst</Title>
+    <Description>Useful guard clauses that simplify argument validity checking and make your code more readable.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/pmcilreavy/GuardAgainst</PackageProjectUrl>
+    <PackageIconUrl>http://cdn.rawgit.com/pmcilreavy/GuardAgainst/master/GuardAgainst.png</PackageIconUrl>
+    <!--<PackageIcon>It's recommended to set this</PackageIcon>-->
+    <RepositoryUrl>https://github.com/pmcilreavy/GuardAgainst.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>GuardAgainst;dotnet;contracts;arguments;validity</PackageTags>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
