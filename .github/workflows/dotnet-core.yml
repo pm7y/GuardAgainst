@@ -55,5 +55,6 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-          name: GuardAgainstLib.dll
-          path: ${{ env.ARITFACT_PATH }}/GuardAgainst.*.nupkg
+          name: artifacts
+          path: ${{ env.ARITFACT_PATH }}/**/*.*
+          #path: ${{ env.ARITFACT_PATH }}/GuardAgainst.*.nupkg:  
