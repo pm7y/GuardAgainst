@@ -13,7 +13,7 @@ env:
   PROJECT_PATH: ./src/GuardAgainstLib/GuardAgainstLib.csproj
   CONFIGURATION: Release
   ARITFACT_PATH: ./dist
-  NUSPEC_PATH: ~/src/GuardAgainst.nuspec
+  NUSPEC_PATH: GuardAgainst.nuspec
 
 jobs:
   build:
