@@ -18,7 +18,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingWhitespace(myArgument, nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingWhitespace(myArgument, nameof(myArgument));
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -27,11 +27,11 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentIsNull_ShouldNotThrowArgumentNullException()
         {
-            var myArgument= default(string);
+            const string myArgument = null;
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingWhitespace(myArgument, nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingWhitespace(myArgument, nameof(myArgument));
             });
             Assert.Equal(myArgument, result);
         }
@@ -42,7 +42,7 @@ namespace GuardAgainstLib.Test
             var myArgument = "  ";
             var ex = Should.Throw<ArgumentException>(() =>
             {
-                GuardAgainst.ArgumentBeingWhitespace(myArgument, nameof(myArgument), null);
+                GuardAgainst.ArgumentBeingWhitespace(myArgument, nameof(myArgument));
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));

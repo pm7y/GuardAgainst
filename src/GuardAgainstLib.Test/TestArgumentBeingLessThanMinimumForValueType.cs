@@ -18,7 +18,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument));
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -31,7 +31,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument));
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -43,7 +43,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 1;
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 2, nameof(myArgument), null);
+                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 2, nameof(myArgument));
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));

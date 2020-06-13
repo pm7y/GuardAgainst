@@ -6,23 +6,23 @@ using System.Runtime.CompilerServices;
 namespace GuardAgainstLib
 {
     /// <summary>
-    /// A single class, containing useful guard clauses, that aims to simplify argument validity checking whilst
-    /// making your code more readable. More information @ https://github.com/pmcilreavy/GuardAgainst
+    ///     A single class, containing useful guard clauses, that aims to simplify argument validity checking whilst
+    ///     making your code more readable. More information @ https://github.com/pmcilreavy/GuardAgainst
     /// </summary>
     public static class GuardAgainst
     {
         /// <summary>
-        /// Guards against an argument being null. Will throw an
-        /// <see cref="ArgumentNullException">ArgumentNullException</see> if the argument is null.
+        ///     Guards against an argument being null. Will throw an
+        ///     <see cref="ArgumentNullException">ArgumentNullException</see> if the argument is null.
         /// </summary>
         /// <param name="argumentValue">The argument value to guard.</param>
         /// <param name="argumentName">
-        /// (Optional) Name of the argument. If specified it will be included in the thrown exception
-        /// and therefore make it more informative.
+        ///     (Optional) Name of the argument. If specified it will be included in the thrown exception
+        ///     and therefore make it more informative.
         /// </param>
         /// <param name="exceptionMessage">
-        /// (Optional) Custom error message. A specific error message that can be used to describe
-        /// the exception in more detail than the default message.
+        ///     (Optional) Custom error message. A specific error message that can be used to describe
+        ///     the exception in more detail than the default message.
         /// </param>
         /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is <c>null</c> .</exception>
         /// <example>
@@ -37,8 +37,8 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static T ArgumentBeingNull<T>(T argumentValue,
-            string argumentName= null,
-            string exceptionMessage= null)
+                                             string argumentName = null,
+                                             string exceptionMessage = null)
             where T : class
         {
             return argumentValue ?? throw new ArgumentNullException(argumentName.ToNullIfWhitespace(),
@@ -46,18 +46,18 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Guards against an argument being null or whitespace. Will throw an
-        /// <see cref="ArgumentNullException">ArgumentNullException</see> if the argument is null. Will throw an
-        /// <see cref="ArgumentException">ArgumentException</see> if the argument is whitespace.
+        ///     Guards against an argument being null or whitespace. Will throw an
+        ///     <see cref="ArgumentNullException">ArgumentNullException</see> if the argument is null. Will throw an
+        ///     <see cref="ArgumentException">ArgumentException</see> if the argument is whitespace.
         /// </summary>
         /// <param name="argumentValue">The argument value to guard.</param>
         /// <param name="argumentName">
-        /// (Optional) Name of the argument. If specified it will be included in the thrown exception
-        /// and therefore make it more informative.
+        ///     (Optional) Name of the argument. If specified it will be included in the thrown exception
+        ///     and therefore make it more informative.
         /// </param>
         /// <param name="exceptionMessage">
-        /// (Optional) Custom error message. A specific error message that can be used to describe
-        /// the exception in more detail than the default message.
+        ///     (Optional) Custom error message. A specific error message that can be used to describe
+        ///     the exception in more detail than the default message.
         /// </param>
         /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is <c>null</c> .</exception>
         /// <exception cref="ArgumentException">Will be thrown when <c>argumentValue</c> is whitespace.</exception>
@@ -72,8 +72,8 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static string ArgumentBeingNullOrWhitespace(string argumentValue,
-            string argumentName= null,
-            string exceptionMessage= null)
+                                                           string argumentName = null,
+                                                           string exceptionMessage = null)
         {
             if (!argumentValue.IsNullOrWhitespace())
             {
@@ -87,17 +87,17 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Guards against an argument being whitespace. Will throw an
-        /// <see cref="ArgumentException">ArgumentException</see> if the argument is whitespace.
+        ///     Guards against an argument being whitespace. Will throw an
+        ///     <see cref="ArgumentException">ArgumentException</see> if the argument is whitespace.
         /// </summary>
         /// <param name="argumentValue">The argument value to guard.</param>
         /// <param name="argumentName">
-        /// (Optional) Name of the argument. If specified it will be included in the thrown exception
-        /// and therefore make it more informative.
+        ///     (Optional) Name of the argument. If specified it will be included in the thrown exception
+        ///     and therefore make it more informative.
         /// </param>
         /// <param name="exceptionMessage">
-        /// (Optional) Custom error message. A specific error message that can be used to describe
-        /// the exception in more detail than the default message.
+        ///     (Optional) Custom error message. A specific error message that can be used to describe
+        ///     the exception in more detail than the default message.
         /// </param>
         /// <exception cref="ArgumentException">Will be thrown when <c>argumentValue</c> is whitespace.</exception>
         /// <example>
@@ -111,8 +111,8 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static string ArgumentBeingWhitespace(string argumentValue,
-            string argumentName= null,
-            string exceptionMessage= null)
+                                                     string argumentName = null,
+                                                     string exceptionMessage = null)
         {
             return argumentValue.IsWhitespace()
                 ? throw new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace())
@@ -120,23 +120,24 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Guards against an argument being null or less than the specified minimum. Will throw an
-        /// <see cref="ArgumentNullException">ArgumentNullException</see> if the argument is null. Will throw an
-        /// <see cref="ArgumentOutOfRangeException">ArgumentOutOfRangeException</see> if the argument is less than the specified
-        /// minimum.
+        ///     Guards against an argument being null or less than the specified minimum. Will throw an
+        ///     <see cref="ArgumentNullException">ArgumentNullException</see> if the argument is null. Will throw an
+        ///     <see cref="ArgumentOutOfRangeException">ArgumentOutOfRangeException</see> if the argument is less than the
+        ///     specified
+        ///     minimum.
         /// </summary>
         /// <typeparam name="T">A reference type.</typeparam>
         /// <param name="argumentValue">The argument value to guard.</param>
         /// <param name="minimumAllowedValue">The minimum allowed value.</param>
         /// <param name="argumentName">Name of the argument. Can be optionally specified to be included in the raised exception.</param>
         /// <param name="exceptionMessage">
-        /// (Optional) Custom error message. A specific error message that can be used to describe
-        /// the exception in more detail than the default message.
+        ///     (Optional) Custom error message. A specific error message that can be used to describe
+        ///     the exception in more detail than the default message.
         /// </param>
         /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Will be thrown when <c>argumentValue</c> is less than the specified
-        /// minimum.
+        ///     Will be thrown when <c>argumentValue</c> is less than the specified
+        ///     minimum.
         /// </exception>
         /// <example>
         ///     <code>
@@ -150,9 +151,9 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static T ArgumentBeingNullOrLessThanMinimum<T>(T argumentValue,
-            T minimumAllowedValue,
-            string argumentName= null,
-            string exceptionMessage= null)
+                                                              T minimumAllowedValue,
+                                                              string argumentName = null,
+                                                              string exceptionMessage = null)
             where T : class, IComparable<T>
         {
             _ = argumentValue ?? throw new ArgumentNullException(argumentName.ToNullIfWhitespace(),
@@ -165,21 +166,22 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Guards against an argument being less than the specified minimum. Will throw an
-        /// <see cref="ArgumentOutOfRangeException">ArgumentOutOfRangeException</see> if the argument is less than the specified
-        /// minimum.
+        ///     Guards against an argument being less than the specified minimum. Will throw an
+        ///     <see cref="ArgumentOutOfRangeException">ArgumentOutOfRangeException</see> if the argument is less than the
+        ///     specified
+        ///     minimum.
         /// </summary>
         /// <typeparam name="T">A reference type.</typeparam>
         /// <param name="argumentValue">The argument value to guard.</param>
         /// <param name="minimumAllowedValue">The minimum allowed value.</param>
         /// <param name="argumentName">Name of the argument. Can be optionally specified to be included in the raised exception.</param>
         /// <param name="exceptionMessage">
-        /// (Optional) Custom error message. A specific error message that can be used to describe
-        /// the exception in more detail than the default message.
+        ///     (Optional) Custom error message. A specific error message that can be used to describe
+        ///     the exception in more detail than the default message.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Will be thrown when <c>argumentValue</c> is less than the specified
-        /// minimum.
+        ///     Will be thrown when <c>argumentValue</c> is less than the specified
+        ///     minimum.
         /// </exception>
         /// <example>
         ///     <code>
@@ -193,12 +195,12 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static T ArgumentBeingLessThanMinimum<T>(T argumentValue,
-            T minimumAllowedValue,
-            string argumentName= null,
-            string exceptionMessage= null)
+                                                        T minimumAllowedValue,
+                                                        string argumentName = null,
+                                                        string exceptionMessage = null)
             where T : IComparable<T>
         {
-            return ReferenceEquals(argumentValue, null)
+            return argumentValue.IsNull()
                 ? default
                 : argumentValue.IsLessThan(minimumAllowedValue)
                     ? throw new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
@@ -207,23 +209,24 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Guards against an argument being null or greater than the specified maximum. Will throw an
-        /// <see cref="ArgumentNullException">ArgumentNullException</see> if the argument is null. Will throw an
-        /// <see cref="ArgumentOutOfRangeException">ArgumentOutOfRangeException</see> if the argument is greater than the specified
-        /// maximum.
+        ///     Guards against an argument being null or greater than the specified maximum. Will throw an
+        ///     <see cref="ArgumentNullException">ArgumentNullException</see> if the argument is null. Will throw an
+        ///     <see cref="ArgumentOutOfRangeException">ArgumentOutOfRangeException</see> if the argument is greater than the
+        ///     specified
+        ///     maximum.
         /// </summary>
         /// <typeparam name="T">A reference type.</typeparam>
         /// <param name="argumentValue">The argument value to guard.</param>
         /// <param name="maximumAllowedValue">The maximum allowed value.</param>
         /// <param name="argumentName">Name of the argument. Can be optionally specified to be included in the raised exception.</param>
         /// <param name="exceptionMessage">
-        /// (Optional) Custom error message. A specific error message that can be used to describe
-        /// the exception in more detail than the default message.
+        ///     (Optional) Custom error message. A specific error message that can be used to describe
+        ///     the exception in more detail than the default message.
         /// </param>
         /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Will be thrown when <c>argumentValue</c> is greater than the specified
-        /// maximum.
+        ///     Will be thrown when <c>argumentValue</c> is greater than the specified
+        ///     maximum.
         /// </exception>
         /// <example>
         ///     <code>
@@ -237,13 +240,13 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static T ArgumentBeingNullOrGreaterThanMaximum<T>(T argumentValue,
-            T maximumAllowedValue,
-            string argumentName= null,
-            string exceptionMessage= null)
+                                                                 T maximumAllowedValue,
+                                                                 string argumentName = null,
+                                                                 string exceptionMessage = null)
             where T : class, IComparable<T>
         {
             _ = argumentValue ?? throw new ArgumentNullException(argumentName.ToNullIfWhitespace(),
-                    exceptionMessage.ToNullIfWhitespace());
+                exceptionMessage.ToNullIfWhitespace());
 
             return argumentValue.IsMoreThan(maximumAllowedValue)
                 ? throw new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
@@ -252,21 +255,22 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Guards against an argument being greater than the specified maximum. Will throw an
-        /// <see cref="ArgumentOutOfRangeException">ArgumentOutOfRangeException</see> if the argument is greater than the specified
-        /// maximum.
+        ///     Guards against an argument being greater than the specified maximum. Will throw an
+        ///     <see cref="ArgumentOutOfRangeException">ArgumentOutOfRangeException</see> if the argument is greater than the
+        ///     specified
+        ///     maximum.
         /// </summary>
         /// <typeparam name="T">A reference type.</typeparam>
         /// <param name="argumentValue">The argument value to guard.</param>
         /// <param name="maximumAllowedValue">The maximum allowed value.</param>
         /// <param name="argumentName">Name of the argument. Can be optionally specified to be included in the raised exception.</param>
         /// <param name="exceptionMessage">
-        /// (Optional) Custom error message. A specific error message that can be used to describe
-        /// the exception in more detail than the default message.
+        ///     (Optional) Custom error message. A specific error message that can be used to describe
+        ///     the exception in more detail than the default message.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Will be thrown when <c>argumentValue</c> is greater than the specified
-        /// maximum.
+        ///     Will be thrown when <c>argumentValue</c> is greater than the specified
+        ///     maximum.
         /// </exception>
         /// <example>
         ///     <code>
@@ -280,12 +284,12 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static T ArgumentBeingGreaterThanMaximum<T>(T argumentValue,
-            T maximumAllowedValue,
-            string argumentName = null,
-            string exceptionMessage = null)
+                                                           T maximumAllowedValue,
+                                                           string argumentName = null,
+                                                           string exceptionMessage = null)
             where T : IComparable<T>
         {
-            return ReferenceEquals(argumentValue, null)
+            return argumentValue.IsNull()
                 ? default
                 : argumentValue.IsMoreThan(maximumAllowedValue)
                     ? throw new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
@@ -295,10 +299,10 @@ namespace GuardAgainstLib
 
 
         /// <summary>
-        /// Guards against an argument being null or less than the specified minimum or greater than the specified
-        /// maximum. Will throw an <see cref="ArgumentNullException">ArgumentNullException</see> if the argument is null. Will
-        /// throw an <see cref="ArgumentOutOfRangeException">ArgumentOutOfRangeException</see> if the argument is less than the
-        /// specified minimum or greater than the specified maximum.
+        ///     Guards against an argument being null or less than the specified minimum or greater than the specified
+        ///     maximum. Will throw an <see cref="ArgumentNullException">ArgumentNullException</see> if the argument is null. Will
+        ///     throw an <see cref="ArgumentOutOfRangeException">ArgumentOutOfRangeException</see> if the argument is less than the
+        ///     specified minimum or greater than the specified maximum.
         /// </summary>
         /// <typeparam name="T">A reference type.</typeparam>
         /// <param name="argumentValue">The argument value to guard.</param>
@@ -306,13 +310,13 @@ namespace GuardAgainstLib
         /// <param name="maximumAllowedValue">The maximum allowed value.</param>
         /// <param name="argumentName">Name of the argument. Can be optionally specified to be included in the raised exception.</param>
         /// <param name="exceptionMessage">
-        /// (Optional) Custom error message. A specific error message that can be used to describe
-        /// the exception in more detail than the default message.
+        ///     (Optional) Custom error message. A specific error message that can be used to describe
+        ///     the exception in more detail than the default message.
         /// </param>
         /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Will be thrown when <c>argumentValue</c> is less than the specified
-        /// minimum or greater than the specified maximum.
+        ///     Will be thrown when <c>argumentValue</c> is less than the specified
+        ///     minimum or greater than the specified maximum.
         /// </exception>
         /// <example>
         ///     <code>
@@ -326,10 +330,10 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static T ArgumentBeingNullOrOutOfRange<T>(T argumentValue,
-            T minimumAllowedValue,
-            T maximumAllowedValue,
-            string argumentName= null,
-            string exceptionMessage= null)
+                                                         T minimumAllowedValue,
+                                                         T maximumAllowedValue,
+                                                         string argumentName = null,
+                                                         string exceptionMessage = null)
             where T : class, IComparable<T>
         {
             _ = argumentValue ??
@@ -343,9 +347,9 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Guards against an argument being less than the specified minimum or greater than the specified maximum. Will
-        /// throw an <see cref="ArgumentOutOfRangeException">ArgumentOutOfRangeException</see> if the argument is less than the
-        /// specified minimum or greater than the specified maximum.
+        ///     Guards against an argument being less than the specified minimum or greater than the specified maximum. Will
+        ///     throw an <see cref="ArgumentOutOfRangeException">ArgumentOutOfRangeException</see> if the argument is less than the
+        ///     specified minimum or greater than the specified maximum.
         /// </summary>
         /// <typeparam name="T">A reference type.</typeparam>
         /// <param name="argumentValue">The argument value to guard.</param>
@@ -353,12 +357,12 @@ namespace GuardAgainstLib
         /// <param name="maximumAllowedValue">The maximum allowed value.</param>
         /// <param name="argumentName">Name of the argument. Can be optionally specified to be included in the raised exception.</param>
         /// <param name="exceptionMessage">
-        /// (Optional) Custom error message. A specific error message that can be used to describe
-        /// the exception in more detail than the default message.
+        ///     (Optional) Custom error message. A specific error message that can be used to describe
+        ///     the exception in more detail than the default message.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Will be thrown when <c>argumentValue</c> is less than the specified
-        /// minimum or greater than the specified maximum.
+        ///     Will be thrown when <c>argumentValue</c> is less than the specified
+        ///     minimum or greater than the specified maximum.
         /// </exception>
         /// <example>
         ///     <code>
@@ -372,13 +376,13 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static T ArgumentBeingOutOfRange<T>(T argumentValue,
-            T minimumAllowedValue,
-            T maximumAllowedValue,
-            string argumentName = null,
-            string exceptionMessage = null)
+                                                   T minimumAllowedValue,
+                                                   T maximumAllowedValue,
+                                                   string argumentName = null,
+                                                   string exceptionMessage = null)
             where T : IComparable<T>
         {
-            return ReferenceEquals(argumentValue, null)
+            return argumentValue.IsNull()
                 ? default
                 : argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue)
                     ? argumentValue
@@ -387,17 +391,17 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Guards against an argument being invalid. The argument is invalid if the condition evaluates to <c>True</c> .
-        /// Will throw an <see cref="ArgumentException">ArgumentException</see> .
+        ///     Guards against an argument being invalid. The argument is invalid if the condition evaluates to <c>True</c> .
+        ///     Will throw an <see cref="ArgumentException">ArgumentException</see> .
         /// </summary>
         /// <param name="argumentValueIsInvalid">A boolean condition, which if <c>true</c> , indicates if the argument is invalid.</param>
         /// <param name="argumentName">
-        /// (Optional) Name of the argument. If specified it will be included in the thrown exception
-        /// and therefore make it more informative.
+        ///     (Optional) Name of the argument. If specified it will be included in the thrown exception
+        ///     and therefore make it more informative.
         /// </param>
         /// <param name="exceptionMessage">
-        /// (Optional) Custom error message. A specific error message that can be used to describe
-        /// the exception in more detail than the default message.
+        ///     (Optional) Custom error message. A specific error message that can be used to describe
+        ///     the exception in more detail than the default message.
         /// </param>
         /// <exception cref="ArgumentException">Will be thrown when <c>argumentValueInvalid</c> is evaluates to <c>true</c> .</exception>
         /// <example>
@@ -411,8 +415,8 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static bool ArgumentBeingInvalid(bool argumentValueIsInvalid,
-            string argumentName= null,
-            string exceptionMessage= null)
+                                                string argumentName = null,
+                                                string exceptionMessage = null)
         {
             return argumentValueIsInvalid
                 ? throw new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace())
@@ -420,13 +424,13 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Guards against an invalid operation. The operation is invalid if the condition evaluates to <c>True</c> . Will
-        /// throw an <see cref="InvalidOperationException">InvalidOperationException</see> .
+        ///     Guards against an invalid operation. The operation is invalid if the condition evaluates to <c>True</c> . Will
+        ///     throw an <see cref="InvalidOperationException">InvalidOperationException</see> .
         /// </summary>
         /// <param name="operationIsInvalid">A boolean condition, which if <c>true</c> , indicates if the operation is invalid.</param>
         /// <param name="exceptionMessage">
-        /// (Optional) Custom error message. A specific error message that can be used to describe
-        /// the exception in more detail than the default message.
+        ///     (Optional) Custom error message. A specific error message that can be used to describe
+        ///     the exception in more detail than the default message.
         /// </param>
         /// <exception cref="InvalidOperationException">Will be thrown when <c>operationInvalid</c> is evaluates to <c>true</c> .</exception>
         /// <example>
@@ -440,7 +444,7 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static bool OperationBeingInvalid(bool operationIsInvalid,
-            string exceptionMessage = null)
+                                                 string exceptionMessage = null)
         {
             return operationIsInvalid
                 ? throw new InvalidOperationException(exceptionMessage.ToNullIfWhitespace())
@@ -448,14 +452,14 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Guards against a DateTime argument being 'Unspecified'. Will throw an
-        /// <see cref="ArgumentException">ArgumentException</see> when the 'Kind' is 'Unspecified'.
+        ///     Guards against a DateTime argument being 'Unspecified'. Will throw an
+        ///     <see cref="ArgumentException">ArgumentException</see> when the 'Kind' is 'Unspecified'.
         /// </summary>
         /// <param name="argumentValue">The argument value to guard.</param>
         /// <param name="argumentName">Name of the argument. Can be optionally specified to be included in the raised exception.</param>
         /// <param name="exceptionMessage">
-        /// (Optional) Custom error message. A specific error message that can be used to describe
-        /// the exception in more detail than the default message.
+        ///     (Optional) Custom error message. A specific error message that can be used to describe
+        ///     the exception in more detail than the default message.
         /// </param>
         /// <exception cref="ArgumentException">Will be thrown when <c>argumentValueInvalid</c> is evaluates to <c>true</c> .</exception>
         /// <example>
@@ -469,8 +473,8 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static DateTime ArgumentBeingUnspecifiedDateTime(DateTime argumentValue,
-            string argumentName= null,
-            string exceptionMessage= null)
+                                                                string argumentName = null,
+                                                                string exceptionMessage = null)
         {
             return argumentValue.Kind != DateTimeKind.Unspecified
                 ? argumentValue
@@ -478,18 +482,18 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Guards against an argument being null or an empty string. Will throw an
-        /// <see cref="ArgumentNullException">ArgumentNullException</see> if the argument is null. Will throw an
-        /// <see cref="ArgumentException">ArgumentException</see> if the argument is an empty string.
+        ///     Guards against an argument being null or an empty string. Will throw an
+        ///     <see cref="ArgumentNullException">ArgumentNullException</see> if the argument is null. Will throw an
+        ///     <see cref="ArgumentException">ArgumentException</see> if the argument is an empty string.
         /// </summary>
         /// <param name="argumentValue">The argument value to guard.</param>
         /// <param name="argumentName">
-        /// (Optional) Name of the argument. If specified it will be included in the thrown exception
-        /// and therefore make it more informative.
+        ///     (Optional) Name of the argument. If specified it will be included in the thrown exception
+        ///     and therefore make it more informative.
         /// </param>
         /// <param name="exceptionMessage">
-        /// (Optional) Custom error message. A specific error message that can be used to describe
-        /// the exception in more detail than the default message.
+        ///     (Optional) Custom error message. A specific error message that can be used to describe
+        ///     the exception in more detail than the default message.
         /// </param>
         /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is <c>null</c> .</exception>
         /// <exception cref="ArgumentException">Will be thrown when <c>argumentValue</c> is an empty string.</exception>
@@ -504,8 +508,8 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static string ArgumentBeingNullOrEmpty(string argumentValue,
-            string argumentName= null,
-            string exceptionMessage= null)
+                                                      string argumentName = null,
+                                                      string exceptionMessage = null)
         {
             if (!argumentValue.IsNullOrEmpty())
             {
@@ -520,18 +524,18 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Guards against an argument being null or an empty enumerable. Will throw an
-        /// <see cref="ArgumentNullException">ArgumentNullException</see> if the argument is null. Will throw an
-        /// <see cref="ArgumentException">ArgumentException</see> if the argument is an empty enumerable.
+        ///     Guards against an argument being null or an empty enumerable. Will throw an
+        ///     <see cref="ArgumentNullException">ArgumentNullException</see> if the argument is null. Will throw an
+        ///     <see cref="ArgumentException">ArgumentException</see> if the argument is an empty enumerable.
         /// </summary>
         /// <param name="argumentValue">The argument value to guard.</param>
         /// <param name="argumentName">
-        /// (Optional) Name of the argument. If specified it will be included in the thrown exception
-        /// and therefore make it more informative.
+        ///     (Optional) Name of the argument. If specified it will be included in the thrown exception
+        ///     and therefore make it more informative.
         /// </param>
         /// <param name="exceptionMessage">
-        /// (Optional) Custom error message. A specific error message that can be used to describe
-        /// the exception in more detail than the default message.
+        ///     (Optional) Custom error message. A specific error message that can be used to describe
+        ///     the exception in more detail than the default message.
         /// </param>
         /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is <c>null</c> .</exception>
         /// <exception cref="ArgumentException">Will be thrown when <c>argumentValue</c> is an empty enumerable.</exception>
@@ -546,10 +550,9 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static IEnumerable<T> ArgumentBeingNullOrEmpty<T>(IEnumerable<T> argumentValue,
-            string argumentName= null,
-            string exceptionMessage= null)
+                                                                 string argumentName = null,
+                                                                 string exceptionMessage = null)
         {
-
             _ = argumentValue ?? throw new ArgumentNullException(argumentName.ToNullIfWhitespace(),
                 exceptionMessage.ToNullIfWhitespace());
 
@@ -560,17 +563,17 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Guards against an argument being an empty string. Will throw an
-        /// <see cref="ArgumentException">ArgumentException</see> if the argument is an empty string.
+        ///     Guards against an argument being an empty string. Will throw an
+        ///     <see cref="ArgumentException">ArgumentException</see> if the argument is an empty string.
         /// </summary>
         /// <param name="argumentValue">The argument value to guard.</param>
         /// <param name="argumentName">
-        /// (Optional) Name of the argument. If specified it will be included in the thrown exception
-        /// and therefore make it more informative.
+        ///     (Optional) Name of the argument. If specified it will be included in the thrown exception
+        ///     and therefore make it more informative.
         /// </param>
         /// <param name="exceptionMessage">
-        /// (Optional) Custom error message. A specific error message that can be used to describe
-        /// the exception in more detail than the default message.
+        ///     (Optional) Custom error message. A specific error message that can be used to describe
+        ///     the exception in more detail than the default message.
         /// </param>
         /// <exception cref="ArgumentException">Will be thrown when <c>argumentValue</c> is an empty string.</exception>
         /// <example>
@@ -584,8 +587,8 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static string ArgumentBeingEmpty(string argumentValue,
-            string argumentName= null,
-            string exceptionMessage= null)
+                                                string argumentName = null,
+                                                string exceptionMessage = null)
         {
             return argumentValue.IsEmpty()
                 ? throw new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace())
@@ -593,17 +596,17 @@ namespace GuardAgainstLib
         }
 
         /// <summary>
-        /// Guards against an argument being an empty enumerable. Will throw an
-        /// <see cref="ArgumentException">ArgumentException</see> if the argument is an empty enumerable.
+        ///     Guards against an argument being an empty enumerable. Will throw an
+        ///     <see cref="ArgumentException">ArgumentException</see> if the argument is an empty enumerable.
         /// </summary>
         /// <param name="argumentValue">The argument value to guard.</param>
         /// <param name="argumentName">
-        /// (Optional) Name of the argument. If specified it will be included in the thrown exception
-        /// and therefore make it more informative.
+        ///     (Optional) Name of the argument. If specified it will be included in the thrown exception
+        ///     and therefore make it more informative.
         /// </param>
         /// <param name="exceptionMessage">
-        /// (Optional) Custom error message. A specific error message that can be used to describe
-        /// the exception in more detail than the default message.
+        ///     (Optional) Custom error message. A specific error message that can be used to describe
+        ///     the exception in more detail than the default message.
         /// </param>
         /// <exception cref="ArgumentException">Will be thrown when <c>argumentValue</c> is an empty enumerable.</exception>
         /// <example>
@@ -617,10 +620,9 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static IEnumerable<T> ArgumentBeingEmpty<T>(IEnumerable<T> argumentValue,
-            string argumentName= null,
-            string exceptionMessage= null)
+                                                           string argumentName = null,
+                                                           string exceptionMessage = null)
         {
-
             return ReferenceEquals(argumentValue, default(IEnumerable<T>)) || argumentValue.Any()
                 ? argumentValue
                 : throw new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
@@ -662,6 +664,12 @@ namespace GuardAgainstLib
                                             string upperBound)
         {
             return string.CompareOrdinal(@this, lowerBound) >= 0 && string.CompareOrdinal(@this, upperBound) <= 0;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool IsNull<T>(this T @this)
+        {
+            return ReferenceEquals(@this, null);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

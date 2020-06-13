@@ -5,20 +5,20 @@ using Xunit.Abstractions;
 
 namespace GuardAgainstLib.Test
 {
-    public class TestOperationBeingInvalid : TestBase
+    public class TestArgumentBeingInvalid : TestBase
     {
-        public TestOperationBeingInvalid(ITestOutputHelper output) : base(output)
+        public TestArgumentBeingInvalid(ITestOutputHelper output) : base(output)
         {
         }
 
         [Fact]
         public void WhenArgumentIsFalse_ShouldNotThrow()
         {
-            var myArgument = false;
+            const bool myArgument = false;
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.OperationBeingInvalid(myArgument, null);
+                result = GuardAgainst.ArgumentBeingInvalid(myArgument, nameof(myArgument));
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -27,11 +27,13 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentIsTrue_ShouldThrowArgumentException()
         {
-            var myArgument = true;
-            var ex = Should.Throw<InvalidOperationException>(() =>
+            const bool myArgument = true;
+            var ex = Should.Throw<ArgumentException>(() =>
             {
-                GuardAgainst.OperationBeingInvalid(myArgument, null);
+                GuardAgainst.ArgumentBeingInvalid(myArgument, nameof(myArgument));
             });
+
+            ex.ParamName.ShouldBe(nameof(myArgument));
         }
     }
 }

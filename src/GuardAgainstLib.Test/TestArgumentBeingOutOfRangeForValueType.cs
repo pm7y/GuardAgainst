@@ -18,7 +18,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument));
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -31,7 +31,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument));
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -43,7 +43,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 5;
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null);
+                GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument));
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
@@ -56,7 +56,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument));
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -68,7 +68,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 1;
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null);
+                GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument));
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));

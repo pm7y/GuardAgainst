@@ -17,7 +17,7 @@ namespace GuardAgainstLib.Test
             var myArgument = "";
             var ex = Should.Throw<ArgumentException>(() =>
             {
-                GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null);
+                GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument));
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
@@ -30,7 +30,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument));
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -39,11 +39,12 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentIsNullString_ShouldNotThrow()
         {
-            var myArgument= default(string);
+            const string myArgument = null;
             object result = null;
+
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument));
             });
             Assert.Equal(myArgument, result);
         }

@@ -5,9 +5,9 @@ using Xunit.Abstractions;
 
 namespace GuardAgainstLib.Test
 {
-    public class TestArgumentBeingLessThanMinimum : TestBase
+    public class TestArgumentBeingNullOrLessThanMinimum : TestBase
     {
-        public TestArgumentBeingLessThanMinimum(ITestOutputHelper output) : base(output)
+        public TestArgumentBeingNullOrLessThanMinimum(ITestOutputHelper output) : base(output)
         {
         }
 
@@ -18,7 +18,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, "A", nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingNullOrLessThanMinimum(myArgument, "A", nameof(myArgument));
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -31,7 +31,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, "A", nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingNullOrLessThanMinimum(myArgument, "A", nameof(myArgument));
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -43,22 +43,22 @@ namespace GuardAgainstLib.Test
             var myArgument = "A";
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, "B", nameof(myArgument), null);
+                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(myArgument, "B", nameof(myArgument));
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
         }
 
         [Fact]
-        public void WhenArgumentIsNull_ShouldNotThrowException()
+        public void WhenArgumentIsNull_ShouldThrowArgumentNullException()
         {
-            var myArgument= default(string);
-            object result = null;
-            Should.NotThrow(() =>
+            const string myArgument = null;
+            var ex = Should.Throw<ArgumentNullException>(() =>
             {
-                result = GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, "B", nameof(myArgument), null);
+                GuardAgainst.ArgumentBeingNullOrLessThanMinimum(myArgument, "B", nameof(myArgument));
             });
-            Assert.Equal(myArgument, result);
+
+            ex.ParamName.ShouldBe(nameof(myArgument));
         }
 
         [Fact]
@@ -68,7 +68,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, null, nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingNullOrLessThanMinimum(myArgument, null, nameof(myArgument));
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);

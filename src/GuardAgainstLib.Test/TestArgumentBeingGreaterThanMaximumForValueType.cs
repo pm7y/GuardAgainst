@@ -18,7 +18,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 2, nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 2, nameof(myArgument));
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -30,7 +30,7 @@ namespace GuardAgainstLib.Test
             var myArgument = 2;
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 1, nameof(myArgument), null);
+                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 1, nameof(myArgument));
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
@@ -43,7 +43,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 2, nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 2, nameof(myArgument));
             });
             Assert.Equal(myArgument, result);
         }

@@ -18,7 +18,7 @@ namespace GuardAgainstLib.Test
             var myArgument = Enumerable.Empty<int>();
             var ex = Should.Throw<ArgumentException>(() =>
             {
-                GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null);
+                GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument));
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
@@ -27,11 +27,11 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentIsNotNullOrEmptyString_ShouldNotThrow()
         {
-            var myArgument = new[] { 1 };
+            var myArgument = new[] {1};
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument));
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -40,11 +40,12 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentIsNullEnumerable_ShouldNotThrow()
         {
-            var myArgument = default(int[]);
+            const int[] myArgument = null;
             object result = null;
+
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument));
             });
             Assert.Equal(myArgument, result);
         }

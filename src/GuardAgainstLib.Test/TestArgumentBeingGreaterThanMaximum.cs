@@ -5,9 +5,9 @@ using Xunit.Abstractions;
 
 namespace GuardAgainstLib.Test
 {
-    public class TestArgumentBeingNullOrGreaterThanMaximum : TestBase
+    public class TestArgumentBeingGreaterThanMaximum : TestBase
     {
-        public TestArgumentBeingNullOrGreaterThanMaximum(ITestOutputHelper output) : base(output)
+        public TestArgumentBeingGreaterThanMaximum(ITestOutputHelper output) : base(output)
         {
         }
 
@@ -18,7 +18,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "A", nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, "A", nameof(myArgument));
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -30,7 +30,7 @@ namespace GuardAgainstLib.Test
             var myArgument = "B";
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "A", nameof(myArgument), null);
+                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, "A", nameof(myArgument));
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
@@ -43,31 +43,32 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "B", nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, "B", nameof(myArgument));
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
         }
 
         [Fact]
-        public void WhenArgumentIsNull_ShouldThrowArgumentNullException()
+        public void WhenArgumentIsNull_ShouldNotThrow()
         {
-            var myArgument= default(string);
-            var ex = Should.Throw<ArgumentNullException>(() =>
-            {
-                GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "B", nameof(myArgument), null);
-            });
+            const string myArgument = null;
+            object result = null;
 
-            ex.ParamName.ShouldBe(nameof(myArgument));
+            Should.NotThrow(() =>
+            {
+                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, "B", nameof(myArgument));
+            });
+            Assert.Equal(myArgument, result);
         }
 
         [Fact]
-        public void WhenMaximumValueIsNull_ShouldThrowArgumentNullException()
+        public void WhenMaximumValueIsNull_ShouldThrowArgumentOutOfRangeException()
         {
             var myArgument = "A";
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, null, nameof(myArgument), null);
+                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, null, nameof(myArgument));
             });
 
             ex.ParamName.ShouldBe("myArgument");

@@ -17,7 +17,7 @@
     <Description>Useful guard clauses that simplify argument validity checking and make your code more readable.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/pmcilreavy/GuardAgainst</PackageProjectUrl>
-    <PackageIconUrl>http://cdn.rawgit.com/pmcilreavy/GuardAgainst/master/GuardAgainst.png</PackageIconUrl>
+    <PackageIconUrl>http://cdn.rawgit.com/pmcilreavy/GuardAgainst/master/src/GuardAgainstLib/logo/GuardAgainstSquare.png</PackageIconUrl>
     <!--<PackageIcon>It's recommended to set this</PackageIcon>-->
     <RepositoryUrl>https://github.com/pmcilreavy/GuardAgainst.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -33,8 +33,9 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>pdbonly</DebugType>
-    <DebugSymbols>true</DebugSymbols>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
     <DocumentationFile>bin\Release\netstandard2.0\GuardAgainstLib.xml</DocumentationFile>
+    <OutputPath>bin\Release\netstandard2.0\</OutputPath>
   </PropertyGroup>
 </Project>

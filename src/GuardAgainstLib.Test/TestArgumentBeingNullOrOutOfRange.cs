@@ -5,12 +5,12 @@ using Xunit.Abstractions;
 
 namespace GuardAgainstLib.Test
 {
-    public class TestArgumentBeingOutOfRange : TestBase
+    public class TestArgumentBeingNullOrOutOfRange : TestBase
     {
-        public TestArgumentBeingOutOfRange(ITestOutputHelper output) : base(output)
+        public TestArgumentBeingNullOrOutOfRange(ITestOutputHelper output) : base(output)
         {
         }
-        
+
         [Fact]
         public void WhenArgumentIsEqualToMaximum_ShouldNotThrow()
         {
@@ -18,12 +18,12 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, "B", "D", nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingNullOrOutOfRange(myArgument, "B", "D", nameof(myArgument));
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
         }
-        
+
         [Fact]
         public void WhenArgumentIsEqualToMinimum_ShouldNotThrow()
         {
@@ -31,7 +31,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, "B", "D", nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingNullOrOutOfRange(myArgument, "B", "D", nameof(myArgument));
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -43,12 +43,12 @@ namespace GuardAgainstLib.Test
             var myArgument = "E";
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingOutOfRange(myArgument, "B", "D", nameof(myArgument), null);
+                GuardAgainst.ArgumentBeingNullOrOutOfRange(myArgument, "B", "D", nameof(myArgument));
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
         }
-        
+
         [Fact]
         public void WhenArgumentIsInRange_ShouldNotThrow()
         {
@@ -56,7 +56,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, "B", "D", nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingNullOrOutOfRange(myArgument, "B", "D", nameof(myArgument));
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -68,22 +68,22 @@ namespace GuardAgainstLib.Test
             var myArgument = "A";
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingOutOfRange(myArgument, "B", "D", nameof(myArgument), null);
+                GuardAgainst.ArgumentBeingNullOrOutOfRange(myArgument, "B", "D", nameof(myArgument));
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
         }
 
         [Fact]
-        public void WhenArgumentValueIsNull_ShouldNotThrow()
+        public void WhenArgumentValueIsNull_ShouldThrowArgumentNullException()
         {
-            var myArgument= default(string);
-            object result = null;
-            Should.NotThrow(() =>
+            const string myArgument = null;
+            var ex = Should.Throw<ArgumentNullException>(() =>
             {
-                GuardAgainst.ArgumentBeingOutOfRange(myArgument, "B", "D", nameof(myArgument), null);
+                GuardAgainst.ArgumentBeingNullOrOutOfRange(myArgument, "B", "D", nameof(myArgument));
             });
-            Assert.Equal(myArgument, result);
+
+            ex.ParamName.ShouldBe(nameof(myArgument));
         }
 
         [Fact]
@@ -92,7 +92,7 @@ namespace GuardAgainstLib.Test
             var myArgument = "A";
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingOutOfRange(myArgument, "B", null, nameof(myArgument), null);
+                GuardAgainst.ArgumentBeingNullOrOutOfRange(myArgument, "B", null, nameof(myArgument));
             });
 
             ex.ParamName.ShouldBe("myArgument");
@@ -105,7 +105,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, null, "D", nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingNullOrOutOfRange(myArgument, null, "D", nameof(myArgument));
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);

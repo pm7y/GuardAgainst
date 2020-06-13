@@ -18,7 +18,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument));
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -30,7 +30,7 @@ namespace GuardAgainstLib.Test
             var myArgument = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified);
             var ex = Should.Throw<ArgumentException>(() =>
             {
-                GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null);
+                GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument));
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
@@ -43,7 +43,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null);
+                result = GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument));
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
