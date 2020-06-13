@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace GuardAgainstLib.Test
 {
-    public class Test_ArgumentBeingNullOrGreaterThanMaximum : TestBase
+    public class TestArgumentBeingNullOrGreaterThanMaximum : TestBase
     {
-        public Test_ArgumentBeingNullOrGreaterThanMaximum(ITestOutputHelper output) : base(output)
+        public TestArgumentBeingNullOrGreaterThanMaximum(ITestOutputHelper output) : base(output)
         {
         }
 
@@ -19,8 +18,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "A", nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
+                result = GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "A", nameof(myArgument), null);
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -32,13 +30,10 @@ namespace GuardAgainstLib.Test
             var myArgument = "B";
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "A", nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
+                GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "A", nameof(myArgument), null);
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
-            ex.Data.Count.ShouldBe(1);
-            ex.Data["a"].ShouldBe("1");
         }
 
         [Fact]
@@ -48,8 +43,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "B", nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
+                result = GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "B", nameof(myArgument), null);
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -58,16 +52,13 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentIsNull_ShouldThrowArgumentNullException()
         {
-            var myArgument = default(string);
+            var myArgument= default(string);
             var ex = Should.Throw<ArgumentNullException>(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "B", nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
+                GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "B", nameof(myArgument), null);
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
-            ex.Data.Count.ShouldBe(1);
-            ex.Data["a"].ShouldBe("1");
         }
 
         [Fact]
@@ -76,12 +67,10 @@ namespace GuardAgainstLib.Test
             var myArgument = "A";
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, null, nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
+                GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, null, nameof(myArgument), null);
             });
 
             ex.ParamName.ShouldBe("myArgument");
-            ex.Data.Count.ShouldBe(1);
         }
     }
 }

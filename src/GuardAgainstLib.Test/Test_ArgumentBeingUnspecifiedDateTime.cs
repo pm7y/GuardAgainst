@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace GuardAgainstLib.Test
 {
-    public class Test_ArgumentBeingUnspecifiedDateTime : TestBase
+    public class TestArgumentBeingUnspecifiedDateTime : TestBase
     {
-        public Test_ArgumentBeingUnspecifiedDateTime(ITestOutputHelper output) : base(output)
+        public TestArgumentBeingUnspecifiedDateTime(ITestOutputHelper output) : base(output)
         {
         }
 
@@ -19,8 +18,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
+                result = GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null);
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -32,13 +30,10 @@ namespace GuardAgainstLib.Test
             var myArgument = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified);
             var ex = Should.Throw<ArgumentException>(() =>
             {
-                GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
+                GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null);
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
-            ex.Data.Count.ShouldBe(1);
-            ex.Data["a"].ShouldBe("1");
         }
 
         [Fact]
@@ -48,8 +43,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
+                result = GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument), null);
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);

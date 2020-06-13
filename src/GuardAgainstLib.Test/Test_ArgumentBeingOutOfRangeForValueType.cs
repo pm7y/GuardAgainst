@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace GuardAgainstLib.Test
 {
-    public class Test_ArgumentBeingOutOfRangeForValueType : TestBase
+    public class TestArgumentBeingOutOfRangeForValueType : TestBase
     {
-        public Test_ArgumentBeingOutOfRangeForValueType(ITestOutputHelper output) : base(output)
+        public TestArgumentBeingOutOfRangeForValueType(ITestOutputHelper output) : base(output)
         {
         }
 
@@ -19,8 +18,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
+                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null);
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -33,8 +31,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
+                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null);
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -46,13 +43,10 @@ namespace GuardAgainstLib.Test
             var myArgument = 5;
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
+                GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null);
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
-            ex.Data.Count.ShouldBe(1);
-            ex.Data["a"].ShouldBe("1");
         }
 
         [Fact]
@@ -62,8 +56,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
+                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null);
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -75,13 +68,10 @@ namespace GuardAgainstLib.Test
             var myArgument = 1;
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
+                GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument), null);
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
-            ex.Data.Count.ShouldBe(1);
-            ex.Data["a"].ShouldBe("1");
         }
     }
 }

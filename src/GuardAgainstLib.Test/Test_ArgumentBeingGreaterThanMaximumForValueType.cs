@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace GuardAgainstLib.Test
 {
-    public class Test_ArgumentBeingGreaterThanMaximumForValueType : TestBase
+    public class TestArgumentBeingGreaterThanMaximumForValueType : TestBase
     {
-        public Test_ArgumentBeingGreaterThanMaximumForValueType(ITestOutputHelper output) : base(output)
+        public TestArgumentBeingGreaterThanMaximumForValueType(ITestOutputHelper output) : base(output)
         {
         }
 
@@ -19,8 +18,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 2, nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
+                result = GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 2, nameof(myArgument), null);
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -32,13 +30,10 @@ namespace GuardAgainstLib.Test
             var myArgument = 2;
             var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
             {
-                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 1, nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
+                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 1, nameof(myArgument), null);
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
-            ex.Data.Count.ShouldBe(1);
-            ex.Data["a"].ShouldBe("1");
         }
 
         [Fact]
@@ -48,8 +43,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 2, nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
+                result = GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 2, nameof(myArgument), null);
             });
             Assert.Equal(myArgument, result);
         }

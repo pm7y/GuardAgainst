@@ -2,12 +2,12 @@ name: Build and Test
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 env:
-  BUILD_NUMBER: 3.0.31.${{ github.run_number }}
+  BUILD_NUMBER: 4.0.0.${{ github.run_number }}
   DOTNET_VERSION: 3.1.101
   SOLUTION_PATH: ./src/GuardAgainstLib.sln
   PROJECT_PATH: ./src/GuardAgainstLib/GuardAgainstLib.csproj
@@ -17,43 +17,42 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
-    steps:     
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }} 
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    - name: Clean
-      run: dotnet clean --configuration ${{ env.CONFIGURATION }} --nologo ${{ env.SOLUTION_PATH }}
+      - name: Clean
+        run: dotnet clean --configuration ${{ env.CONFIGURATION }} --nologo ${{ env.SOLUTION_PATH }}
 
-    - name: Restore
-      run: dotnet restore ${{ env.SOLUTION_PATH }}
+      - name: Restore
+        run: dotnet restore ${{ env.SOLUTION_PATH }}
 
-    - name: Build
-      run: dotnet build --configuration ${{ env.CONFIGURATION }} --no-restore --nologo /p:BuildNumber=${{ env.BUILD_NUMBER }} -p:Version=${{ env.BUILD_NUMBER }} ${{ env.SOLUTION_PATH }}
+      - name: Build
+        run: dotnet build --configuration ${{ env.CONFIGURATION }} --no-restore --nologo /p:BuildNumber=${{ env.BUILD_NUMBER }} -p:Version=${{ env.BUILD_NUMBER }} ${{ env.SOLUTION_PATH }}
 
-    - name: Test
-      run: dotnet test --configuration ${{ env.CONFIGURATION }} --no-restore --no-build --verbosity normal --nologo ${{ env.SOLUTION_PATH }}
+      - name: Test
+        run: dotnet test --configuration ${{ env.CONFIGURATION }} --no-restore --no-build --verbosity normal --nologo ${{ env.SOLUTION_PATH }}
 
-    #- name: Publish
-    #  run: dotnet publish ${{ env.PROJECT_PATH }} --configuration ${{ env.CONFIGURATION }} --no-build --no-restore --nologo --output ${{ env.ARITFACT_PATH }}
+      #- name: Publish
+      #  run: dotnet publish ${{ env.PROJECT_PATH }} --configuration ${{ env.CONFIGURATION }} --no-build --no-restore --nologo --output ${{ env.ARITFACT_PATH }}
 
-    - name: Pack
-      run: dotnet pack 
-            ${{ env.PROJECT_PATH }}
-            --configuration ${{ env.CONFIGURATION }} 
-            --no-build
-            --no-restore
-            --nologo 
-            -p:Version=${{ env.BUILD_NUMBER }} 
-            --output ${{ env.ARITFACT_PATH }} 
-        
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
+      - name: Pack
+        run: dotnet pack
+          ${{ env.PROJECT_PATH }}
+          --configuration ${{ env.CONFIGURATION }}
+          --no-build
+          --no-restore
+          --nologo
+          -p:Version=${{ env.BUILD_NUMBER }}
+          --output ${{ env.ARITFACT_PATH }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
           name: artifacts
           path: ${{ env.ARITFACT_PATH }}/GuardAgainst.*.nupkg

@@ -4,9 +4,9 @@ using Xunit.Abstractions;
 
 namespace GuardAgainstLib.Test
 {
-    public class Test_Canary : TestBase
+    public class TestCanary : TestBase
     {
-        public Test_Canary(ITestOutputHelper output) : base(output)
+        public TestCanary(ITestOutputHelper output) : base(output)
         {
         }
 

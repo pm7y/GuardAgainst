@@ -7,9 +7,9 @@ using Xunit.Abstractions;
 
 namespace GuardAgainstLib.Test
 {
-    public class Test_ArgumentBeingNullOrEmpty_Enumerable : TestBase
+    public class TestArgumentBeingNullOrEmptyEnumerable : TestBase
     {
-        public Test_ArgumentBeingNullOrEmpty_Enumerable(ITestOutputHelper output) : base(output)
+        public TestArgumentBeingNullOrEmptyEnumerable(ITestOutputHelper output) : base(output)
         {
         }
 
@@ -19,13 +19,10 @@ namespace GuardAgainstLib.Test
             var myArgument = Enumerable.Empty<string>();
             var ex = Should.Throw<ArgumentException>(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
+                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null);
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
-            ex.Data.Count.ShouldBe(1);
-            ex.Data["a"].ShouldBe("1");
         }
         
         [Fact]
@@ -35,8 +32,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
+                result = GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null);
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -45,16 +41,13 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentIsNull_ShouldThrowArgumentNullException()
         {
-            var myArgument = default(IEnumerable<string>);
+            var myArgument= default(IEnumerable<string>);
             var ex = Should.Throw<ArgumentNullException>(() =>
             {
-                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null,
-                    new Dictionary<object, object> {{"a", "1"}});
+                GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument), null);
             });
 
             ex.ParamName.ShouldBe(nameof(myArgument));
-            ex.Data.Count.ShouldBe(1);
-            ex.Data["a"].ShouldBe("1");
         }
     }
 }

@@ -24,7 +24,6 @@ namespace GuardAgainstLib
         /// (Optional) Custom error message. A specific error message that can be used to describe
         /// the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData">(Optional) Additional information to add to the Data property of the thrown exception.</param>
         /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is <c>null</c> .</exception>
         /// <example>
         ///     <code>
@@ -33,25 +32,17 @@ namespace GuardAgainstLib
         ///     GuardAgainst.ArgumentBeingNull(myArgument, nameof(myArgument));
         ///     GuardAgainst.ArgumentBeingNull(person, nameof(person));
         /// 
-        ///     // Remaining code omitted.
+        ///     ...
         /// }
         /// </code>
         /// </example>
         public static T ArgumentBeingNull<T>(T argumentValue,
-                                                string argumentName = null,
-                                                string exceptionMessage = null,
-                                                IDictionary<object, object> additionalData = default)
+            string argumentName= null,
+            string exceptionMessage= null)
             where T : class
         {
-            if (!ReferenceEquals(argumentValue, null))
-            {
-                return argumentValue;
-            }
-
-            var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+            return argumentValue ?? throw new ArgumentNullException(argumentName.ToNullIfWhitespace(),
                 exceptionMessage.ToNullIfWhitespace());
-            ex.AddData(additionalData);
-            throw ex;
         }
 
         /// <summary>
@@ -68,7 +59,6 @@ namespace GuardAgainstLib
         /// (Optional) Custom error message. A specific error message that can be used to describe
         /// the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData">(Optional) Additional information to add to the Data property of the thrown exception.</param>
         /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is <c>null</c> .</exception>
         /// <exception cref="ArgumentException">Will be thrown when <c>argumentValue</c> is whitespace.</exception>
         /// <example>
@@ -77,36 +67,23 @@ namespace GuardAgainstLib
         /// {
         ///     GuardAgainst.ArgumentBeingNullOrWhitespace(myArgument, nameof(myArgument));
         /// 
-        ///     // Remaining code omitted.
+        ///     ...
         /// }
         /// </code>
         /// </example>
         public static string ArgumentBeingNullOrWhitespace(string argumentValue,
-                                                         string argumentName = null,
-                                                         string exceptionMessage = null,
-                                                         IDictionary<object, object> additionalData = default)
+            string argumentName= null,
+            string exceptionMessage= null)
         {
-            if (!string.IsNullOrWhiteSpace(argumentValue))
+            if (!argumentValue.IsNullOrWhitespace())
             {
                 return argumentValue;
             }
 
-            if (ReferenceEquals(argumentValue, null))
-            {
-                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
-                    exceptionMessage.ToNullIfWhitespace());
+            _ = argumentValue ?? throw new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+                exceptionMessage.ToNullIfWhitespace());
 
-                ex.AddData(additionalData);
-                throw ex;
-            }
-            else
-            {
-                var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(),
-                    argumentName.ToNullIfWhitespace());
-
-                ex.AddData(additionalData);
-                throw ex;
-            }
+            throw new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
         }
 
         /// <summary>
@@ -122,7 +99,6 @@ namespace GuardAgainstLib
         /// (Optional) Custom error message. A specific error message that can be used to describe
         /// the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData">(Optional) Additional information to add to the Data property of the thrown exception.</param>
         /// <exception cref="ArgumentException">Will be thrown when <c>argumentValue</c> is whitespace.</exception>
         /// <example>
         ///     <code>
@@ -130,23 +106,17 @@ namespace GuardAgainstLib
         /// {
         ///     GuardAgainst.ArgumentBeingWhitespace(myArgument, nameof(myArgument));
         /// 
-        ///     // Remaining code omitted.
+        ///     ...
         /// }
         /// </code>
         /// </example>
         public static string ArgumentBeingWhitespace(string argumentValue,
-                                                   string argumentName = null,
-                                                   string exceptionMessage = null,
-                                                   IDictionary<object, object> additionalData = default)
+            string argumentName= null,
+            string exceptionMessage= null)
         {
-            if (ReferenceEquals(argumentValue, null) || !string.IsNullOrWhiteSpace(argumentValue))
-            {
-                return argumentValue;
-            }
-
-            var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
-            ex.AddData(additionalData);
-            throw ex;
+            return argumentValue.IsWhitespace()
+                ? throw new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace())
+                : argumentValue;
         }
 
         /// <summary>
@@ -163,7 +133,6 @@ namespace GuardAgainstLib
         /// (Optional) Custom error message. A specific error message that can be used to describe
         /// the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData">(Optional) Additional information to add to the Data property of the thrown exception.</param>
         /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Will be thrown when <c>argumentValue</c> is less than the specified
@@ -176,36 +145,23 @@ namespace GuardAgainstLib
         ///     GuardAgainst.ArgumentBeingNullOrLessThanMinimum(myArgument, "A", nameof(myArgument));
         ///     GuardAgainst.ArgumentBeingNullOrLessThanMinimum(dob, yearTwoThousand, nameof(dob));
         /// 
-        ///     // Remaining code omitted.
+        ///     ...
         /// }
         /// </code>
         /// </example>
         public static T ArgumentBeingNullOrLessThanMinimum<T>(T argumentValue,
-                                                                 T minimumAllowedValue,
-                                                                 string argumentName = null,
-                                                                 string exceptionMessage = null,
-                                                                 IDictionary<object, object> additionalData = default)
+            T minimumAllowedValue,
+            string argumentName= null,
+            string exceptionMessage= null)
             where T : class, IComparable<T>
         {
-            if (ReferenceEquals(argumentValue, null))
-            {
-                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
-                    exceptionMessage.ToNullIfWhitespace());
+            _ = argumentValue ?? throw new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+                exceptionMessage.ToNullIfWhitespace());
 
-                ex.AddData(additionalData);
-                throw ex;
-            }
-
-            if (argumentValue.IsLessThan(minimumAllowedValue))
-            {
-                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
-                    exceptionMessage.ToNullIfWhitespace());
-
-                ex.AddData(additionalData);
-                throw ex;
-            }
-
-            return argumentValue;
+            return argumentValue.IsLessThan(minimumAllowedValue)
+                ? throw new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
+                    exceptionMessage.ToNullIfWhitespace())
+                : argumentValue;
         }
 
         /// <summary>
@@ -221,7 +177,6 @@ namespace GuardAgainstLib
         /// (Optional) Custom error message. A specific error message that can be used to describe
         /// the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData">(Optional) Additional information to add to the Data property of the thrown exception.</param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Will be thrown when <c>argumentValue</c> is less than the specified
         /// minimum.
@@ -233,32 +188,22 @@ namespace GuardAgainstLib
         ///     GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument));
         ///     GuardAgainst.ArgumentBeingLessThanMinimum(dob, yearTwoThousand, nameof(dob));
         /// 
-        ///     // Remaining code omitted.
+        ///     ...
         /// }
         /// </code>
         /// </example>
         public static T ArgumentBeingLessThanMinimum<T>(T argumentValue,
-                                                           T minimumAllowedValue,
-                                                           string argumentName = null,
-                                                           string exceptionMessage = null,
-                                                           IDictionary<object, object> additionalData = default)
+            T minimumAllowedValue,
+            string argumentName= null,
+            string exceptionMessage= null)
             where T : IComparable<T>
         {
-            if (ReferenceEquals(argumentValue, null))
-            {
-                return argumentValue;
-            }
-
-            if (argumentValue.IsLessThan(minimumAllowedValue))
-            {
-                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
-                    exceptionMessage.ToNullIfWhitespace());
-
-                ex.AddData(additionalData);
-                throw ex;
-            }
-
-            return argumentValue;
+            return ReferenceEquals(argumentValue, null)
+                ? default
+                : argumentValue.IsLessThan(minimumAllowedValue)
+                    ? throw new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
+                        exceptionMessage.ToNullIfWhitespace())
+                    : argumentValue;
         }
 
         /// <summary>
@@ -275,7 +220,6 @@ namespace GuardAgainstLib
         /// (Optional) Custom error message. A specific error message that can be used to describe
         /// the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData">(Optional) Additional information to add to the Data property of the thrown exception.</param>
         /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Will be thrown when <c>argumentValue</c> is greater than the specified
@@ -288,37 +232,23 @@ namespace GuardAgainstLib
         ///     GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(myArgument, "Z", nameof(myArgument));
         ///     GuardAgainst.ArgumentBeingNullOrGreaterThanMaximum(dob, DateTime.now, nameof(dob));
         /// 
-        ///     // Remaining code omitted.
+        ///     ...
         /// }
         /// </code>
         /// </example>
         public static T ArgumentBeingNullOrGreaterThanMaximum<T>(T argumentValue,
-                                                                    T maximumAllowedValue,
-                                                                    string argumentName = null,
-                                                                    string exceptionMessage = null,
-                                                                    IDictionary<object, object> additionalData =
-                                                                        default)
+            T maximumAllowedValue,
+            string argumentName= null,
+            string exceptionMessage= null)
             where T : class, IComparable<T>
         {
-            if (ReferenceEquals(argumentValue, null))
-            {
-                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+            _ = argumentValue ?? throw new ArgumentNullException(argumentName.ToNullIfWhitespace(),
                     exceptionMessage.ToNullIfWhitespace());
 
-                ex.AddData(additionalData);
-                throw ex;
-            }
-
-            if (argumentValue.IsMoreThan(maximumAllowedValue))
-            {
-                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
-                    exceptionMessage.ToNullIfWhitespace());
-
-                ex.AddData(additionalData);
-                throw ex;
-            }
-
-            return argumentValue;
+            return argumentValue.IsMoreThan(maximumAllowedValue)
+                ? throw new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
+                    exceptionMessage.ToNullIfWhitespace())
+                : argumentValue;
         }
 
         /// <summary>
@@ -334,7 +264,6 @@ namespace GuardAgainstLib
         /// (Optional) Custom error message. A specific error message that can be used to describe
         /// the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData">(Optional) Additional information to add to the Data property of the thrown exception.</param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Will be thrown when <c>argumentValue</c> is greater than the specified
         /// maximum.
@@ -346,32 +275,22 @@ namespace GuardAgainstLib
         ///     GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 100, nameof(myArgument));
         ///     GuardAgainst.ArgumentBeingGreaterThanMaximum(dob, DateTime.Now, nameof(dob));
         /// 
-        ///     // Remaining code omitted.
+        ///     ...
         /// }
         /// </code>
         /// </example>
         public static T ArgumentBeingGreaterThanMaximum<T>(T argumentValue,
-                                                              T maximumAllowedValue,
-                                                              string argumentName = null,
-                                                              string exceptionMessage = null,
-                                                              IDictionary<object, object> additionalData = default)
+            T maximumAllowedValue,
+            string argumentName = null,
+            string exceptionMessage = null)
             where T : IComparable<T>
         {
-            if (ReferenceEquals(argumentValue, null))
-            {
-                return argumentValue;
-            }
-
-            if (argumentValue.IsMoreThan(maximumAllowedValue))
-            {
-                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
-                    exceptionMessage.ToNullIfWhitespace());
-
-                ex.AddData(additionalData);
-                throw ex;
-            }
-
-            return argumentValue;
+            return ReferenceEquals(argumentValue, null)
+                ? default
+                : argumentValue.IsMoreThan(maximumAllowedValue)
+                    ? throw new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
+                        exceptionMessage.ToNullIfWhitespace())
+                    : argumentValue;
         }
 
 
@@ -390,7 +309,6 @@ namespace GuardAgainstLib
         /// (Optional) Custom error message. A specific error message that can be used to describe
         /// the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData">(Optional) Additional information to add to the Data property of the thrown exception.</param>
         /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Will be thrown when <c>argumentValue</c> is less than the specified
@@ -403,37 +321,25 @@ namespace GuardAgainstLib
         ///     GuardAgainst.ArgumentBeingNullOrOutOfRange(myArgument, "A", "Z", nameof(myArgument));
         ///     GuardAgainst.ArgumentBeingNullOrOutOfRange(dob, yearTwoThousand, DateTime.Now, nameof(dob));
         /// 
-        ///     // Remaining code omitted.
+        ///     ...
         /// }
         /// </code>
         /// </example>
         public static T ArgumentBeingNullOrOutOfRange<T>(T argumentValue,
-                                                            T minimumAllowedValue,
-                                                            T maximumAllowedValue,
-                                                            string argumentName = null,
-                                                            string exceptionMessage = null,
-                                                            IDictionary<object, object> additionalData = default)
+            T minimumAllowedValue,
+            T maximumAllowedValue,
+            string argumentName= null,
+            string exceptionMessage= null)
             where T : class, IComparable<T>
         {
-            if (ReferenceEquals(argumentValue, null))
-            {
-                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+            _ = argumentValue ??
+                throw new ArgumentNullException(argumentName.ToNullIfWhitespace(),
                     exceptionMessage.ToNullIfWhitespace());
 
-                ex.AddData(additionalData);
-                throw ex;
-            }
-
-            if (!argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
-            {
-                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
+            return argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue)
+                ? argumentValue
+                : throw new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
                     exceptionMessage.ToNullIfWhitespace());
-
-                ex.AddData(additionalData);
-                throw ex;
-            }
-
-            return argumentValue;
         }
 
         /// <summary>
@@ -450,7 +356,6 @@ namespace GuardAgainstLib
         /// (Optional) Custom error message. A specific error message that can be used to describe
         /// the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData">(Optional) Additional information to add to the Data property of the thrown exception.</param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Will be thrown when <c>argumentValue</c> is less than the specified
         /// minimum or greater than the specified maximum.
@@ -462,40 +367,30 @@ namespace GuardAgainstLib
         ///     GuardAgainst.ArgumentBeingOutOfRange(myArgument, 1, 100, nameof(myArgument));
         ///     GuardAgainst.ArgumentBeingOutOfRange(dob, yearTwoThousand, DateTime.Now, nameof(dob));
         /// 
-        ///     // Remaining code omitted.
+        ///     ...
         /// }
         /// </code>
         /// </example>
         public static T ArgumentBeingOutOfRange<T>(T argumentValue,
-                                                      T minimumAllowedValue,
-                                                      T maximumAllowedValue,
-                                                      string argumentName = null,
-                                                      string exceptionMessage = null,
-                                                      IDictionary<object, object> additionalData = default)
+            T minimumAllowedValue,
+            T maximumAllowedValue,
+            string argumentName = null,
+            string exceptionMessage = null)
             where T : IComparable<T>
         {
-            if (ReferenceEquals(argumentValue, null))
-            {
-                return argumentValue;
-            }
-
-            if (!argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue))
-            {
-                var ex = new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
-                    exceptionMessage.ToNullIfWhitespace());
-
-                ex.AddData(additionalData);
-                throw ex;
-            }
-
-            return argumentValue;
+            return ReferenceEquals(argumentValue, null)
+                ? default
+                : argumentValue.IsInRange(minimumAllowedValue, maximumAllowedValue)
+                    ? argumentValue
+                    : throw new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
+                        exceptionMessage.ToNullIfWhitespace());
         }
 
         /// <summary>
         /// Guards against an argument being invalid. The argument is invalid if the condition evaluates to <c>True</c> .
         /// Will throw an <see cref="ArgumentException">ArgumentException</see> .
         /// </summary>
-        /// <param name="argumentValueInvalid">A boolean condition, which if <c>true</c> , indicates if the argument is invalid.</param>
+        /// <param name="argumentValueIsInvalid">A boolean condition, which if <c>true</c> , indicates if the argument is invalid.</param>
         /// <param name="argumentName">
         /// (Optional) Name of the argument. If specified it will be included in the thrown exception
         /// and therefore make it more informative.
@@ -504,66 +399,52 @@ namespace GuardAgainstLib
         /// (Optional) Custom error message. A specific error message that can be used to describe
         /// the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData">(Optional) Additional information to add to the Data property of the thrown exception.</param>
         /// <exception cref="ArgumentException">Will be thrown when <c>argumentValueInvalid</c> is evaluates to <c>true</c> .</exception>
         /// <example>
         ///     <code>
         /// public void MyAmazingMethod(string myArgument)
         /// {
-        ///     GuardAgainst.ArgumentBeingInvalid(myArgument.StartsWith("!"), nameof(myArgument));
+        ///     GuardAgainst.ArgumentBeingInvalid(myArgument.StartsWith("!"));
         /// 
-        ///     // Remaining code omitted.
+        ///     ...
         /// }
         /// </code>
         /// </example>
-        public static bool ArgumentBeingInvalid(bool argumentValueInvalid,
-                                                string argumentName = null,
-                                                string exceptionMessage = null,
-                                                IDictionary<object, object> additionalData = default)
+        public static bool ArgumentBeingInvalid(bool argumentValueIsInvalid,
+            string argumentName= null,
+            string exceptionMessage= null)
         {
-            if (!argumentValueInvalid)
-            {
-                return argumentValueInvalid;
-            }
-
-            var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
-            ex.AddData(additionalData);
-            throw ex;
+            return argumentValueIsInvalid
+                ? throw new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace())
+                : false;
         }
 
         /// <summary>
         /// Guards against an invalid operation. The operation is invalid if the condition evaluates to <c>True</c> . Will
         /// throw an <see cref="InvalidOperationException">InvalidOperationException</see> .
         /// </summary>
-        /// <param name="operationInvalid">A boolean condition, which if <c>true</c> , indicates if the operation is invalid.</param>
+        /// <param name="operationIsInvalid">A boolean condition, which if <c>true</c> , indicates if the operation is invalid.</param>
         /// <param name="exceptionMessage">
         /// (Optional) Custom error message. A specific error message that can be used to describe
         /// the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData">(Optional) Additional information to add to the Data property of the thrown exception.</param>
         /// <exception cref="InvalidOperationException">Will be thrown when <c>operationInvalid</c> is evaluates to <c>true</c> .</exception>
         /// <example>
         ///     <code>
         /// public void Start()
         /// {
-        ///     GuardAgainst.OperationBeingInvalid(_started), nameof(myArgument));
+        ///     GuardAgainst.OperationBeingInvalid(_started));
         /// 
-        ///     // Remaining code omitted.
+        ///     ...
         /// }
         /// </code>
         /// </example>
-        public static bool OperationBeingInvalid(bool operationInvalid,
-                                                 string exceptionMessage = null,
-                                                 IDictionary<object, object> additionalData = default)
+        public static bool OperationBeingInvalid(bool operationIsInvalid,
+            string exceptionMessage = null)
         {
-            if (!operationInvalid)
-            {
-                return operationInvalid;
-            }
-
-            var ex = new InvalidOperationException(exceptionMessage.ToNullIfWhitespace());
-            ex.AddData(additionalData);
-            throw ex;
+            return operationIsInvalid
+                ? throw new InvalidOperationException(exceptionMessage.ToNullIfWhitespace())
+                : false;
         }
 
         /// <summary>
@@ -576,7 +457,6 @@ namespace GuardAgainstLib
         /// (Optional) Custom error message. A specific error message that can be used to describe
         /// the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData">(Optional) Additional information to add to the Data property of the thrown exception.</param>
         /// <exception cref="ArgumentException">Will be thrown when <c>argumentValueInvalid</c> is evaluates to <c>true</c> .</exception>
         /// <example>
         ///     <code>
@@ -584,23 +464,17 @@ namespace GuardAgainstLib
         /// {
         ///     GuardAgainst.ArgumentBeingUnspecifiedDateTime(myArgument, nameof(myArgument));
         /// 
-        ///     // Remaining code omitted.
+        ///     ...
         /// }
         /// </code>
         /// </example>
         public static DateTime ArgumentBeingUnspecifiedDateTime(DateTime argumentValue,
-                                                            string argumentName = null,
-                                                            string exceptionMessage = null,
-                                                            IDictionary<object, object> additionalData = default)
+            string argumentName= null,
+            string exceptionMessage= null)
         {
-            if (argumentValue.Kind != DateTimeKind.Unspecified)
-            {
-                return argumentValue;
-            }
-
-            var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
-            ex.AddData(additionalData);
-            throw ex;
+            return argumentValue.Kind != DateTimeKind.Unspecified
+                ? argumentValue
+                : throw new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
         }
 
         /// <summary>
@@ -617,7 +491,6 @@ namespace GuardAgainstLib
         /// (Optional) Custom error message. A specific error message that can be used to describe
         /// the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData">(Optional) Additional information to add to the Data property of the thrown exception.</param>
         /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is <c>null</c> .</exception>
         /// <exception cref="ArgumentException">Will be thrown when <c>argumentValue</c> is an empty string.</exception>
         /// <example>
@@ -626,36 +499,24 @@ namespace GuardAgainstLib
         /// {
         ///     GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument));
         /// 
-        ///     // Remaining code omitted.
+        ///     ...
         /// }
         /// </code>
         /// </example>
         public static string ArgumentBeingNullOrEmpty(string argumentValue,
-                                                    string argumentName = null,
-                                                    string exceptionMessage = null,
-                                                    IDictionary<object, object> additionalData = default)
+            string argumentName= null,
+            string exceptionMessage= null)
         {
-            if (!string.IsNullOrEmpty(argumentValue))
+            if (!argumentValue.IsNullOrEmpty())
             {
                 return argumentValue;
             }
 
-            if (ReferenceEquals(argumentValue, null))
-            {
-                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
-                    exceptionMessage.ToNullIfWhitespace());
+            _ = argumentValue ?? throw new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+                exceptionMessage.ToNullIfWhitespace());
 
-                ex.AddData(additionalData);
-                throw ex;
-            }
-            else
-            {
-                var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(),
-                    argumentName.ToNullIfWhitespace());
-
-                ex.AddData(additionalData);
-                throw ex;
-            }
+            throw new ArgumentException(exceptionMessage.ToNullIfWhitespace(),
+                argumentName.ToNullIfWhitespace());
         }
 
         /// <summary>
@@ -672,7 +533,6 @@ namespace GuardAgainstLib
         /// (Optional) Custom error message. A specific error message that can be used to describe
         /// the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData">(Optional) Additional information to add to the Data property of the thrown exception.</param>
         /// <exception cref="ArgumentNullException">Will be thrown when <c>argumentValue</c> is <c>null</c> .</exception>
         /// <exception cref="ArgumentException">Will be thrown when <c>argumentValue</c> is an empty enumerable.</exception>
         /// <example>
@@ -681,32 +541,22 @@ namespace GuardAgainstLib
         /// {
         ///     GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument));
         /// 
-        ///     // Remaining code omitted.
+        ///     ...
         /// }
         /// </code>
         /// </example>
         public static IEnumerable<T> ArgumentBeingNullOrEmpty<T>(IEnumerable<T> argumentValue,
-                                                       string argumentName = null,
-                                                       string exceptionMessage = null,
-                                                       IDictionary<object, object> additionalData = default)
+            string argumentName= null,
+            string exceptionMessage= null)
         {
-            if (ReferenceEquals(argumentValue, null))
-            {
-                var ex = new ArgumentNullException(argumentName.ToNullIfWhitespace(),
-                    exceptionMessage.ToNullIfWhitespace());
-                ex.AddData(additionalData);
-                throw ex;
-            }
 
-            if (!argumentValue.Any())
-            {
-                var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(),
+            _ = argumentValue ?? throw new ArgumentNullException(argumentName.ToNullIfWhitespace(),
+                exceptionMessage.ToNullIfWhitespace());
+
+            return argumentValue.Any()
+                ? argumentValue
+                : throw new ArgumentException(exceptionMessage.ToNullIfWhitespace(),
                     argumentName.ToNullIfWhitespace());
-                ex.AddData(additionalData);
-                throw ex;
-            }
-
-            return argumentValue;
         }
 
         /// <summary>
@@ -722,7 +572,6 @@ namespace GuardAgainstLib
         /// (Optional) Custom error message. A specific error message that can be used to describe
         /// the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData">(Optional) Additional information to add to the Data property of the thrown exception.</param>
         /// <exception cref="ArgumentException">Will be thrown when <c>argumentValue</c> is an empty string.</exception>
         /// <example>
         ///     <code>
@@ -730,23 +579,17 @@ namespace GuardAgainstLib
         /// {
         ///     GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument));
         /// 
-        ///     // Remaining code omitted.
+        ///     ...
         /// }
         /// </code>
         /// </example>
         public static string ArgumentBeingEmpty(string argumentValue,
-                                              string argumentName = null,
-                                              string exceptionMessage = null,
-                                              IDictionary<object, object> additionalData = default)
+            string argumentName= null,
+            string exceptionMessage= null)
         {
-            if (ReferenceEquals(argumentValue, null) || !string.IsNullOrEmpty(argumentValue))
-            {
-                return argumentValue;
-            }
-
-            var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
-            ex.AddData(additionalData);
-            throw ex;
+            return argumentValue.IsEmpty()
+                ? throw new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace())
+                : argumentValue;
         }
 
         /// <summary>
@@ -762,7 +605,6 @@ namespace GuardAgainstLib
         /// (Optional) Custom error message. A specific error message that can be used to describe
         /// the exception in more detail than the default message.
         /// </param>
-        /// <param name="additionalData">(Optional) Additional information to add to the Data property of the thrown exception.</param>
         /// <exception cref="ArgumentException">Will be thrown when <c>argumentValue</c> is an empty enumerable.</exception>
         /// <example>
         ///     <code>
@@ -770,23 +612,18 @@ namespace GuardAgainstLib
         /// {
         ///     GuardAgainst.ArgumentBeingNullOrEmpty(myArgument, nameof(myArgument));
         /// 
-        ///     // Remaining code omitted.
+        ///     ...
         /// }
         /// </code>
         /// </example>
         public static IEnumerable<T> ArgumentBeingEmpty<T>(IEnumerable<T> argumentValue,
-                                                 string argumentName = null,
-                                                 string exceptionMessage = null,
-                                                 IDictionary<object, object> additionalData = default)
+            string argumentName= null,
+            string exceptionMessage= null)
         {
-            if (ReferenceEquals(argumentValue, default(IEnumerable<T>)) || argumentValue.Any())
-            {
-                return argumentValue;
-            }
 
-            var ex = new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
-            ex.AddData(additionalData);
-            throw ex;
+            return ReferenceEquals(argumentValue, default(IEnumerable<T>)) || argumentValue.Any()
+                ? argumentValue
+                : throw new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -796,18 +633,27 @@ namespace GuardAgainstLib
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void AddData(this Exception ex,
-                                    IDictionary<object, object> additionalData)
+        private static bool IsWhitespace(this string @this)
         {
-            if (additionalData is null || !additionalData.Any())
-            {
-                return;
-            }
+            return @this != null && string.IsNullOrWhiteSpace(@this);
+        }
 
-            foreach (var key in additionalData.Keys)
-            {
-                ex.Data.Add(key, additionalData[key]);
-            }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool IsNullOrWhitespace(this string @this)
+        {
+            return string.IsNullOrWhiteSpace(@this);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool IsNullOrEmpty(this string @this)
+        {
+            return string.IsNullOrEmpty(@this);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool IsEmpty(this string @this)
+        {
+            return @this != null && string.IsNullOrEmpty(@this);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

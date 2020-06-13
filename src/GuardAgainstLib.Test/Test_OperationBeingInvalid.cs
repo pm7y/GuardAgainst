@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace GuardAgainstLib.Test
 {
-    public class Test_OperationBeingInvalid : TestBase
+    public class TestOperationBeingInvalid : TestBase
     {
-        public Test_OperationBeingInvalid(ITestOutputHelper output) : base(output)
+        public TestOperationBeingInvalid(ITestOutputHelper output) : base(output)
         {
         }
 
@@ -19,7 +18,7 @@ namespace GuardAgainstLib.Test
             object result = null;
             Should.NotThrow(() =>
             {
-                result = GuardAgainst.OperationBeingInvalid(myArgument, null, new Dictionary<object, object> {{"a", "1"}});
+                result = GuardAgainst.OperationBeingInvalid(myArgument, null);
             });
             Assert.NotNull(result);
             Assert.Equal(myArgument, result);
@@ -31,11 +30,8 @@ namespace GuardAgainstLib.Test
             var myArgument = true;
             var ex = Should.Throw<InvalidOperationException>(() =>
             {
-                GuardAgainst.OperationBeingInvalid(myArgument, null, new Dictionary<object, object> {{"a", "1"}});
+                GuardAgainst.OperationBeingInvalid(myArgument, null);
             });
-
-            ex.Data.Count.ShouldBe(1);
-            ex.Data["a"].ShouldBe("1");
         }
     }
 }
