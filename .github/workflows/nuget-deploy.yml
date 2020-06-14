@@ -1,21 +1,17 @@
 name: Deploy to Nuget
 
-on:
-  push:
-    branches: [master]
-  pull_request:
-    branches: [master]
-
 env:
   BUILD_NUMBER: 4.0.2.${{ github.run_number }}
   DOTNET_VERSION: 3.1.x
   SOLUTION_PATH: ./src/GuardAgainstLib.sln
   PROJECT_PATH: ./src/GuardAgainstLib/GuardAgainstLib.csproj
   CONFIGURATION: Release
-  ARITFACT_PATH: ./dist
-  NUSPEC_PATH: GuardAgainst.nuspec
 
 jobs:
 
 deploy:
-run: dotnet nuget push nuget-packages/*.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
+  runs-on: ubuntu-latest
+
+  steps:
+    - name: push to nuget
+      run: dotnet nuget push ${{ env.ARITFACT_PATH }}/GuardAgainst.*.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
