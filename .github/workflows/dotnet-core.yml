@@ -38,7 +38,7 @@ jobs:
         run: dotnet test --configuration ${{ env.CONFIGURATION }} --no-restore --no-build --verbosity normal --nologo ${{ env.SOLUTION_PATH }}
 
       - name: publish
-       run: dotnet publish ${{ env.PROJECT_PATH }} --configuration ${{ env.CONFIGURATION }} --no-build --no-restore --nologo --output ${{ env.ARITFACT_PATH }}
+        run: dotnet publish --configuration ${{ env.CONFIGURATION }} --no-restore --no-build --nologo --output ${{ env.ARITFACT_PATH }} ${{ env.PROJECT_PATH }}
 
       # - name: pack
       #   run: dotnet pack
