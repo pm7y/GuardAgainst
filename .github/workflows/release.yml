@@ -1,8 +1,8 @@
-name: build/test/pack/nuget/release
+name: release
 
 on:
   release:
-    types: [created]
+    types: [published]
 
 env:
   BUILD_NUMBER: 4.0.2.${{ github.run_number }}
