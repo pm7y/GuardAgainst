@@ -16,10 +16,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # - name: log github context
-      #   env:
-      #     GITHUB_CONTEXT: ${{ toJson(github) }}
-      #   run: echo "$GITHUB_CONTEXT"
+      - name: log github context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
       - uses: actions/checkout@v2
       - name: setup dotnet core
         uses: actions/setup-dotnet@v1
@@ -35,7 +36,6 @@ jobs:
       - name: build
         run: dotnet build
           --configuration ${{ env.CONFIGURATION }}
-          --verbosity detailed
           --no-incremental
           --nologo
           ${{ env.SOLUTION_PATH }}
@@ -43,7 +43,6 @@ jobs:
       - name: test
         run: dotnet test
           --configuration ${{ env.CONFIGURATION }}
-          --verbosity detailed
           --no-restore
           --no-build
           --nologo
