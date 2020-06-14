@@ -26,11 +26,13 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+
       - name: clean
         run: dotnet clean
           --configuration ${{ env.CONFIGURATION }}
           --nologo
           ${{ env.SOLUTION_PATH }}
+
       - name: build
         run: dotnet build
           --configuration ${{ env.CONFIGURATION }}
@@ -38,6 +40,7 @@ jobs:
           --no-incremental
           --nologo
           ${{ env.SOLUTION_PATH }}
+
       - name: test
         run: dotnet test
           --configuration ${{ env.CONFIGURATION }}
@@ -46,4 +49,4 @@ jobs:
           --no-build
           --verbosity normal
           --nologo
-          ${{ env.SOLUTION_PATH }}
+          ${{ env.PROJECT_PATH }}

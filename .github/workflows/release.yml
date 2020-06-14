@@ -52,7 +52,7 @@ jobs:
           --no-build
           --verbosity normal
           --nologo
-          ${{ env.SOLUTION_PATH }}
+          ${{ env.PROJECT_PATH }}
 
       - name: publish
         run: dotnet publish
