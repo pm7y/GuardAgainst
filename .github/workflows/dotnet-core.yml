@@ -52,4 +52,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: artifacts
-          path: ${{ env.ARITFACT_PATH }}/GuardAgainst.*.nupkg
+          path: ${{ env.ARITFACT_PATH }}/GuardAgainst.${{ env.BUILD_NUMBER }}.nupkg
+
+      - name: push to nuget
+        run: dotnet nuget push ${{ env.ARITFACT_PATH }}/GuardAgainst.${{ env.BUILD_NUMBER }}.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
