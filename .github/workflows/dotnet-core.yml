@@ -48,7 +48,9 @@ jobs:
           --no-build
           --no-restore
           --nologo
-          -p:Version=${{ env.BUILD_NUMBER }}
+          --verbosity Detailed
+          /p:Version=${{ env.BUILD_NUMBER }}
+          /p:PackageVersion=${{ env.BUILD_NUMBER }}
           --output ${{ env.ARITFACT_PATH }}
 
       - name: Upload artifacts
