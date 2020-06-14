@@ -1,6 +1,10 @@
 name: Build and Test
 
 on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
 
 env:
   BUILD_NUMBER: 4.0.2.${{ github.run_number }}
