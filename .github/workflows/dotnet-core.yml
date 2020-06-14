@@ -40,41 +40,41 @@ jobs:
       - name: publish
         run: dotnet publish --configuration ${{ env.CONFIGURATION }} --no-restore --no-build --nologo --output ${{ env.ARITFACT_PATH }} ${{ env.PROJECT_PATH }}
 
-      # - name: pack
-      #   run: dotnet pack
-      #     ${{ env.PROJECT_PATH }}
-      #     --configuration ${{ env.CONFIGURATION }}
-      #     --no-build
-      #     --no-restore
-      #     --nologo
-      #     --verbosity Detailed
-      #     /p:Version=${{ env.BUILD_NUMBER }}
-      #     /p:PackageVersion=${{ env.BUILD_NUMBER }}
-      #     --output ${{ env.ARITFACT_PATH }}
+      - name: pack
+        run: dotnet pack
+          ${{ env.PROJECT_PATH }}
+          --configuration ${{ env.CONFIGURATION }}
+          --no-build
+          --no-restore
+          --nologo
+          --verbosity Detailed
+          /p:Version=${{ env.BUILD_NUMBER }}
+          /p:PackageVersion=${{ env.BUILD_NUMBER }}
+          --output ${{ env.ARITFACT_PATH }}
 
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: artifacts
           path: ${{ env.ARITFACT_PATH }}/GuardAgainst*
-      # - name: push to nuget
-      #   run: dotnet nuget push ${{ env.ARITFACT_PATH }}/GuardAgainst.${{ env.BUILD_NUMBER }}.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
-      # - name: create release
-      #   id: create_release
-      #   uses: actions/create-release@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     tag_name: ${{ env.BUILD_NUMBER }}
-      #     release_name: Release ${{ env.BUILD_NUMBER }}
-      #     draft: false
-      #     prerelease: false
-      # - name: upload release asset
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
-      #     asset_path: ${{ env.ARITFACT_PATH }}/GuardAgainst.${{ env.BUILD_NUMBER }}.dll
-      #     asset_name: GuardAgainst.${{ env.BUILD_NUMBER }}.nupkg
-      #     asset_content_type: application/zip
+      - name: push to nuget
+        run: dotnet nuget push ${{ env.ARITFACT_PATH }}/GuardAgainst.${{ env.BUILD_NUMBER }}.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
+      - name: create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.BUILD_NUMBER }}
+          release_name: Release ${{ env.BUILD_NUMBER }}
+          draft: false
+          prerelease: false
+      - name: upload release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.ARITFACT_PATH }}/GuardAgainst.dll
+          asset_name: GuardAgainst.dll
+          asset_content_type: application/octet-stream
