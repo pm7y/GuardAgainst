@@ -27,10 +27,24 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: clean
-        run: dotnet clean --configuration ${{ env.CONFIGURATION }} --nologo ${{ env.SOLUTION_PATH }}
+        run: dotnet clean
+          --configuration ${{ env.CONFIGURATION }}
+          --nologo
+          ${{ env.SOLUTION_PATH }}
 
       - name: build
-        run: dotnet build --configuration ${{ env.CONFIGURATION }} --verbosity detailed --no-incremental --nologo ${{ env.SOLUTION_PATH }}
+        run: dotnet build
+          --configuration ${{ env.CONFIGURATION }}
+          --verbosity detailed
+          --no-incremental
+          --nologo
+          ${{ env.SOLUTION_PATH }}
 
       - name: test
-        run: dotnet test --configuration ${{ env.CONFIGURATION }} --verbosity detailed --no-restore --no-build --verbosity normal --nologo ${{ env.SOLUTION_PATH }}
+        run: dotnet test
+          --configuration ${{ env.CONFIGURATION }}
+          --verbosity detailed
+          --no-restore
+          --no-build
+          --nologo
+          ${{ env.SOLUTION_PATH }}
