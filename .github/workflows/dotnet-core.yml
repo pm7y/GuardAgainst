@@ -71,3 +71,13 @@ jobs:
           release_name: Release ${{ env.BUILD_NUMBER }}
           draft: false
           prerelease: false
+
+      - name: upload release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.ARITFACT_PATH }}/GuardAgainst.${{ env.BUILD_NUMBER }}.nupkg
+          asset_name: GuardAgainst.${{ env.BUILD_NUMBER }}.nupkg
+          asset_content_type: application/zip
