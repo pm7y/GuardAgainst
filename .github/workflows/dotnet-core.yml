@@ -37,20 +37,20 @@ jobs:
       - name: test
         run: dotnet test --configuration ${{ env.CONFIGURATION }} --no-restore --no-build --verbosity normal --nologo ${{ env.SOLUTION_PATH }}
 
-      #- name: Publish
-      #  run: dotnet publish ${{ env.PROJECT_PATH }} --configuration ${{ env.CONFIGURATION }} --no-build --no-restore --nologo --output ${{ env.ARITFACT_PATH }}
+      - name: publish
+       run: dotnet publish ${{ env.PROJECT_PATH }} --configuration ${{ env.CONFIGURATION }} --no-build --no-restore --nologo --output ${{ env.ARITFACT_PATH }}
 
-      - name: pack
-        run: dotnet pack
-          ${{ env.PROJECT_PATH }}
-          --configuration ${{ env.CONFIGURATION }}
-          --no-build
-          --no-restore
-          --nologo
-          --verbosity Detailed
-          /p:Version=${{ env.BUILD_NUMBER }}
-          /p:PackageVersion=${{ env.BUILD_NUMBER }}
-          --output ${{ env.ARITFACT_PATH }}
+      # - name: pack
+      #   run: dotnet pack
+      #     ${{ env.PROJECT_PATH }}
+      #     --configuration ${{ env.CONFIGURATION }}
+      #     --no-build
+      #     --no-restore
+      #     --nologo
+      #     --verbosity Detailed
+      #     /p:Version=${{ env.BUILD_NUMBER }}
+      #     /p:PackageVersion=${{ env.BUILD_NUMBER }}
+      #     --output ${{ env.ARITFACT_PATH }}
 
       - name: upload artifacts
         uses: actions/upload-artifact@v2
