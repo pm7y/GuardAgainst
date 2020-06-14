@@ -5,7 +5,7 @@ on:
     types: [published]
 
 env:
-  BUILD_NUMBER: 4.0.2.${{ github.run_number }}
+  BUILD_NUMBER: ${{ github.event.release.tag_name }}.${{ github.run_number }}
   DOTNET_VERSION: 3.1.x
   SOLUTION_PATH: ./src/GuardAgainstLib.sln
   PROJECT_PATH: ./src/GuardAgainstLib/GuardAgainstLib.csproj
@@ -17,86 +17,85 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Dump GitHub context
+      - name: dump githib context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
-      # - uses: actions/checkout@v2
-      # - name: setup dotnet core
-      #   uses: actions/setup-dotnet@v1
-      #   with:
-      #     dotnet-version: ${{ env.DOTNET_VERSION }}
-      # - name: clean
-      #   run: dotnet clean
-      #     --configuration ${{ env.CONFIGURATION }}
-      #     --nologo
-      #     ${{ env.SOLUTION_PATH }}
-      # - name: build
-      #   run: dotnet build
-      #     --configuration ${{ env.CONFIGURATION }}
-      #     --verbosity detailed
-      #     --no-incremental
-      #     --nologo
-      #     /p:BuildNumber=${{ env.BUILD_NUMBER }}
-      #     /p:Version=${{ env.BUILD_NUMBER }}
-      #     ${{ env.SOLUTION_PATH }}
-      # - name: test
-      #   run: dotnet test
-      #     --configuration ${{ env.CONFIGURATION }}
-      #     --verbosity detailed
-      #     --no-restore
-      #     --no-build
-      #     --verbosity normal
-      #     --nologo
-      #     ${{ env.SOLUTION_PATH }}
-      # - name: publish
-      #   run: dotnet publish
-      #     --configuration ${{ env.CONFIGURATION }}
-      #     --verbosity detailed
-      #     --no-restore
-      #     --no-build
-      #     --nologo
-      #     /p:BuildNumber=${{ env.BUILD_NUMBER }}
-      #     /p:Version=${{ env.BUILD_NUMBER }}
-      #     --output ${{ env.ARITFACT_PATH }}
-      #     ${{ env.PROJECT_PATH }}
-      # - name: pack
-      #   run: dotnet pack
-      #     --configuration ${{ env.CONFIGURATION }}
-      #     --no-build
-      #     --no-restore
-      #     --nologo
-      #     --verbosity detailed
-      #     /p:Version=${{ env.BUILD_NUMBER }}
-      #     /p:PackageVersion=${{ env.BUILD_NUMBER }}
-      #     --output ${{ env.ARITFACT_PATH }}
-      #     ${{ env.PROJECT_PATH }}
-      # - name: upload artifacts
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: artifacts
-      #     path: ${{ env.ARITFACT_PATH }}/GuardAgainst*
-      # - name: push to nuget
-      #   run: dotnet nuget
-      #     push ${{ env.ARITFACT_PATH }}/GuardAgainst.${{ env.BUILD_NUMBER }}.nupkg
-      #     --api-key ${{ secrets.NUGET_KEY }}
-      #     --source https://api.nuget.org/v3/index.json
-      # - name: create release
-      #   id: create_release
-      #   uses: actions/create-release@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     tag_name: ${{ env.BUILD_NUMBER }}
-      #     release_name: Release ${{ env.BUILD_NUMBER }}
-      #     draft: false
-      #     prerelease: false
-      # - name: upload release asset
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
-      #     asset_path: ${{ env.ARITFACT_PATH }}/GuardAgainstLib.dll
-      #     asset_name: GuardAgainstLib.dll
-      #     asset_content_type: application/octet-stream
+
+      - uses: actions/checkout@v2
+      - name: setup dotnet core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: clean
+        run: dotnet clean
+          --configuration ${{ env.CONFIGURATION }}
+          --nologo
+          ${{ env.SOLUTION_PATH }}
+
+      - name: build
+        run: dotnet build
+          --configuration ${{ env.CONFIGURATION }}
+          --verbosity detailed
+          --no-incremental
+          --nologo
+          /p:BuildNumber=${{ env.BUILD_NUMBER }}
+          /p:Version=${{ env.BUILD_NUMBER }}
+          ${{ env.SOLUTION_PATH }}
+
+      - name: test
+        run: dotnet test
+          --configuration ${{ env.CONFIGURATION }}
+          --verbosity detailed
+          --no-restore
+          --no-build
+          --verbosity normal
+          --nologo
+          ${{ env.SOLUTION_PATH }}
+
+      - name: publish
+        run: dotnet publish
+          --configuration ${{ env.CONFIGURATION }}
+          --verbosity detailed
+          --no-restore
+          --no-build
+          --nologo
+          /p:BuildNumber=${{ env.BUILD_NUMBER }}
+          /p:Version=${{ env.BUILD_NUMBER }}
+          --output ${{ env.ARITFACT_PATH }}
+          ${{ env.PROJECT_PATH }}
+
+      - name: pack
+        run: dotnet pack
+          --configuration ${{ env.CONFIGURATION }}
+          --no-build
+          --no-restore
+          --nologo
+          --verbosity detailed
+          /p:Version=${{ env.BUILD_NUMBER }}
+          /p:PackageVersion=${{ env.BUILD_NUMBER }}
+          --output ${{ env.ARITFACT_PATH }}
+          ${{ env.PROJECT_PATH }}
+
+      - name: upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts
+          path: ${{ env.ARITFACT_PATH }}/GuardAgainst*
+
+      - name: push to nuget
+        run: dotnet nuget
+          push ${{ env.ARITFACT_PATH }}/GuardAgainst.${{ env.BUILD_NUMBER }}.nupkg
+          --api-key ${{ secrets.NUGET_KEY }}
+          --source https://api.nuget.org/v3/index.json
+
+      - name: upload release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ env.ARITFACT_PATH }}/GuardAgainstLib.dll
+          asset_name: GuardAgainstLib.dll
+          asset_content_type: application/octet-stream
