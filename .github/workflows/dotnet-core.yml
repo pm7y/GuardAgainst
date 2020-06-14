@@ -75,6 +75,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.ARITFACT_PATH }}/GuardAgainst.dll
-          asset_name: GuardAgainst.dll
+          asset_path: ${{ env.ARITFACT_PATH }}/GuardAgainstLib.dll
+          asset_name: GuardAgainstLib.dll
           asset_content_type: application/octet-stream
