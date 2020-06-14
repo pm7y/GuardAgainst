@@ -7,7 +7,7 @@ on:
     branches: [master]
 
 env:
-  BUILD_NUMBER: 4.0.1.${{ github.run_number }}
+  BUILD_NUMBER: 4.0.2.${{ github.run_number }}
   DOTNET_VERSION: 3.1.x
   SOLUTION_PATH: ./src/GuardAgainstLib.sln
   PROJECT_PATH: ./src/GuardAgainstLib/GuardAgainstLib.csproj
