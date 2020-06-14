@@ -1,4 +1,4 @@
-name: Build and Test
+name: build/test/pack/nuget/release
 
 on:
   push:
@@ -20,27 +20,27 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Setup .NET Core
+      - name: setup dotnet core
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Clean
+      - name: clean
         run: dotnet clean --configuration ${{ env.CONFIGURATION }} --nologo ${{ env.SOLUTION_PATH }}
 
-      - name: Restore
+      - name: restore
         run: dotnet restore ${{ env.SOLUTION_PATH }}
 
-      - name: Build
+      - name: build
         run: dotnet build --configuration ${{ env.CONFIGURATION }} --no-restore --nologo /p:BuildNumber=${{ env.BUILD_NUMBER }} -p:Version=${{ env.BUILD_NUMBER }} ${{ env.SOLUTION_PATH }}
 
-      - name: Test
+      - name: test
         run: dotnet test --configuration ${{ env.CONFIGURATION }} --no-restore --no-build --verbosity normal --nologo ${{ env.SOLUTION_PATH }}
 
       #- name: Publish
       #  run: dotnet publish ${{ env.PROJECT_PATH }} --configuration ${{ env.CONFIGURATION }} --no-build --no-restore --nologo --output ${{ env.ARITFACT_PATH }}
 
-      - name: Pack
+      - name: pack
         run: dotnet pack
           ${{ env.PROJECT_PATH }}
           --configuration ${{ env.CONFIGURATION }}
@@ -52,7 +52,7 @@ jobs:
           /p:PackageVersion=${{ env.BUILD_NUMBER }}
           --output ${{ env.ARITFACT_PATH }}
 
-      - name: Upload artifacts
+      - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: artifacts
@@ -60,3 +60,12 @@ jobs:
 
       - name: push to nuget
         run: dotnet nuget push ${{ env.ARITFACT_PATH }}/GuardAgainst.${{ env.BUILD_NUMBER }}.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
+
+      - name: create release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ env.BUILD_NUMBER }}
+          release_name: Release ${{ env.BUILD_NUMBER }}
+          draft: false
+          prerelease: false
