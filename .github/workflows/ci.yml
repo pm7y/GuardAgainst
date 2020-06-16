@@ -1,4 +1,5 @@
 name: ci
+# Continuous integration action which will fire on any push to any branch.
 
 on: [push]
 

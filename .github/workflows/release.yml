@@ -1,4 +1,6 @@
 name: release
+# Release action which will fire when a new release is published.
+# The code will be built uploaded to the release.
 
 on:
   release:
