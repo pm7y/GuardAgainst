@@ -1,6 +1,6 @@
 ﻿<img src="/src/GuardAgainstLib/logo/GuardAgainstSquare.png" width="64">
 
-# GuardAgainst [![Build and Tests](https://github.com/pmcilreavy/GuardAgainst/workflows/Build%20and%20Test/badge.svg)](https://github.com/pmcilreavy/GuardAgainst)
+# GuardAgainst [![CI](https://github.com/pmcilreavy/GuardAgainst/workflows/ci/badge.svg?branch=master)](https://github.com/pmcilreavy/GuardAgainst)
 
 Useful guard clauses that simplify argument validity checking and make your code more readable.
 

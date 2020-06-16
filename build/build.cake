@@ -19,7 +19,7 @@ Information($"'configuration'='{configuration}'");
 // VARIABLES
 //////////////////////////////////////////////////////////////////////
 
-var solutionPath = MakeAbsolute(File("./src/GuardAgainstLib.sln")).FullPath;
+var solutionPath = MakeAbsolute(File("../src/GuardAgainstLib.sln")).FullPath;
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -28,8 +28,8 @@ var solutionPath = MakeAbsolute(File("./src/GuardAgainstLib.sln")).FullPath;
 Task("Clean")
     .Does(() =>
 { 
-    var binFolders = GetDirectories("./src/**/bin");
-    var objFolders = GetDirectories("./src/**/obj");
+    var binFolders = GetDirectories("../src/**/bin");
+    var objFolders = GetDirectories("../src/**/obj");
     var foldersToDelete = binFolders.Concat(objFolders);
     
     DeleteDirectories(foldersToDelete, new DeleteDirectorySettings {
@@ -59,7 +59,7 @@ Task("Build")
 Task("Test")
     .Does(() =>
 {       
-        var projects = GetFiles("./src/**/*Test.csproj");
+        var projects = GetFiles("../src/**/*Test.csproj");
 
         foreach(var project in projects)
         {
