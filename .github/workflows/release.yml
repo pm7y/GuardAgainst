@@ -43,6 +43,10 @@ jobs:
           --nologo
           /p:BuildNumber=${{ env.BUILD_NUMBER }}
           /p:Version=${{ env.BUILD_NUMBER }}
+          /p:WarningLevel=4
+          /p:TreatWarningsAsErrors=true
+          /p:NoWarn=""
+          /p:WarningsAsErrors=""
           ${{ env.SOLUTION_PATH }}
 
       - name: test

@@ -35,6 +35,10 @@ jobs:
           --configuration ${{ env.CONFIGURATION }}
           --no-incremental
           --nologo
+          /p:WarningLevel=4
+          /p:TreatWarningsAsErrors=true
+          /p:NoWarn=""
+          /p:WarningsAsErrors=""
           ${{ env.SOLUTION_PATH }}
 
       - name: test
