@@ -9,12 +9,15 @@ env:
   CONFIGURATION: Release
 
 jobs:
-  build-and-test-windows:
+  build-and-test:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
     steps:
+      - name: OS is ...
+      - run: echo ${{matrix.TARGET}}
+
       - name: log github context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
