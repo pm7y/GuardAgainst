@@ -15,8 +15,8 @@ jobs:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
     steps:
-      - name: OS is ...
-      - run: echo ${{matrix.TARGET}}
+      - name: OS
+      - run: echo "${{matrix.TARGET}}"
 
       - name: log github context
         env:
