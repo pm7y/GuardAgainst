@@ -9,7 +9,7 @@ namespace GuardAgainstLib
     ///     A single class, containing useful guard clauses, that aims to simplify argument validity checking whilst
     ///     making your code more readable. More information @ https://github.com/pmcilreavy/GuardAgainst
     /// </summary>
-    public static class GuardAgainst
+    public static partial class GuardAgainst
     {
         /// <summary>
         ///     Guards against an argument being null. Will throw an
@@ -591,6 +591,39 @@ namespace GuardAgainstLib
                                                 string exceptionMessage = null)
         {
             return argumentValue.IsEmpty()
+                ? throw new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace())
+                : argumentValue;
+        }
+
+        /// <summary>
+        ///     Guards against an argument being an empty Guid. Will throw an
+        ///     <see cref="ArgumentException">ArgumentException</see> if the argument is an empty Guid.
+        /// </summary>
+        /// <param name="argumentValue">The argument value to guard.</param>
+        /// <param name="argumentName">
+        ///     (Optional) Name of the argument. If specified it will be included in the thrown exception
+        ///     and therefore make it more informative.
+        /// </param>
+        /// <param name="exceptionMessage">
+        ///     (Optional) Custom error message. A specific error message that can be used to describe
+        ///     the exception in more detail than the default message.
+        /// </param>
+        /// <exception cref="ArgumentException">Will be thrown when <c>argumentValue</c> is an empty Guid.</exception>
+        /// <example>
+        ///     <code>
+        /// public void MyAmazingMethod(Guid myArgument)
+        /// {
+        ///     GuardAgainst.ArgumentBeingEmpty(myArgument, nameof(myArgument));
+        /// 
+        ///     ...
+        /// }
+        /// </code>
+        /// </example>
+        public static Guid ArgumentBeingEmpty(Guid argumentValue,
+                                              string argumentName = null,
+                                              string exceptionMessage = null)
+        {
+            return argumentValue == Guid.Empty
                 ? throw new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace())
                 : argumentValue;
         }

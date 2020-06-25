@@ -10,48 +10,10 @@ env:
 
 jobs:
   build-and-test-windows:
-    runs-on: windows-latest
-
-    steps:
-      - name: log github context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-
-      - uses: actions/checkout@v2
-      - name: setup dotnet core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: clean
-        run: dotnet clean
-          --configuration ${{ env.CONFIGURATION }}
-          --nologo
-          ${{ env.SOLUTION_PATH }}
-
-      - name: build
-        run: dotnet build
-          --configuration ${{ env.CONFIGURATION }}
-          --no-incremental
-          --nologo
-          /p:WarningLevel=4
-          /p:TreatWarningsAsErrors=true
-          /p:NoWarn=""
-          /p:WarningsAsErrors=""
-          ${{ env.SOLUTION_PATH }}
-
-      - name: test
-        run: dotnet test
-          --configuration ${{ env.CONFIGURATION }}
-          --no-restore
-          --no-build
-          --nologo
-          ${{ env.SOLUTION_PATH }}
-
-  build-and-test-ubuntu:
-    runs-on: ubuntu-latest
-
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
     steps:
       - name: log github context
         env:
