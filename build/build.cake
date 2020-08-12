@@ -42,15 +42,16 @@ Task("Clean")
 
 Task("Build")
     .Does(() =>
-{
+{                           
     var settings = new DotNetCoreBuildSettings
     {
         Configuration = configuration,
-        Verbosity = DotNetCoreVerbosity.Minimal
+        Verbosity = DotNetCoreVerbosity.Minimal,
+
     };
     
     if (!string.IsNullOrWhiteSpace(buildVersion)) {
-        settings.ArgumentCustomization = args => args.Append($"-p:Version={buildVersion}");
+        settings.ArgumentCustomization = args => args.Append($"-p:Version={buildVersion} -p:WarningLevel=4 -p:TreatWarningsAsErrors=true -p:NoWarn=\"\" -p:WarningsAsErrors=\"\"");
     }
     
     DotNetCoreBuild(solutionPath, settings);

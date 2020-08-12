@@ -10,8 +10,10 @@ env:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
-
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
     steps:
       - name: log github context
         env:
@@ -35,6 +37,10 @@ jobs:
           --configuration ${{ env.CONFIGURATION }}
           --no-incremental
           --nologo
+          /p:WarningLevel=4
+          /p:TreatWarningsAsErrors=true
+          /p:NoWarn=""
+          /p:WarningsAsErrors=""
           ${{ env.SOLUTION_PATH }}
 
       - name: test
