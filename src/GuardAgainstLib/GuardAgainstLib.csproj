@@ -17,8 +17,8 @@
     <Description>Useful guard clauses that simplify argument validity checking and make your code more readable.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/pmcilreavy/GuardAgainst</PackageProjectUrl>
-    <PackageIconUrl>http://cdn.rawgit.com/pmcilreavy/GuardAgainst/master/src/GuardAgainstLib/logo/GuardAgainstSquare.png</PackageIconUrl>
-    <!--<PackageIcon>It's recommended to set this</PackageIcon>-->
+    <!-- <PackageIconUrl>http://cdn.rawgit.com/pmcilreavy/GuardAgainst/master/src/GuardAgainstLib/logo/GuardAgainstSquare.png</PackageIconUrl> -->
+    <PackageIcon>./logo/GuardAgainstSquare.png</PackageIcon>
     <RepositoryUrl>https://github.com/pmcilreavy/GuardAgainst.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>GuardAgainst;guard against;guard clause;exceptions;exception handling;dotnet;c#;</PackageTags>
