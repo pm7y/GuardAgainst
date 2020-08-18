@@ -1,7 +1,10 @@
 name: ci
 # Continuous integration action which will fire on any push to any branch.
 
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - master
 
 env:
   DOTNET_VERSION: 3.1.x
