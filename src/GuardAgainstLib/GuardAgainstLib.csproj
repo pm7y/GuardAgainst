@@ -18,7 +18,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/pmcilreavy/GuardAgainst</PackageProjectUrl>
     <!-- <PackageIconUrl>http://cdn.rawgit.com/pmcilreavy/GuardAgainst/master/src/GuardAgainstLib/logo/GuardAgainstSquare.png</PackageIconUrl> -->
-    <PackageIcon>./logo/GuardAgainstSquare.png</PackageIcon>
+    <PackageIcon>GuardAgainstSquare.png</PackageIcon>
     <RepositoryUrl>https://github.com/pmcilreavy/GuardAgainst.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>GuardAgainst;guard against;guard clause;exceptions;exception handling;dotnet;c#;</PackageTags>
@@ -41,4 +41,8 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
+
+  <ItemGroup>
+      <None Include="logo/GuardAgainstSquare.png" Pack="true" PackagePath=""/>
+  </ItemGroup>
 </Project>
