@@ -6,7 +6,7 @@ on:
     types: [opened, synchronize, reopened]
 
 env:
-  DOTNET_VERSION: 3.1.x
+  DOTNET_VERSION: 5.0.x
   SOLUTION_PATH: ./src/GuardAgainstLib.sln
   CONFIGURATION: Release
 
