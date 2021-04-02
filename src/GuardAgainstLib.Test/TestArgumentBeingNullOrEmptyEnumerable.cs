@@ -28,7 +28,7 @@ namespace GuardAgainstLib.Test
         [Fact]
         public void WhenArgumentIsNotNullOrEmpty_ShouldNotThrow()
         {
-            var myArgument = new[] {"blah"};
+            var myArgument = new[] { "blah" };
             object result = null;
             Should.NotThrow(() =>
             {
