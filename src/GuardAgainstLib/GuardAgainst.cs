@@ -9,7 +9,7 @@ namespace GuardAgainstLib
     ///     A single class, containing useful guard clauses, that aims to simplify argument validity checking whilst
     ///     making your code more readable. More information @ https://github.com/pmcilreavy/GuardAgainst
     /// </summary>
-    public static partial class GuardAgainst
+    public static class GuardAgainst
     {
         /// <summary>
         ///     Guards against an argument being null. Will throw an
@@ -37,8 +37,8 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static T ArgumentBeingNull<T>(T argumentValue,
-                                             string argumentName = null,
-                                             string exceptionMessage = null)
+            string argumentName = null,
+            string exceptionMessage = null)
             where T : class
         {
             return argumentValue ?? throw new ArgumentNullException(argumentName.ToNullIfWhitespace(),
@@ -72,8 +72,8 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static string ArgumentBeingNullOrWhitespace(string argumentValue,
-                                                           string argumentName = null,
-                                                           string exceptionMessage = null)
+            string argumentName = null,
+            string exceptionMessage = null)
         {
             if (!argumentValue.IsNullOrWhitespace())
             {
@@ -111,8 +111,8 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static string ArgumentBeingWhitespace(string argumentValue,
-                                                     string argumentName = null,
-                                                     string exceptionMessage = null)
+            string argumentName = null,
+            string exceptionMessage = null)
         {
             return argumentValue.IsWhitespace()
                 ? throw new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace())
@@ -151,9 +151,9 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static T ArgumentBeingNullOrLessThanMinimum<T>(T argumentValue,
-                                                              T minimumAllowedValue,
-                                                              string argumentName = null,
-                                                              string exceptionMessage = null)
+            T minimumAllowedValue,
+            string argumentName = null,
+            string exceptionMessage = null)
             where T : class, IComparable<T>
         {
             _ = argumentValue ?? throw new ArgumentNullException(argumentName.ToNullIfWhitespace(),
@@ -195,9 +195,9 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static T ArgumentBeingLessThanMinimum<T>(T argumentValue,
-                                                        T minimumAllowedValue,
-                                                        string argumentName = null,
-                                                        string exceptionMessage = null)
+            T minimumAllowedValue,
+            string argumentName = null,
+            string exceptionMessage = null)
             where T : IComparable<T>
         {
             return argumentValue.IsNull()
@@ -240,9 +240,9 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static T ArgumentBeingNullOrGreaterThanMaximum<T>(T argumentValue,
-                                                                 T maximumAllowedValue,
-                                                                 string argumentName = null,
-                                                                 string exceptionMessage = null)
+            T maximumAllowedValue,
+            string argumentName = null,
+            string exceptionMessage = null)
             where T : class, IComparable<T>
         {
             _ = argumentValue ?? throw new ArgumentNullException(argumentName.ToNullIfWhitespace(),
@@ -284,9 +284,9 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static T ArgumentBeingGreaterThanMaximum<T>(T argumentValue,
-                                                           T maximumAllowedValue,
-                                                           string argumentName = null,
-                                                           string exceptionMessage = null)
+            T maximumAllowedValue,
+            string argumentName = null,
+            string exceptionMessage = null)
             where T : IComparable<T>
         {
             return argumentValue.IsNull()
@@ -330,10 +330,10 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static T ArgumentBeingNullOrOutOfRange<T>(T argumentValue,
-                                                         T minimumAllowedValue,
-                                                         T maximumAllowedValue,
-                                                         string argumentName = null,
-                                                         string exceptionMessage = null)
+            T minimumAllowedValue,
+            T maximumAllowedValue,
+            string argumentName = null,
+            string exceptionMessage = null)
             where T : class, IComparable<T>
         {
             _ = argumentValue ??
@@ -376,10 +376,10 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static T ArgumentBeingOutOfRange<T>(T argumentValue,
-                                                   T minimumAllowedValue,
-                                                   T maximumAllowedValue,
-                                                   string argumentName = null,
-                                                   string exceptionMessage = null)
+            T minimumAllowedValue,
+            T maximumAllowedValue,
+            string argumentName = null,
+            string exceptionMessage = null)
             where T : IComparable<T>
         {
             return argumentValue.IsNull()
@@ -415,8 +415,8 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static bool ArgumentBeingInvalid(bool argumentValueIsInvalid,
-                                                string argumentName = null,
-                                                string exceptionMessage = null)
+            string argumentName = null,
+            string exceptionMessage = null)
         {
             return argumentValueIsInvalid
                 ? throw new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace())
@@ -444,7 +444,7 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static bool OperationBeingInvalid(bool operationIsInvalid,
-                                                 string exceptionMessage = null)
+            string exceptionMessage = null)
         {
             return operationIsInvalid
                 ? throw new InvalidOperationException(exceptionMessage.ToNullIfWhitespace())
@@ -473,8 +473,8 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static DateTime ArgumentBeingUnspecifiedDateTime(DateTime argumentValue,
-                                                                string argumentName = null,
-                                                                string exceptionMessage = null)
+            string argumentName = null,
+            string exceptionMessage = null)
         {
             return argumentValue.Kind != DateTimeKind.Unspecified
                 ? argumentValue
@@ -508,8 +508,8 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static string ArgumentBeingNullOrEmpty(string argumentValue,
-                                                      string argumentName = null,
-                                                      string exceptionMessage = null)
+            string argumentName = null,
+            string exceptionMessage = null)
         {
             if (!argumentValue.IsNullOrEmpty())
             {
@@ -550,8 +550,8 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static IEnumerable<T> ArgumentBeingNullOrEmpty<T>(IEnumerable<T> argumentValue,
-                                                                 string argumentName = null,
-                                                                 string exceptionMessage = null)
+            string argumentName = null,
+            string exceptionMessage = null)
         {
             _ = argumentValue ?? throw new ArgumentNullException(argumentName.ToNullIfWhitespace(),
                 exceptionMessage.ToNullIfWhitespace());
@@ -587,8 +587,8 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static string ArgumentBeingEmpty(string argumentValue,
-                                                string argumentName = null,
-                                                string exceptionMessage = null)
+            string argumentName = null,
+            string exceptionMessage = null)
         {
             return argumentValue.IsEmpty()
                 ? throw new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace())
@@ -620,8 +620,8 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static Guid ArgumentBeingEmpty(Guid argumentValue,
-                                              string argumentName = null,
-                                              string exceptionMessage = null)
+            string argumentName = null,
+            string exceptionMessage = null)
         {
             return argumentValue == Guid.Empty
                 ? throw new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace())
@@ -653,8 +653,8 @@ namespace GuardAgainstLib
         /// </code>
         /// </example>
         public static IEnumerable<T> ArgumentBeingEmpty<T>(IEnumerable<T> argumentValue,
-                                                           string argumentName = null,
-                                                           string exceptionMessage = null)
+            string argumentName = null,
+            string exceptionMessage = null)
         {
             return ReferenceEquals(argumentValue, default(IEnumerable<T>)) || argumentValue.Any()
                 ? argumentValue
@@ -693,8 +693,8 @@ namespace GuardAgainstLib
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsStringInRange(this string @this,
-                                            string lowerBound,
-                                            string upperBound)
+            string lowerBound,
+            string upperBound)
         {
             return string.CompareOrdinal(@this, lowerBound) >= 0 && string.CompareOrdinal(@this, upperBound) <= 0;
         }
@@ -707,8 +707,8 @@ namespace GuardAgainstLib
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsInRange<T>(this T @this,
-                                         T lowerBound,
-                                         T upperBound)
+            T lowerBound,
+            T upperBound)
             where T : IComparable<T>
         {
             if (typeof(T) == typeof(string))
@@ -721,14 +721,14 @@ namespace GuardAgainstLib
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsStringLessThan(this string @this,
-                                             string lowerBound)
+            string lowerBound)
         {
             return string.CompareOrdinal(@this, lowerBound) < 0;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsLessThan<T>(this T @this,
-                                          T lowerBound)
+            T lowerBound)
             where T : IComparable<T>
         {
             if (typeof(T) == typeof(string))
@@ -741,14 +741,14 @@ namespace GuardAgainstLib
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsStringMoreThan(this string @this,
-                                             string upperBound)
+            string upperBound)
         {
             return string.CompareOrdinal(@this, upperBound) > 0;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsMoreThan<T>(this T @this,
-                                          T upperBound)
+            T upperBound)
             where T : IComparable<T>
         {
             if (typeof(T) == typeof(string))
