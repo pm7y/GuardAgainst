@@ -49,14 +49,12 @@ jobs:
 
       - name: restore
         run: dotnet restore
-          --runtime ${{ matrix.runtime }}
           --nologo
           ${{ env.SOLUTION_PATH }}
 
       - name: build
         run: dotnet build
           --configuration ${{ env.CONFIGURATION }}
-          --runtime ${{ matrix.runtime }}
           --no-incremental
           --nologo
           /p:WarningLevel=4
@@ -68,7 +66,6 @@ jobs:
       - name: test
         run: dotnet test
           --configuration ${{ env.CONFIGURATION }}
-          --runtime ${{ matrix.runtime }}
           --no-restore
           --no-build
           --nologo
