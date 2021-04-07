@@ -91,11 +91,12 @@ jobs:
           --no-restore
           --nologo
           /p:Version=${{ env.BUILD_NUMBER }}
-          /p:PackageVersion=${{ env.BUILD_NUMBER }}
+          /p:PackageVersion=${{ env.VERSION_NUMBER }}
           --output ${{ env.ARITFACT_PATH }}
           ${{ env.PROJECT_PATH }}
 
       - name: push to nuget
+        if: github.event.inputs.nuget == 'y'
         run: dotnet nuget
           push ${{ env.ARITFACT_PATH }}/GuardAgainst.${{ env.VERSION_NUMBER }}.nupkg
           --api-key ${{ secrets.NUGET_KEY }}
@@ -103,7 +104,6 @@ jobs:
 
       - name: release artifacts
         uses: softprops/action-gh-release@v1
-        if: github.event.inputs.nuget == 'y'
         with:
           name: ${{ env.VERSION_NUMBER }}
           tag_name: ${{ env.VERSION_NUMBER }}
