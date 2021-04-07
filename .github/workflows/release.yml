@@ -8,6 +8,10 @@ on:
       tag_name:
         description: "Release tag name e.g. '1.0.1'"
         required: true
+      nuget:
+        description: "Also publish nuget package? y/n"
+        required: true
+        default: "n"
 
 env:
   VERSION_NUMBER: ${{ github.event.inputs.tag_name }}
@@ -91,23 +95,20 @@ jobs:
           --output ${{ env.ARITFACT_PATH }}
           ${{ env.PROJECT_PATH }}
 
-      - name: upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: artifacts
-          path: ${{ env.ARITFACT_PATH }}/GuardAgainst*
-
       - name: push to nuget
         run: dotnet nuget
-          push ${{ env.ARITFACT_PATH }}/GuardAgainst.${{ env.BUILD_NUMBER }}.nupkg
+          push ${{ env.ARITFACT_PATH }}/GuardAgainst.${{ env.VERSION_NUMBER }}.nupkg
           --api-key ${{ secrets.NUGET_KEY }}
           --source https://api.nuget.org/v3/index.json
 
       - name: release artifacts
         uses: softprops/action-gh-release@v1
+        if: github.event.inputs.nuget == "y"
         with:
           name: ${{ env.VERSION_NUMBER }}
           tag_name: ${{ env.VERSION_NUMBER }}
-          files: GuardAgainstLib.dll
+          files: |
+            ${{ env.ARITFACT_PATH }}/GuardAgainstLib.dll
+            ${{ env.ARITFACT_PATH }}/GuardAgainst.${{ env.VERSION_NUMBER }}.nupkg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
