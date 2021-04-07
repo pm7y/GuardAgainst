@@ -103,7 +103,7 @@ jobs:
 
       - name: release artifacts
         uses: softprops/action-gh-release@v1
-        if: github.event.inputs.nuget == "y"
+        if: github.event.inputs.nuget == 'y'
         with:
           name: ${{ env.VERSION_NUMBER }}
           tag_name: ${{ env.VERSION_NUMBER }}
