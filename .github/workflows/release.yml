@@ -75,14 +75,8 @@ jobs:
         run: dotnet publish
           --configuration ${{ env.CONFIGURATION }}
           --nologo
-          --self-contained true
           /p:BuildNumber=${{ env.BUILD_NUMBER }}
           /p:Version=${{ env.BUILD_NUMBER }}
-          /p:PublishReadyToRun=false
-          /p:IncludeNativeLibrariesForSelfExtract=true
-          /p:PublishSingleFile=true
-          /p:PublishTrimmed=true
-          /p:TrimUnusedDependencies=true
           --output ${{ env.ARITFACT_PATH }}
           ${{ env.PROJECT_PATH }}
 
