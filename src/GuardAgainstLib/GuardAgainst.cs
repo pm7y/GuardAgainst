@@ -36,6 +36,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T ArgumentBeingNull<T>(T argumentValue,
             string argumentName = null,
             string exceptionMessage = null)
@@ -71,6 +72,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ArgumentBeingNullOrWhitespace(string argumentValue,
             string argumentName = null,
             string exceptionMessage = null)
@@ -110,6 +112,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ArgumentBeingWhitespace(string argumentValue,
             string argumentName = null,
             string exceptionMessage = null)
@@ -150,6 +153,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T ArgumentBeingNullOrLessThanMinimum<T>(T argumentValue,
             T minimumAllowedValue,
             string argumentName = null,
@@ -194,6 +198,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T ArgumentBeingLessThanMinimum<T>(T argumentValue,
             T minimumAllowedValue,
             string argumentName = null,
@@ -239,6 +244,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T ArgumentBeingNullOrGreaterThanMaximum<T>(T argumentValue,
             T maximumAllowedValue,
             string argumentName = null,
@@ -283,6 +289,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T ArgumentBeingGreaterThanMaximum<T>(T argumentValue,
             T maximumAllowedValue,
             string argumentName = null,
@@ -329,6 +336,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T ArgumentBeingNullOrOutOfRange<T>(T argumentValue,
             T minimumAllowedValue,
             T maximumAllowedValue,
@@ -375,6 +383,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T ArgumentBeingOutOfRange<T>(T argumentValue,
             T minimumAllowedValue,
             T maximumAllowedValue,
@@ -389,6 +398,77 @@ namespace GuardAgainstLib
                     : throw new ArgumentOutOfRangeException(argumentName.ToNullIfWhitespace(), argumentValue,
                         exceptionMessage.ToNullIfWhitespace());
         }
+
+        /// <summary>
+        ///     Guards against an argument being invalid. The argument is invalid if the specified enum value equals the specified invalid value.
+        ///     Will throw an <see cref="ArgumentException">ArgumentException</see> .
+        /// </summary>
+        /// <param name="argumentValue">The argument value to guard.</param>
+        /// <param name="invalidEnum">The enum value that is considered invalid.</param>
+        /// <param name="argumentName">
+        ///     (Optional) Name of the argument. If specified it will be included in the thrown exception
+        ///     and therefore make it more informative.
+        /// </param>
+        /// <param name="exceptionMessage">
+        ///     (Optional) Custom error message. A specific error message that can be used to describe
+        ///     the exception in more detail than the default message.
+        /// </param>
+        /// <exception cref="ArgumentException">Will be thrown when <c>argumentValueInvalid</c> is evaluates to <c>true</c> .</exception>
+        /// <example>
+        ///     <code>
+        /// public void MyAmazingMethod(string myArgument)
+        /// {
+        ///     GuardAgainst.ArgumentBeingInvalid(argument, MyEnum.Unknown);
+        /// 
+        ///     ...
+        /// }
+        /// </code>
+        /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool ArgumentBeingInvalid<T>(T argumentValue, T invalidEnum,
+            string argumentName = null,
+            string exceptionMessage = null) where T : Enum
+        {
+            return argumentValue.Equals(invalidEnum)
+                ? throw new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace())
+                : false;
+        }
+        
+        
+        /// <summary>
+        ///     Guards against an argument being invalid. The argument is invalid if the specified enum value equals the 0 based enum value (usually None or Unknown).
+        ///     Will throw an <see cref="ArgumentException">ArgumentException</see> .
+        /// </summary>
+        /// <param name="argumentValue">The argument value to guard.</param>
+        /// <param name="argumentName">
+        ///     (Optional) Name of the argument. If specified it will be included in the thrown exception
+        ///     and therefore make it more informative.
+        /// </param>
+        /// <param name="exceptionMessage">
+        ///     (Optional) Custom error message. A specific error message that can be used to describe
+        ///     the exception in more detail than the default message.
+        /// </param>
+        /// <exception cref="ArgumentException">Will be thrown when <c>argumentValueInvalid</c> is evaluates to <c>true</c> .</exception>
+        /// <example>
+        ///     <code>
+        /// public void MyAmazingMethod(string myArgument)
+        /// {
+        ///     GuardAgainst.ArgumentBeingInvalid(argument, MyEnum.Unknown);
+        /// 
+        ///     ...
+        /// }
+        /// </code>
+        /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool ArgumentBeingInvalid<T>(T argumentValue,
+            string argumentName = null,
+            string exceptionMessage = null) where T : Enum
+        {
+            return Convert.ToInt32(argumentValue) == 0
+                ? throw new ArgumentException(exceptionMessage.ToNullIfWhitespace(), argumentName.ToNullIfWhitespace())
+                : false;
+        }
+
 
         /// <summary>
         ///     Guards against an argument being invalid. The argument is invalid if the condition evaluates to <c>True</c> .
@@ -414,6 +494,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool ArgumentBeingInvalid(bool argumentValueIsInvalid,
             string argumentName = null,
             string exceptionMessage = null)
@@ -443,6 +524,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool OperationBeingInvalid(bool operationIsInvalid,
             string exceptionMessage = null)
         {
@@ -472,6 +554,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DateTime ArgumentBeingUnspecifiedDateTime(DateTime argumentValue,
             string argumentName = null,
             string exceptionMessage = null)
@@ -507,6 +590,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ArgumentBeingNullOrEmpty(string argumentValue,
             string argumentName = null,
             string exceptionMessage = null)
@@ -549,6 +633,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<T> ArgumentBeingNullOrEmpty<T>(IEnumerable<T> argumentValue,
             string argumentName = null,
             string exceptionMessage = null)
@@ -586,6 +671,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ArgumentBeingEmpty(string argumentValue,
             string argumentName = null,
             string exceptionMessage = null)
@@ -619,6 +705,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Guid ArgumentBeingEmpty(Guid argumentValue,
             string argumentName = null,
             string exceptionMessage = null)
@@ -652,6 +739,7 @@ namespace GuardAgainstLib
         /// }
         /// </code>
         /// </example>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<T> ArgumentBeingEmpty<T>(IEnumerable<T> argumentValue,
             string argumentName = null,
             string exceptionMessage = null)
