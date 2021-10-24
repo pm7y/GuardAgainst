@@ -1,48 +1,48 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <RootNamespace>GuardAgainstLib</RootNamespace>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <Product>GuardAgainst</Product>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>GuardAgainstLib</RootNamespace>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <Product>GuardAgainst</Product>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
 
-  <!-- FOR NUGET -->
-  <PropertyGroup>
-    <PackageId>GuardAgainst</PackageId>
-    <PackageVersion>1.0.0.0</PackageVersion>
-    <Authors>Paul Mcilreavy</Authors>
-    <Title>GuardAgainst</Title>
-    <Description>Useful guard clauses that simplify argument validity checking and make your code more readable.</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/pmcilreavy/GuardAgainst</PackageProjectUrl>
-    <!-- <PackageIconUrl>http://cdn.rawgit.com/pmcilreavy/GuardAgainst/master/src/GuardAgainstLib/logo/GuardAgainstSquare.png</PackageIconUrl> -->
-    <PackageIcon>GuardAgainstSquare.png</PackageIcon>
-    <RepositoryUrl>https://github.com/pmcilreavy/GuardAgainst.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>GuardAgainst;guard against;guard clause;exceptions;exception handling;dotnet;c#;</PackageTags>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-  </PropertyGroup>
+    <!-- FOR NUGET -->
+    <PropertyGroup>
+        <PackageId>GuardAgainst</PackageId>
+        <PackageVersion>1.0.0.0</PackageVersion>
+        <Authors>Paul Mcilreavy</Authors>
+        <Title>GuardAgainst</Title>
+        <Description>Useful guard clauses that simplify argument validity checking and make your code more readable.</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/pmcilreavy/GuardAgainst</PackageProjectUrl>
+        <!-- <PackageIconUrl>http://cdn.rawgit.com/pmcilreavy/GuardAgainst/master/src/GuardAgainstLib/logo/GuardAgainstSquare.png</PackageIconUrl> -->
+        <PackageIcon>GuardAgainstSquare.png</PackageIcon>
+        <RepositoryUrl>https://github.com/pmcilreavy/GuardAgainst.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>GuardAgainst;guard against;guard clause;exceptions;exception handling;dotnet;c#;</PackageTags>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD;NETSTANDARD2_0;</DefineConstants>
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-    <DocumentationFile>bin\Debug\netstandard2.0\GuardAgainstLib.xml</DocumentationFile>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DefineConstants>TRACE;DEBUG;NETSTANDARD;NETSTANDARD2_0;</DefineConstants>
+        <DebugType>full</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+        <DocumentationFile>bin\Debug\netstandard2.0\GuardAgainstLib.xml</DocumentationFile>
+        <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>none</DebugType>
-    <DebugSymbols>false</DebugSymbols>
-    <DocumentationFile>bin\Release\netstandard2.0\GuardAgainstLib.xml</DocumentationFile>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <DebugType>none</DebugType>
+        <DebugSymbols>false</DebugSymbols>
+        <DocumentationFile>bin\Release\netstandard2.0\GuardAgainstLib.xml</DocumentationFile>
+        <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
 
-  <ItemGroup>
-      <None Include="logo/GuardAgainstSquare.png" Pack="true" PackagePath="" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Include="logo/GuardAgainstSquare.png" Pack="true" PackagePath="" />
+    </ItemGroup>
 </Project>
