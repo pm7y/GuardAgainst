@@ -62,7 +62,7 @@ jobs:
           --nologo
           /p:WarningLevel=4
           /p:TreatWarningsAsErrors=true
-          /p:NoWarn=""
+          /p:NoWarn="CS1591"
           /p:WarningsAsErrors=""
           ${{ env.SOLUTION_PATH }}
 
