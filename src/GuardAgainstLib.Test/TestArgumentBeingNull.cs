@@ -3,37 +3,39 @@ using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace GuardAgainstLib.Test
+namespace GuardAgainstLib.Test;
+
+public class TestArgumentBeingNull
 {
-    public class TestArgumentBeingNull : TestBase
+    [Fact]
+    public void WhenObjectArgumentIsNotNull_ShouldNotThrow()
     {
-        public TestArgumentBeingNull(ITestOutputHelper output) : base(output)
-        {
-        }
+        var myArgument = new object();
 
-        [Fact]
-        public void WhenArgumentIsNotNull_ShouldNotThrow()
-        {
-            var myArgument = "Hello, World!";
-            object result = null;
-            Should.NotThrow(() =>
-            {
-                result = GuardAgainst.ArgumentBeingNull(myArgument, nameof(myArgument));
-            });
-            Assert.NotNull(result);
-            Assert.Equal(myArgument, result);
-        }
+        var result = Should.NotThrow(() => GuardAgainst.ArgumentBeingNull(myArgument, msg: "asd"));
+        Assert.NotNull(result);
+        Assert.Equal(myArgument, result);
+    }
 
-        [Fact]
-        public void WhenArgumentIsNull_ShouldThrowArgumentNullException()
-        {
-            const object myArgument = null;
-            var ex = Should.Throw<ArgumentNullException>(() =>
-            {
-                GuardAgainst.ArgumentBeingNull(myArgument, nameof(myArgument));
-            });
+    [Fact]
+    public void WhenStringArgumentIsNotNull_ShouldNotThrow()
+    {
+        var myArgument = "asd";
 
-            ex.ParamName.ShouldBe(nameof(myArgument));
-        }
+        var result = Should.NotThrow(() => GuardAgainst.ArgumentBeingNull(myArgument));
+        Assert.NotNull(result);
+        Assert.Equal(myArgument, result);
+    }
+
+    [Fact]
+    public void WhenArgumentIsNull_ShouldThrowArgumentNullException()
+    {
+        const object? myArgument = null;
+        var ex = Should.Throw<ArgumentNullException>(() =>
+        {
+            GuardAgainst.ArgumentBeingNull(myArgument);
+        });
+
+        ex.ParamName.ShouldBe(nameof(myArgument));
     }
 }

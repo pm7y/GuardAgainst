@@ -3,35 +3,25 @@ using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace GuardAgainstLib.Test
+namespace GuardAgainstLib.Test;
+
+public class TestOperationBeingInvalid
 {
-    public class TestOperationBeingInvalid : TestBase
+    [Fact]
+    public void WhenArgumentIsFalse_ShouldNotThrow()
     {
-        public TestOperationBeingInvalid(ITestOutputHelper output) : base(output)
-        {
-        }
+        const bool myArgument = false;
+        var result = Should.NotThrow(() => GuardAgainst.OperationBeingInvalid(myArgument));
+        Assert.Equal(myArgument, result);
+    }
 
-        [Fact]
-        public void WhenArgumentIsFalse_ShouldNotThrow()
+    [Fact]
+    public void WhenArgumentIsTrue_ShouldThrowArgumentException()
+    {
+        const bool myArgument = true;
+        Should.Throw<InvalidOperationException>(() =>
         {
-            const bool myArgument = false;
-            object result = null;
-            Should.NotThrow(() =>
-            {
-                result = GuardAgainst.OperationBeingInvalid(myArgument);
-            });
-            Assert.NotNull(result);
-            Assert.Equal(myArgument, result);
-        }
-
-        [Fact]
-        public void WhenArgumentIsTrue_ShouldThrowArgumentException()
-        {
-            const bool myArgument = true;
-            Should.Throw<InvalidOperationException>(() =>
-            {
-                GuardAgainst.OperationBeingInvalid(myArgument);
-            });
-        }
+            GuardAgainst.OperationBeingInvalid(myArgument);
+        });
     }
 }

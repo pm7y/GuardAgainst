@@ -62,8 +62,8 @@ Hopefully you'll agree that this is much simpler and easier to read...
 ```csharp
 private static string GetFullname(string firstname, string surname)
 {
-    GuardAgainst.ArgumentBeingNullOrWhitespace(firstname, nameof(firstname), "Firstname is required.");
-    GuardAgainst.ArgumentBeingNullOrWhitespace(surname, nameof(surname), "Surname is required.");
+    GuardAgainst.ArgumentBeingNullOrWhitespace(firstname, msg: "Firstname is required.");
+    GuardAgainst.ArgumentBeingNullOrWhitespace(surname, msg: "Surname is required.");
 
     return $"{firstname} {surname}";
 }
@@ -74,8 +74,8 @@ Both implementations of `GetFullname` are achieving the exact same thing.
 `GuardAgainst.ArgumentBeingNullOrWhitespace` accepts 2 main arguments: -
 
 - `argumentValue` is required. This is the value that you want to validate.
-- `argumentName` is optional. Supplying this makes the exception more useful particularly if the method has several parameters.
-- `exceptionMessage` is optional. Allows you to give an additional specific error message to pass to the exception constructor.
+- `argumentName` is optional. It will be added be the compiler automatically via the `CallerArgumentExpression`.
+- `exceptionMessage` is optional. Allows you to give a specific error message to pass to the exception constructor.
 
 <br/>
 
@@ -98,9 +98,8 @@ There are several other helper methods available that act in a similar fashion. 
 | `GuardAgainst.ArgumentBeingNullOrOutOfRange`         | - Throws an `ArgumentNullException` when the value is null. <br/>- Throws an `ArgumentOutOfRangeException` when the value is less than the minimum allowed value. <br/>- Throws an `ArgumentOutOfRangeException` when the value is greater than the maximum allowed value. |
 | `GuardAgainst.ArgumentBeingOutOfRange`               | - Throws an `ArgumentOutOfRangeException` when the value is less than the minimum allowed value. <br/>- Throws an `ArgumentOutOfRangeException` when the value is greater than the maximum allowed value.                                                                  |
 | **Other**                                            | **Description**                                                                                                                                                                                                                                                            |
-| `GuardAgainst.ArgumentBeingInvalid`                  | - Throws an `ArgumentException` based on whether the condition is met.                                                                                                                                                                                                     |
-| `GuardAgainst.OperationBeingInvalid`                 | - Throws an `InvalidOperationException` if the condition is not satisfied.                                                                                                                                                                                                 |
-| `GuardAgainst.ArgumentBeingUnspecifiedDateTime`      | - Throws an `ArgumentException` if the `Kind` of the `DateTime` argument is `Unspecified`.                                                                                                                                                                                 |
+| `GuardAgainst.ArgumentBeingInvalidEnum`              | - Throws an `ArgumentException` of enum is the specified invalid value.                                                                                                                                                                                                     |
+| `GuardAgainst.OperationBeingInvalid`                 | - Throws an `InvalidOperationException` if the condition is not satisfied.                                                                                                                                                                                                 |                                                                                                                                                                                |
 
 <br/>
 

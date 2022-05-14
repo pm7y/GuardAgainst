@@ -2,18 +2,13 @@
 using Xunit;
 using Xunit.Abstractions;
 
-namespace GuardAgainstLib.Test
-{
-    public class TestCanary : TestBase
-    {
-        public TestCanary(ITestOutputHelper output) : base(output)
-        {
-        }
+namespace GuardAgainstLib.Test;
 
-        [Fact]
-        public void WhenEverythingIsAsItShouldBe_ThisTestShouldAlwaysPass()
-        {
-            true.ShouldBe(true);
-        }
+public class TestCanary
+{
+    [Fact]
+    public void WhenEverythingIsAsItShouldBe_ThisTestShouldAlwaysPass()
+    {
+        true.ShouldBe(true);
     }
 }

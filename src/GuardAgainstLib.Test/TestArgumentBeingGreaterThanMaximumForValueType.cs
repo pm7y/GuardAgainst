@@ -3,49 +3,35 @@ using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace GuardAgainstLib.Test
+namespace GuardAgainstLib.Test;
+
+public class TestArgumentBeingGreaterThanMaximumForValueType
 {
-    public class TestArgumentBeingGreaterThanMaximumForValueType : TestBase
+    [Fact]
+    public void WhenArgumentIsEqualToMaximum_ShouldNotThrow()
     {
-        public TestArgumentBeingGreaterThanMaximumForValueType(ITestOutputHelper output) : base(output)
-        {
-        }
+        const int myArgument = 1;
+        var result = Should.NotThrow(() => GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 2));
+        Assert.Equal(myArgument, result);
+    }
 
-        [Fact]
-        public void WhenArgumentIsEqualToMaximum_ShouldNotThrow()
+    [Fact]
+    public void WhenArgumentIsGreaterThanMaximum_ShouldThrowArgumentOutOfRangeException()
+    {
+        var myArgument = 2;
+        var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
         {
-            var myArgument = 1;
-            object result = null;
-            Should.NotThrow(() =>
-            {
-                result = GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 2, nameof(myArgument));
-            });
-            Assert.NotNull(result);
-            Assert.Equal(myArgument, result);
-        }
+            GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 1);
+        });
 
-        [Fact]
-        public void WhenArgumentIsGreaterThanMaximum_ShouldThrowArgumentOutOfRangeException()
-        {
-            var myArgument = 2;
-            var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
-            {
-                GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 1, nameof(myArgument));
-            });
+        ex.ParamName.ShouldBe(nameof(myArgument));
+    }
 
-            ex.ParamName.ShouldBe(nameof(myArgument));
-        }
-
-        [Fact]
-        public void WhenArgumentIsLessThanMaximum_ShouldNotThrow()
-        {
-            var myArgument = 1;
-            object result = null;
-            Should.NotThrow(() =>
-            {
-                result = GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 2, nameof(myArgument));
-            });
-            Assert.Equal(myArgument, result);
-        }
+    [Fact]
+    public void WhenArgumentIsLessThanMaximum_ShouldNotThrow()
+    {
+        const int myArgument = 1;
+        var result = Should.NotThrow(() => GuardAgainst.ArgumentBeingGreaterThanMaximum(myArgument, 2));
+        Assert.Equal(myArgument, result);
     }
 }

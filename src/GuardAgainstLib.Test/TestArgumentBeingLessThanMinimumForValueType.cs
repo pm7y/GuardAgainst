@@ -3,50 +3,36 @@ using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace GuardAgainstLib.Test
+namespace GuardAgainstLib.Test;
+
+public class TestArgumentBeingLessThanMinimumForValueType
 {
-    public class TestArgumentBeingLessThanMinimumForValueType : TestBase
+    [Fact]
+    public void WhenArgumentIsEqualToMinimum_ShouldNotThrow()
     {
-        public TestArgumentBeingLessThanMinimumForValueType(ITestOutputHelper output) : base(output)
-        {
-        }
+        var myArgument = 1;
+        var result = Should.NotThrow(() => GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, myArgument));
+        Assert.Equal(myArgument, result);
+    }
 
-        [Fact]
-        public void WhenArgumentIsEqualToMinimum_ShouldNotThrow()
-        {
-            var myArgument = 1;
-            object result = null;
-            Should.NotThrow(() =>
-            {
-                result = GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument));
-            });
-            Assert.NotNull(result);
-            Assert.Equal(myArgument, result);
-        }
+    [Fact]
+    public void WhenArgumentIsGreaterThanMinimum_ShouldNotThrow()
+    {
+        var myArgument = 2;
+        var result = Should.NotThrow(() => GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1));
+        Assert.NotNull(result);
+        Assert.Equal(myArgument, result);
+    }
 
-        [Fact]
-        public void WhenArgumentIsGreaterThanMinimum_ShouldNotThrow()
+    [Fact]
+    public void WhenArgumentIsLessThanMinimum_ShouldThrowArgumentOutOfRangeException()
+    {
+        var myArgument = 1;
+        var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
         {
-            var myArgument = 2;
-            object result = null;
-            Should.NotThrow(() =>
-            {
-                result = GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 1, nameof(myArgument));
-            });
-            Assert.NotNull(result);
-            Assert.Equal(myArgument, result);
-        }
+            GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 2);
+        });
 
-        [Fact]
-        public void WhenArgumentIsLessThanMinimum_ShouldThrowArgumentOutOfRangeException()
-        {
-            var myArgument = 1;
-            var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
-            {
-                GuardAgainst.ArgumentBeingLessThanMinimum(myArgument, 2, nameof(myArgument));
-            });
-
-            ex.ParamName.ShouldBe(nameof(myArgument));
-        }
+        ex.ParamName.ShouldBe(nameof(myArgument));
     }
 }

@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <RootNamespace>GuardAgainstLib</RootNamespace>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <Nullable>enable</Nullable>
         <Product>GuardAgainst</Product>
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
@@ -32,6 +33,7 @@
         <DocumentationFile>bin\Debug\netstandard2.0\GuardAgainstLib.xml</DocumentationFile>
         <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <NoWarn>CS1591;</NoWarn>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -40,6 +42,7 @@
         <DocumentationFile>bin\Release\netstandard2.0\GuardAgainstLib.xml</DocumentationFile>
         <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <NoWarn>CS1591;</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>

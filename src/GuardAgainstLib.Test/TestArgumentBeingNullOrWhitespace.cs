@@ -3,49 +3,37 @@ using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace GuardAgainstLib.Test
+namespace GuardAgainstLib.Test;
+
+public class TestArgumentBeingNullOrWhitespace
 {
-    public class TestArgumentBeingNullOrWhitespace : TestBase
+    [Fact]
+    public void WhenArgumentIsNotNullOrWhitespace_ShouldNotThrow()
     {
-        public TestArgumentBeingNullOrWhitespace(ITestOutputHelper output) : base(output)
+        const string? myArgument = " blah ";
+        var result = Should.NotThrow(() => GuardAgainst.ArgumentBeingNullOrWhitespace(myArgument));
+        Assert.NotNull(result);
+        Assert.Equal(myArgument, result);
+    }
+
+    [Fact]
+    public void WhenArgumentIsNull_ShouldThrowArgumentNullException()
+    {
+        const string? myArgument = null;
+        var ex = Should.Throw<ArgumentNullException>(() => GuardAgainst.ArgumentBeingNullOrWhitespace(myArgument));
+
+        ex.ParamName.ShouldBe(nameof(myArgument));
+    }
+
+    [Fact]
+    public void WhenArgumentIsWhitespace_ShouldThrowArgumentException()
+    {
+        var myArgument = "  ";
+        var ex = Should.Throw<ArgumentException>(() =>
         {
-        }
+            GuardAgainst.ArgumentBeingNullOrWhitespace(myArgument);
+        });
 
-        [Fact]
-        public void WhenArgumentIsNotNullOrWhitespace_ShouldNotThrow()
-        {
-            var myArgument = " blah ";
-            object result = null;
-            Should.NotThrow(() =>
-            {
-                result = GuardAgainst.ArgumentBeingNullOrWhitespace(myArgument, nameof(myArgument));
-            });
-            Assert.NotNull(result);
-            Assert.Equal(myArgument, result);
-        }
-
-        [Fact]
-        public void WhenArgumentIsNull_ShouldThrowArgumentNullException()
-        {
-            const string myArgument = null;
-            var ex = Should.Throw<ArgumentNullException>(() =>
-            {
-                GuardAgainst.ArgumentBeingNullOrWhitespace(myArgument, nameof(myArgument));
-            });
-
-            ex.ParamName.ShouldBe(nameof(myArgument));
-        }
-
-        [Fact]
-        public void WhenArgumentIsWhitespace_ShouldThrowArgumentException()
-        {
-            var myArgument = "  ";
-            var ex = Should.Throw<ArgumentException>(() =>
-            {
-                GuardAgainst.ArgumentBeingNullOrWhitespace(myArgument, nameof(myArgument));
-            });
-
-            ex.ParamName.ShouldBe(nameof(myArgument));
-        }
+        ex.ParamName.ShouldBe(nameof(myArgument));
     }
 }

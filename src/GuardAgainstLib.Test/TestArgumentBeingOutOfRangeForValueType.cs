@@ -3,75 +3,51 @@ using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace GuardAgainstLib.Test
+namespace GuardAgainstLib.Test;
+
+public class TestArgumentBeingOutOfRangeForValueType
 {
-    public class TestArgumentBeingOutOfRangeForValueType : TestBase
+    [Fact]
+    public void WhenArgumentIsEqualToMaximum_ShouldNotThrow()
     {
-        public TestArgumentBeingOutOfRangeForValueType(ITestOutputHelper output) : base(output)
-        {
-        }
+        const int myArgument = 4;
+        var result = Should.NotThrow(() => GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4));
+        Assert.Equal(myArgument, result);
+    }
 
-        [Fact]
-        public void WhenArgumentIsEqualToMaximum_ShouldNotThrow()
-        {
-            var myArgument = 4;
-            object result = null;
-            Should.NotThrow(() =>
-            {
-                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument));
-            });
-            Assert.NotNull(result);
-            Assert.Equal(myArgument, result);
-        }
+    [Fact]
+    public void WhenArgumentIsEqualToMinimum_ShouldNotThrow()
+    {
+        const int myArgument = 2;
+        var result = Should.NotThrow(() => GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4));
+        Assert.Equal(myArgument, result);
+    }
 
-        [Fact]
-        public void WhenArgumentIsEqualToMinimum_ShouldNotThrow()
-        {
-            var myArgument = 2;
-            object result = null;
-            Should.NotThrow(() =>
-            {
-                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument));
-            });
-            Assert.NotNull(result);
-            Assert.Equal(myArgument, result);
-        }
+    [Fact]
+    public void WhenArgumentIsGreaterThanMaximum_ShouldThrowArgumentOutOfRangeException()
+    {
+        const int myArgument = 5;
+        var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
+            GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4));
 
-        [Fact]
-        public void WhenArgumentIsGreaterThanMaximum_ShouldThrowArgumentOutOfRangeException()
-        {
-            var myArgument = 5;
-            var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
-            {
-                GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument));
-            });
+        ex.ParamName.ShouldBe(nameof(myArgument));
+    }
 
-            ex.ParamName.ShouldBe(nameof(myArgument));
-        }
+    [Fact]
+    public void WhenArgumentIsInRange_ShouldNotThrow()
+    {
+        const int myArgument = 3;
+        var result = Should.NotThrow(() => GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4));
+        Assert.Equal(myArgument, result);
+    }
 
-        [Fact]
-        public void WhenArgumentIsInRange_ShouldNotThrow()
-        {
-            var myArgument = 3;
-            object result = null;
-            Should.NotThrow(() =>
-            {
-                result = GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument));
-            });
-            Assert.NotNull(result);
-            Assert.Equal(myArgument, result);
-        }
+    [Fact]
+    public void WhenArgumentIsLessThanMinimum_ShouldThrowArgumentOutOfRangeException()
+    {
+        const int myArgument = 1;
+        var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
+            GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4));
 
-        [Fact]
-        public void WhenArgumentIsLessThanMinimum_ShouldThrowArgumentOutOfRangeException()
-        {
-            var myArgument = 1;
-            var ex = Should.Throw<ArgumentOutOfRangeException>(() =>
-            {
-                GuardAgainst.ArgumentBeingOutOfRange(myArgument, 2, 4, nameof(myArgument));
-            });
-
-            ex.ParamName.ShouldBe(nameof(myArgument));
-        }
+        ex.ParamName.ShouldBe(nameof(myArgument));
     }
 }
