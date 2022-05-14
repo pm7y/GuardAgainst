@@ -154,7 +154,7 @@ public static class GuardAgainst
         string? msg = null)
         where T : class, IComparable<T>
     {
-        return ReferenceEquals(argumentValue, null)
+        return argumentValue is null
             ? default
             : argumentValue.CompareTo(maximumAllowedValue) > 0
                 ? throw new ArgumentOutOfRangeException(argumentName,
@@ -209,7 +209,7 @@ public static class GuardAgainst
         string? msg = null)
         where T : IComparable<T>
     {
-        return ReferenceEquals(argumentValue, null)
+        return argumentValue is null
             ? default
             : argumentValue.CompareTo(minimumAllowedValue) >= 0 && argumentValue.CompareTo(maximumAllowedValue) <= 0
                 ? argumentValue
@@ -269,7 +269,7 @@ public static class GuardAgainst
         string? argumentName = null,
         string? msg = null)
     {
-        return ReferenceEquals(argumentValue, default(IEnumerable<T>)) || argumentValue.Any()
+        return argumentValue is null || argumentValue.Any()
             ? argumentValue
             : throw new ArgumentException(msg, argumentName);
     }
