@@ -2,7 +2,6 @@
 using System.Linq;
 using Shouldly;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace GuardAgainstLib.Test;
 
@@ -35,6 +34,6 @@ public class TestArgumentBeingEmptyEnumerable
     {
         const int[]? myArgument = null;
         var result = Should.NotThrow(() => GuardAgainst.ArgumentBeingEmpty(myArgument));
-        Assert.Equal(myArgument, result);
+        Assert.True(myArgument == result);
     }
 }

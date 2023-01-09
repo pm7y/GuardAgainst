@@ -1,12 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <RootNamespace>GuardAgainstLib</RootNamespace>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <Nullable>enable</Nullable>
         <Product>GuardAgainst</Product>
-        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <!-- FOR NUGET -->
